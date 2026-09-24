@@ -94,3 +94,7 @@ This repository starts private. Before making it public, choose a source-code li
 ## External research archive
 
 The **Data archive** button shows live progress for a configured external archive. The resumable downloader preserves source layouts, participant/cohort provenance and integrity receipts while keeping raw data outside Git. See [archive scope, operation and limitations](docs/DATA_ARCHIVE.md) and the [reviewed source catalogue](docs/cohort-sources.json). The current collection falls short of the 300 GB diagnosed-neurodegenerative target; unrelated neurological conditions are not used to fill it.
+
+## Parkinson’s classifier research plan
+
+The [research-backed PD classifier proposal](docs/PD_CLASSIFIER_RESEARCH_PLAN.md) describes the initial neural model, participant-separated train/validation/test split, independent-study evaluation, local runtime estimates, cloud costs and later Myna integration. It is a decision draft; no classifier has been trained.
