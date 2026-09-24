@@ -90,3 +90,7 @@ Downloaded source bytes and normalized arrays receive SHA-256 fingerprints for p
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the progression toward repeatable personal sessions, wearable acquisition, and symptom-specific multimodal studies.
 
 This repository starts private. Before making it public, choose a source-code license, review the full Git history for private data, confirm dataset attribution, and update validation results. No open-source license is granted by this prototype yet; public visibility and open-source licensing are separate decisions.
+
+## External research archive
+
+The **Data archive** button shows live progress for a configured external archive. The resumable downloader preserves source layouts, participant/cohort provenance and integrity receipts while keeping raw data outside Git. See [archive scope, operation and limitations](docs/DATA_ARCHIVE.md) and the [reviewed source catalogue](docs/cohort-sources.json). The current collection falls short of the 300 GB diagnosed-neurodegenerative target; unrelated neurological conditions are not used to fill it.

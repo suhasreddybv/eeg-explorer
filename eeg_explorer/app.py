@@ -113,11 +113,32 @@ def save_recording(rec, name, source, provenance=None):
     return meta
 
 
+@app.get("/api/archive/status")
+def archive_status():
+    config = DATA / "archive-path.txt"
+    if not config.exists():
+        return {"available": False, "message": "No external archive configured."}
+    root = Path(config.read_text().strip())
+    try:
+        status = json.loads((root / "download-status.json").read_text())
+        summary = json.loads((DATA / "archive-summary.json").read_text())
+    except (OSError, ValueError):
+        return {
+            "available": False,
+            "message": "Connect the archive drive to see download progress.",
+        }
+    return {"available": True, "path": str(root), "status": status, "summary": summary}
+
+
 @app.get("/api/recordings")
 def list_recordings():
     with LOCK:
         return sorted(
-            [json.loads(p.read_text()) for p in DATA.glob("*.json")],
+            [
+                json.loads(p.read_text())
+                for p in DATA.glob("*.json")
+                if len(p.stem) == 24 and all(c in "0123456789abcdef" for c in p.stem)
+            ],
             key=lambda x: x["created_at"],
             reverse=True,
         )

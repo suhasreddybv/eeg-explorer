@@ -111,3 +111,17 @@ def test_edf_import_preserves_units_and_events(client, tmp_path):
     assert rec["sfreq"] == 256
     stored = module.recording(rec["id"])
     assert np.max(stored.data) == pytest.approx(10, abs=0.01)
+
+
+def test_archive_status_and_recording_library(client, tmp_path):
+    assert client.get("/api/archive/status").json()["available"] is False
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    (tmp_path / "archive-path.txt").write_text(str(archive))
+    (tmp_path / "archive-summary.json").write_text('{"datasets": 23}')
+    (archive / "download-status.json").write_text('{"state": "downloading", "verified_bytes": 100}')
+    status = client.get("/api/archive/status").json()
+    assert status["status"]["verified_bytes"] == 100
+    assert client.get("/api/recordings").json() == []
+    (archive / "download-status.json").unlink()
+    assert client.get("/api/archive/status").json()["available"] is False

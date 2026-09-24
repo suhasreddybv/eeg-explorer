@@ -245,3 +245,19 @@ $("#note-form").onsubmit = async e => {e.preventDefault();const form=e.currentTa
 $("#context-form").onsubmit = async e => {e.preventDefault();try {state.current=await api(`/recordings/${state.current.id}/context`,{method:"PUT",body:JSON.stringify(Object.fromEntries(new FormData(e.currentTarget)))});notice("Session context saved on this computer.");}catch(err){notice(err.message,true);}};
 window.addEventListener("resize", () => {drawWave();drawSpectrum();});
 (async () => {try {await refreshLibrary();if(state.recordings.length)await busy(()=>selectRecording(state.recordings[0]),"Opening your latest recording…");}catch(err){notice(`Could not connect to the local application. ${err.message}`,true);}})();
+
+async function refreshArchive() {
+  try {
+    const result = await api("/archive/status");
+    text("#archive-state", result.available ? `Download state: ${result.status.state} · updated ${new Date(result.status.updated_at).toLocaleString()}` : result.message);
+    if (!result.available) {for (const id of ["location","progress","cohorts","plan"]) text(`#archive-${id}`, ""); return;}
+    const {status:s, summary:p} = result;
+    const gb = n => ((n || 0) / 1e9).toFixed(2);
+    text("#archive-location", result.path);
+    text("#archive-progress", `${s.verified_files.toLocaleString()} / ${s.total_files.toLocaleString()} files verified · ${gb(s.verified_bytes)} GB · ${s.failures.length} failed files`);
+    text("#archive-cohorts", `Downloaded EEG: healthy/control ${gb(s.cohort_bytes.healthy_control)} GB · neurodegenerative ${gb(s.cohort_bytes.neurodegenerative)} GB`);
+    text("#archive-plan", `Queued across ${p.datasets} datasets: ${gb(p.known_bytes_by_cohort.healthy_control)} GB controls and ${gb(p.known_bytes_by_cohort.neurodegenerative)} GB neurodegenerative EEG, plus up to 44.6 GB of ALS/control recordings whose split is measured as files arrive.`);
+  } catch (e) {text("#archive-state", e.message);}
+}
+$("#archive-button").onclick = () => {$("#archive-dialog").showModal();refreshArchive();};
+setInterval(() => {if ($("#archive-dialog").open) refreshArchive();}, 5000);

@@ -1,0 +1,255 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-24T18:42:53.493177+00:00",
+  "target_bytes_per_cohort": 300000000000,
+  "scope": "Human scalp EEG. Source-described healthy/control participants and diagnosed Parkinson's, Alzheimer's, FTD, ALS. No epilepsy, post-arrest coma, MRI/MEG, duplicate derivatives, or unconfirmed MCI/risk cases counted as disease.",
+  "datasets": [
+    {
+      "id": "ds002778",
+      "provider": "openneuro",
+      "title": "UC San Diego Resting State EEG Data from Patients with Parkinson's Disease",
+      "source": "https://openneuro.org/datasets/ds002778",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds002778.v1.0.4",
+      "listed_at": "2026-09-24T18:37:18.284720+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003194",
+      "provider": "openneuro",
+      "title": "Neuroepo multisession",
+      "source": "https://openneuro.org/datasets/ds003194",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003194.v1.0.3",
+      "listed_at": "2026-09-24T18:37:18.162838+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003195",
+      "provider": "openneuro",
+      "title": "Placebo Neuroepo multisession",
+      "source": "https://openneuro.org/datasets/ds003195",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003195.v1.0.3",
+      "listed_at": "2026-09-24T18:38:42.028349+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003490",
+      "provider": "openneuro",
+      "title": "EEG: 3-Stim Auditory Oddball and Rest in Parkinson's",
+      "source": "https://openneuro.org/datasets/ds003490",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003490.v1.1.0",
+      "listed_at": "2026-09-24T18:37:18.365401+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003506",
+      "provider": "openneuro",
+      "title": "EEG: Reinforcement Learning in Parkinson's",
+      "source": "https://openneuro.org/datasets/ds003506",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003506.v1.1.0",
+      "listed_at": "2026-09-24T18:38:41.592520+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003509",
+      "provider": "openneuro",
+      "title": "EEG: Simon Conflict in Parkinson's",
+      "source": "https://openneuro.org/datasets/ds003509",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003509.v1.1.0",
+      "listed_at": "2026-09-24T18:38:42.354363+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds003775",
+      "provider": "openneuro",
+      "title": "SRM Resting-state EEG",
+      "source": "https://openneuro.org/datasets/ds003775",
+      "license": "CC0",
+      "dataset_doi": "10.18112/openneuro.ds003775.v1.0.0",
+      "listed_at": "2026-09-24T18:37:20.663187+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004148",
+      "provider": "openneuro",
+      "title": "A test-retest resting and cognitive state EEG dataset",
+      "source": "https://openneuro.org/datasets/ds004148",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004148.v1.0.0",
+      "listed_at": "2026-09-24T18:38:42.414119+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004504",
+      "provider": "openneuro",
+      "title": "A dataset of EEG recordings from: Alzheimer's disease, Frontotemporal dementia and Healthy subjects",
+      "source": "https://openneuro.org/datasets/ds004504",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004504.v1.0.9",
+      "listed_at": "2026-09-24T18:37:20.040460+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004574",
+      "provider": "openneuro",
+      "title": "Cross-modal Oddball Task.",
+      "source": "https://openneuro.org/datasets/ds004574",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004574.v1.0.0",
+      "listed_at": "2026-09-24T18:37:18.889910+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004579",
+      "provider": "openneuro",
+      "title": "Interval Timing Task",
+      "source": "https://openneuro.org/datasets/ds004579",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004579.v1.0.0",
+      "listed_at": "2026-09-24T18:37:18.879372+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004580",
+      "provider": "openneuro",
+      "title": "Simon-conflict Task.",
+      "source": "https://openneuro.org/datasets/ds004580",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004580.v1.0.0",
+      "listed_at": "2026-09-24T18:37:19.030388+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004584",
+      "provider": "openneuro",
+      "title": "Rest eyes open",
+      "source": "https://openneuro.org/datasets/ds004584",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004584.v1.0.0",
+      "listed_at": "2026-09-24T18:37:18.399969+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds004796",
+      "provider": "openneuro",
+      "title": "A Polish Electroencephalography, Alzheimer\u2019s Risk-genes, Lifestyle and Neuroimaging (PEARL-Neuro) Database",
+      "source": "https://openneuro.org/datasets/ds004796",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds004796.v1.1.0",
+      "listed_at": "2026-09-24T18:37:20.684670+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds005048",
+      "provider": "openneuro",
+      "title": "40Hz Auditory Entrainment",
+      "source": "https://openneuro.org/datasets/ds005048",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds005048.v1.0.1",
+      "listed_at": "2026-09-24T18:37:20.304521+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds005385",
+      "provider": "openneuro",
+      "title": "Resting-state EEG data before and after cognitive activity across the adult lifespan and a 5-year follow-up",
+      "source": "https://openneuro.org/datasets/ds005385",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds005385.v1.0.3",
+      "listed_at": "2026-09-24T18:37:23.330639+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds006036",
+      "provider": "openneuro",
+      "title": "A complementary dataset of open-eyes EEG recordings in a photo-stimulation setting from: Alzheimer's disease, Frontotemporal dementia and Healthy subjects",
+      "source": "https://openneuro.org/datasets/ds006036",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds006036.v1.0.6",
+      "listed_at": "2026-09-24T18:37:20.255832+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds007526",
+      "provider": "openneuro",
+      "title": "PD-EEG: Resting-State & Walking EEG in Parkinson's Disease",
+      "source": "https://openneuro.org/datasets/ds007526",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds007526.v1.0.2",
+      "listed_at": "2026-09-24T18:37:19.707408+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds007864",
+      "provider": "openneuro",
+      "title": "Neuroepo multisession Phase II and III",
+      "source": "https://openneuro.org/datasets/ds007864",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds007864.v1.0.0",
+      "listed_at": "2026-09-24T18:37:19.608399+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds007865",
+      "provider": "openneuro",
+      "title": "Placebo Neuroepo multisession Phase II and III",
+      "source": "https://openneuro.org/datasets/ds007865",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds007865.v1.0.0",
+      "listed_at": "2026-09-24T18:37:19.642309+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds007987",
+      "provider": "openneuro",
+      "title": "Raw resting-state EEG dataset with alternating eyes-open and eyes-closed recordings in healthy adults",
+      "source": "https://openneuro.org/datasets/ds007987",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds007987.v1.1.0",
+      "listed_at": "2026-09-24T18:38:41.534258+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "ds008768",
+      "provider": "openneuro",
+      "title": "Resting-State EEG in Parkinson's Disease and Healthy Controls",
+      "source": "https://openneuro.org/datasets/ds008768",
+      "license": "CC0",
+      "dataset_doi": "doi:10.18112/openneuro.ds008768.v1.0.0",
+      "listed_at": "2026-09-24T18:37:19.891356+00:00",
+      "note": "S3 object snapshot pinned by ETag; raw BIDS EEG and associated metadata only. No MRI or derivatives."
+    },
+    {
+      "id": "bigp3bci",
+      "provider": "physionet",
+      "title": "bigP3BCI P300 speller EEG",
+      "source": "https://physionet.org/content/bigp3bci/1.0.0/",
+      "license": "CC BY 4.0",
+      "estimated_total_bytes": 44600000000,
+      "note": "ALS/NonALS labels from EDF headers. Do not infer neurologically normal EEG from a NonALS label alone."
+    }
+  ],
+  "known_bytes_by_cohort": {
+    "metadata": 68823221,
+    "healthy_control": 255141694790,
+    "neurodegenerative": 140789829835
+  },
+  "file_counts_by_cohort": {
+    "metadata": 28552,
+    "healthy_control": 10500,
+    "neurodegenerative": 2694
+  },
+  "bigp3_bytes_not_yet_split": 44600000000,
+  "overlap_notes": [
+    "ds004504 and ds006036 contain the same 88 people.",
+    "New Mexico task datasets share Original_ID values; Iowa task datasets share EEG/ID values.",
+    "NeuroEPO releases and other Parkinson's cohorts may overlap; reconcile before participant-level evaluation.",
+    "ds007020 omitted because resting recordings may overlap the Iowa source cohort.",
+    "No participant independence is implied by dataset count or raw byte count."
+  ]
+}
