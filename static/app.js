@@ -254,10 +254,32 @@ async function refreshArchive() {
     const {status:s, summary:p} = result;
     const gb = n => ((n || 0) / 1e9).toFixed(2);
     text("#archive-location", result.path);
-    text("#archive-progress", `${s.verified_files.toLocaleString()} / ${s.total_files.toLocaleString()} files verified · ${gb(s.verified_bytes)} GB · ${s.failures.length} failed files`);
+    text("#archive-progress", `${s.verified_files.toLocaleString()} / ${s.total_files.toLocaleString()} files verified · ${gb(s.verified_bytes)} GB · ${s.failures.length} files awaiting retry · ${s.recovered_files_this_run || 0} recovered this run`);
     text("#archive-cohorts", `Downloaded EEG: healthy/control ${gb(s.cohort_bytes.healthy_control)} GB · neurodegenerative ${gb(s.cohort_bytes.neurodegenerative)} GB`);
     text("#archive-plan", `Queued across ${p.datasets} datasets: ${gb(p.known_bytes_by_cohort.healthy_control)} GB controls and ${gb(p.known_bytes_by_cohort.neurodegenerative)} GB neurodegenerative EEG, plus up to 44.6 GB of ALS/control recordings whose split is measured as files arrive.`);
   } catch (e) {text("#archive-state", e.message);}
 }
 $("#archive-button").onclick = () => {$("#archive-dialog").showModal();refreshArchive();};
 setInterval(() => {if ($("#archive-dialog").open) refreshArchive();}, 5000);
+
+async function refreshResearch() {
+  try {
+    const r = await api("/research/status");
+    text("#research-state", r.available ? (r.model_locked ? "Model fitted and locked for evaluation." : (r.tuning_state === "complete" ? "Model search complete. Final seeded fits underway." : `Training-only model search: ${r.tuning_folds_completed}/18 folds completed (${r.tuning_state}).`)) : r.message);
+    if (!r.available) return;
+    const c = r.counts;
+    text("#research-counts", `Ready: ${c["train:ready"] || 0} training participants · ${c["validation:ready"] || 0} validation participants. Quality exclusions: ${(c["train:excluded_qc"] || 0) + (c["validation:excluded_qc"] || 0)}.`);
+    text("#research-device", `${r.device === "mps" ? "Apple GPU" : r.device || "Device pending"} · measured epoch ${r.epoch_seconds?.toFixed(2) || "—"} seconds · conservative experiment estimate ${r.projected_hours.toFixed(1)} hours.`);
+    const target = $("#research-results");target.replaceChildren();
+    if (!Object.keys(r.test_results).length) target.append(node("p", "", "Test results are not available yet. Holdout data stays separate from model selection."));
+    for (const [name, result] of Object.entries(r.test_results)) {
+      const label = {internal_test:"Iowa internal test",ucsd_on:"UCSD external · medication ON",ucsd_off:"UCSD external · medication OFF"}[name];
+      target.append(node("h3", "", label));
+      target.append(node("p", "", `${result.participants_eligible}/${result.participants_total} people passed quality checks.`));
+      if (result.neural) target.append(node("p", "", `Participant AUROC: neural ${result.neural.auroc.toFixed(2)} (95% interval ${result.neural.auroc_95ci.map(n=>n.toFixed(2)).join("–")}) · spectral baseline ${result.baseline.auroc.toFixed(2)}. Neural sensitivity ${(result.neural.sensitivity*100).toFixed(0)}%; specificity ${(result.neural.specificity*100).toFixed(0)}%.`));
+      else target.append(node("p", "", "Performance could not be estimated with the remaining class coverage."));
+    }
+  } catch (e) {text("#research-state", e.message);}
+}
+$("#research-button").onclick = () => {$("#research-dialog").showModal();refreshResearch();};
+setInterval(() => {if ($("#research-dialog").open) refreshResearch();}, 5000);

@@ -113,6 +113,61 @@ def save_recording(rec, name, source, provenance=None):
     return meta
 
 
+@app.get("/api/research/status")
+def research_status():
+    config = DATA / "pd-training-path.txt"
+    if not config.exists():
+        return {"available": False, "message": "No local training run configured."}
+    root = Path(config.read_text().strip())
+
+    def read(name):
+        try:
+            return json.loads((root / name).read_text())
+        except (OSError, ValueError):
+            return None
+
+    registry = read("registry.json")
+    if registry is None:
+        return {"available": False, "message": "Training run is unavailable."}
+    preparation = read("preparation.json") or {}
+    counts = {}
+    for row in preparation.get("records", []):
+        key = f"{row['split']}:{row['status']}"
+        counts[key] = counts.get(key, 0) + 1
+    tuning = read("tuning.json") or {}
+    bench = read("benchmark.json") or {}
+    locked = read("model-lock.json")
+    tests = {}
+    for cohort in ["internal_test", "ucsd_on", "ucsd_off"]:
+        result = read(f"evaluation-{cohort}.json")
+        if result:
+            tests[cohort] = {
+                k: result[k]
+                for k in [
+                    "status",
+                    "coverage",
+                    "participants_total",
+                    "participants_eligible",
+                    "neural",
+                    "baseline",
+                ]
+                if k in result
+            }
+    return {
+        "available": True,
+        "counts": counts,
+        "tuning_folds_completed": len(tuning.get("fold_results", [])),
+        "tuning_state": tuning.get("state", "not_started"),
+        "model_locked": locked is not None,
+        "device": bench.get("device"),
+        "epoch_seconds": bench.get("median_epoch_seconds"),
+        "projected_hours": bench.get("projected_21_fits_100_epochs_seconds_with_25pct_buffer", 0)
+        / 3600,
+        "test_results": tests,
+        "policy": "Local Mac only. Notify before any continuous stage projected over four days.",
+    }
+
+
 @app.get("/api/archive/status")
 def archive_status():
     config = DATA / "archive-path.txt"

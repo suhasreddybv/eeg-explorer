@@ -125,3 +125,18 @@ def test_archive_status_and_recording_library(client, tmp_path):
     assert client.get("/api/recordings").json() == []
     (archive / "download-status.json").unlink()
     assert client.get("/api/archive/status").json()["available"] is False
+
+
+def test_research_status_exposes_aggregate_progress_only(client, tmp_path):
+    assert client.get("/api/research/status").json()["available"] is False
+    run = tmp_path / "research"
+    run.mkdir()
+    (tmp_path / "pd-training-path.txt").write_text(str(run))
+    (run / "registry.json").write_text('{"records": [{"participant_key": "private-subject"}]}')
+    (run / "preparation.json").write_text(
+        '{"records": [{"split": "train", "status": "ready", "participant_key": "private-subject"}]}'
+    )
+    result = client.get("/api/research/status")
+    assert result.json()["counts"]["train:ready"] == 1
+    assert "private-subject" not in result.text
+    assert "test_results" in result.json()

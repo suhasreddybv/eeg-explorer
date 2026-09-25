@@ -32,7 +32,7 @@ From the project directory, with the external drive mounted:
 
 The detached worker resumes partial files, retries transient failures, checks free space, and avoids duplicate simultaneous workers. On macOS it prevents idle sleep while running; closing the lid, shutting down, losing power, or disconnecting the drive can still interrupt it. Re-run the command to resume after an interruption or retry failed files.
 
-To pause safely, create an empty file called `PAUSE` in the archive folder. Wait for `download-status.json` to report `paused` before disconnecting the drive. To resume, remove only that empty `PAUSE` marker and run the command above. The worker also stops if free space falls below 20 GiB. It does not automatically restart after reboot.
+To pause safely, create an empty file called `PAUSE` in the archive folder. Wait for `download-status.json` to report `paused` before disconnecting the drive. To resume, remove only that empty `PAUSE` marker; the installed service checks again within a minute. Without the service, run the command above. The worker also stops if free space falls below 20 GiB. The installed macOS LaunchAgent resumes eligible work after login and checks every minute when no worker is running. It does not depend on Codex being open or having usage remaining.
 
 The app's **Data archive** panel reads progress from the path in local `data/archive-path.txt` and aggregate metadata in `data/archive-summary.json`. It is read-only and does not restart downloads. Its timestamp is the last worker update; a stale timestamp can indicate an interrupted worker.
 
@@ -41,3 +41,19 @@ The signal explorer currently imports bounded EDF/CSV files. The archive also co
 ## Rebuilding inventories
 
 `scripts/catalog_openneuro.py` lists public raw objects and participant metadata; `scripts/build_cohort_plan.py` applies the explicit reviewed dataset/cohort mappings. `scripts/catalog_physionet.py` inventories PhysioNet resources, while `scripts/download_physionet.py` is a checksum-based utility. Only the reviewed cohort manifest should be supplied to `scripts/archive_download.py`; a broad EEG catalogue is not a clinically eligible cohort plan.
+
+## Autonomous service and retry recovery
+
+The service is installed as `~/Library/LaunchAgents/local.eeg-explorer.archive.plist`. It uses the local project interpreter, not Codex, an AI API or a scheduled Codex task. Keep the project/virtual environment in place. It runs when the user is logged in, requires the SSD and network, and cannot transfer while the Mac is shut down or the lid causes sleep. `caffeinate -i` prevents idle sleep while a worker is active.
+
+A September 25 audit found 1,280 failures, all reporting DNS name-resolution errors. Current DNS and a byte-range request to a previously failed source succeeded. The old status was preserved under `provenance/pre-retry-upgrade-status.json`. This supports a past network/DNS interruption; it does not establish why DNS was unavailable.
+
+The upgraded worker imports those failures, prioritizes retries, and retains a persistent `retry-state.json` plus append-only `retry-history.jsonl`. It retries until files pass integrity checks or the archive is paused. DNS/connection failures back off the affected host, up to five minutes, while other hosts can progress. Rate limits honor numeric Retry-After. Missing/denied/changed sources are retained with an hourly retry and visible error rather than treated as completed. Failures are removed only after verified success. Completion requires every manifest entry to be verified, with an empty retry queue.
+
+Install on another Mac from the project directory with:
+
+```sh
+.venv/bin/python -m scripts.install_archive_service --root '/Volumes/Extreme Pro/EEG data'
+```
+
+Service logs are under local `data/archive-service/`; download progress and retry history stay on the SSD. The service waits for the mounted drive rather than recreating its mount directory on the internal disk. A `PAUSE` file remains the safe stop control.

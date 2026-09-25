@@ -1,6 +1,6 @@
 # Parkinson’s EEG classifier: research and starting protocol
 
-**Decision draft · 24 September 2026 · Documentation only; no model trained or cloud resources purchased.**
+**Approved starting protocol · 24 September 2026 · Local Mac only.**
 
 ## Recommendation
 
@@ -8,7 +8,7 @@ Start with a compact EEGNet-style neural network for **diagnosed Parkinson’s d
 
 The first result will be a reproducible research comparison, not a diagnostic product or a symptom severity score. Later, expand to the specified neurodegenerative diagnoses, then test whether EEG adds information to Myna’s audio and movement measurements using paired participant data.
 
-**Start on the existing M4 Mac.** A cloud GPU becomes worthwhile if the measured experiment queue would occupy the Mac for several days or MPS compatibility/memory limits impede progress. A proposed first cloud allowance is **$30–75**, contingent on a local benchmark and a specific approved rental. No cloud spending is authorized by this document.
+**Start on the existing M4 Mac.** The user approved local implementation. Notify them before proceeding with any single continuous stage estimated to exceed four days.
 
 ## Agreed scope and research question
 
@@ -132,25 +132,9 @@ Timing basis: 105 training participants × 15 four-second windows = 1,575 traini
 
 Before committing to the full experiment matrix, time 5–10 warm epochs on the real cached training subset, including validation/I/O. Record epochs/second, windows/second, peak memory, device and fallback behavior. Forecast total time from the measured full-epoch duration × remaining epochs × fits, with a 25% buffer. This benchmark is future implementation work; none has been run for this document.
 
-## Cloud GPU costs and the decision to rent
+## Approved compute policy
 
-USD list prices checked **24 September 2026**; availability, region and deployment options can change the checkout price. Examples for a single GPU:
-
-- Runpod RTX A5000, 24 GB: **$0.27/hour** on the reviewed Pods pricing page.
-- Runpod RTX 4090, 24 GB: **$0.74/hour** on that page.
-- Lambda A10, 24 GB: **$1.29/hour**, an alternative full-instance offering with different CPU/RAM/storage allocations.
-
-These are not performance-equivalent instances. Compare cost per completed experiment after a benchmark, not price per GPU-hour alone. [Runpod pricing](https://www.runpod.io/pricing); [Lambda instance pricing](https://lambda.ai/instances).
-
-For a provisional **20–60 GPU-hour** campaign, compute arithmetic is **$5.40–16.20** on the A5000, **$14.80–44.40** on the 4090, or **$25.80–77.40** on the A10. This is a budget scenario, not a forecast of identical runtimes across those GPUs. Recalculate from the measured rental benchmark.
-
-Runpod standard network storage below 1 TB is listed at **$0.07/GB/month**: 50–100 GB retained for a full month is **$3.50–7**. Keeping 600 GB would be **$42/month**, so upload/re-download only the selected public cohort or processed cache. Count billed setup/download/idle time and container disk separately; allow tax and any applicable transfer/provider fees. Persistent storage can continue billing after compute stops. [Storage pricing](https://www.runpod.io/pricing); [billing documentation](https://github.com/runpod/docs/blob/main/accounts-billing/billing.mdx).
-
-**Proposed initial envelope: $30–75**, including a compact 4090 campaign, modest persistent storage and setup contingency, subject to the actual quote. Do not start an H100/A100-scale rental for this small model. A cheaper GPU might have the best cost per fit; the 4090 is a reasonable candidate to benchmark, not a guaranteed winner.
-
-Rent only if the local measured queue exceeds roughly 48–72 hours, interferes substantially with daily use, hits memory/backend limitations, or a bounded cloud experiment saves meaningful iteration time. If a future measured 24-hour local queue takes six hours on a 4090, its compute would cost **$4.44** and save about 18 hours before setup/transfer. That is a conditional illustration, not a measured fourfold speedup.
-
-Cloud compute cannot resolve participant overlap, mismatched protocols, weak labels, or lack of external data. Dataset audit and evaluation design are likely to dominate this phase. No GPU needs to be purchased, and no cloud account or machine has been provisioned.
+Use this local Mac only. Before launching any uninterrupted stage projected to exceed 96 hours (four days), stop and notify the user with the measured estimate. Cloud cost planning is excluded from the active project. Checkpoints and a runtime watchdog enforce this bound.
 
 ## Later expansion and Myna integration
 
@@ -171,4 +155,4 @@ Symptom tracking is a separate longitudinal study: repeated recordings with time
 5. A bounded experiment configuration, participant-level evaluation and uncertainty report, then locked internal/external results.
 6. A model card recording intended use, data overlap limitations, subgroup results, failure cases, resource use and reproducibility instructions. Only then consider adding research predictions to the local application.
 
-**Review decision:** approve or revise the cohort allocation, preprocessing assumptions, split policy and local-first compute plan before training implementation. No classifier, training dependencies, benchmark or rental was added in this documentation phase.
+**Review decision:** approved for local implementation. Runtime estimates above remain provisional until measured.

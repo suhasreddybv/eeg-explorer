@@ -17,3 +17,11 @@ exports/
 *.log
 playwright-report/
 test-results/
+*.set
+*.fdt
+*.vhdr
+*.vmrk
+*.npy
+*.pt
+*.pth
+*.ckpt
