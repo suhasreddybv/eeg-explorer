@@ -87,3 +87,29 @@ The current model is an initial research pilot. Remaining scientific work includ
 ## First completed result
 
 The first campaign and locked internal/UCSD tests are complete. See [PD_PILOT_RESULTS.md](PD_PILOT_RESULTS.md) for coverage, uncertainty, false positives, timing, and the implications for future test-set reuse. Run `python -m pd_pipeline audit --run data/pd-runs/v1` for the development-only demographic/QC audit. The untouched New Mexico cohort remains reserved.
+
+## Expanded comparison v2 (26 September 2026)
+
+The completed archive has been reconciled. The expanded comparison is implemented in `cohort_v2`, `models_v2`, `compare_v2` and `diagnostics_v2`; the exact scientific protocol and architecture adaptations are in [PD_PROTOCOL_V2.md](PD_PROTOCOL_V2.md). The pilot remains unchanged.
+
+The development pool now has 220 assigned training people and 46 validation people from the expanded Iowa release. Fixed QC retained 177 and 39 respectively. Another 46 Iowa people are an exploratory internal holdout; Tel Aviv (144 candidates) and New Mexico (50 candidates, repeated medication sessions) are reserved external endpoints. Their final eligible counts will appear in the results report after the locked evaluation.
+
+The final MPS benchmark forecast approximately 9.94 hours for all six neural families at the full epoch limits, including a 25% margin. This is a conservative training forecast, not a promise of completion at a particular time. Early stopping, interruptions, preprocessing and report generation change actual elapsed time.
+
+The local macOS job `local.eeg-explorer.comparison.v2` runs the lock-protected `scripts.run_pd_comparison` driver. It executes training, test preprocessing only after the all-model lock, test evaluation, subgroup analysis and aggregate/PDF reporting. No Codex calls occur inside the job. Keep the Mac powered, awake and connected to the SSD. Completion stops the job; a failure is recorded in `data/pd-runs/v2/campaign-status.json` and stage logs rather than silently dropping a model. The job can resume completed fits after an explicitly reviewed recovery, but never refits after a completed all-model lock. Do not start a second campaign manually while the job is running.
+
+Preparation and reproduction commands, from the project root:
+
+```sh
+.venv/bin/python -m pd_pipeline.cohort_v2 build
+.venv/bin/python -m pd_pipeline.cohort_v2 prepare
+.venv/bin/python -m pd_pipeline.compare_v2 setup
+.venv/bin/python -m pd_pipeline.compare_v2 benchmark --device mps
+.venv/bin/python -m pd_pipeline.diagnostics_v2 permutation
+.venv/bin/python -m pd_pipeline.compare_v2 campaign --device mps
+.venv/bin/python -m pd_pipeline.cohort_v2 test-prepare
+.venv/bin/python -m pd_pipeline.compare_v2 evaluate --device mps
+.venv/bin/python -m pd_pipeline.diagnostics_v2 subgroups
+```
+
+The report generator `scripts/report_pd_comparison.py` uses a separate document runtime with `reportlab` and `pypdf`. It refuses to report until the locked test results and diagnostics exist. It writes aggregate Markdown/JSON and model cards under `docs/`, and `output/pdf/PD_Classifier_Comparison_Report.pdf`. The final PDF needs rendered-page visual review before delivery. Local run artifacts include identities and predictions and must remain ignored by Git. No final performance is claimed while the campaign is running.

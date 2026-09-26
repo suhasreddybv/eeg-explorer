@@ -1,6 +1,6 @@
 # Expanded PD model comparison
 
-Status: waiting for the complete queued archive download. Requested 25 September 2026. No further training should start before that gate passes.
+Status: archive completed and reconciled; protocol v2 implemented and local comparison running as of 26 September 2026. See PD_PROTOCOL_V2.md for the frozen design. Final results and PDF remain pending until all locked evaluations finish.
 
 This supersedes the starting protocol's permission to train before all downloads finish. The completed experiment in PD_PILOT_RESULTS.md remains a pilot: 80 participants passed training QC, 15 passed validation QC, and 20 of the 22 assigned internal-test participants passed QC. The six EEGNet tuning configurations were not six different model families.
 
