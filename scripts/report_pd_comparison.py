@@ -345,6 +345,16 @@ def main():
         f"Device: {bench['device']}; {bench['platform']}. Conservative neural campaign forecast: {bench['forecast_seconds'] / 3600:.2f} hours, using maximum epochs and 25% margin. Recorded neural fit time: {total / 3600:.2f} hours; this excludes separate preprocessing, representation creation, benchmarks, reporting and test/bootstrap evaluation. The six architectures use different parameter counts; identical tuning counts do not imply identical compute."
     )
     paragraph("Registry fingerprint: " + reg["fingerprint"], True)
+    environment = read("environment.json")
+    paragraph(
+        "Software: Python "
+        + environment["python"]
+        + "; "
+        + "; ".join(f"{name} {version}" for name, version in environment["packages"].items())
+        + ".",
+        True,
+    )
+    paragraph(environment["hardware"] + ". " + environment["memory_measurement"], True)
     paragraph("Final model-lock fingerprint: " + lock["fingerprint"], True)
     paragraph(
         "Reproduce with the repository environment and verified archive. Commands: python -m pd_pipeline.cohort_v2 build; python -m pd_pipeline.cohort_v2 prepare; python -m pd_pipeline.compare_v2 setup; python -m pd_pipeline.compare_v2 benchmark; python -m pd_pipeline.compare_v2 campaign; python -m pd_pipeline.cohort_v2 test-prepare; python -m pd_pipeline.compare_v2 evaluate. See LOCAL_TRAINING.md and PD_PROTOCOL_V2.md for prerequisites and immutable-run behavior."
