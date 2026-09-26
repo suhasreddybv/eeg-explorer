@@ -1,0 +1,3079 @@
+{
+  "majority": {
+    "display_name": "Class-frequency reference",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "threshold": 0.5,
+      "probability": 0.6384180790960452,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.8754449702581328,
+          0.9999999999999998
+        ],
+        "specificity_95ci_wilson": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ],
+        "pr_auc_average_precision": 0.6923076923076923,
+        "brier": 0.21592184189139083,
+        "confusion_matrix": [
+          [
+            0,
+            12
+          ],
+          [
+            0,
+            27
+          ]
+        ],
+        "threshold": 0.5
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.967122467834048,
+          1.0
+        ],
+        "specificity_95ci_wilson": [
+          0.0,
+          0.05662405979280534
+        ],
+        "pr_auc_average_precision": 0.6384180790960452,
+        "brier": 0.23084043537936097,
+        "confusion_matrix": [
+          [
+            0,
+            64
+          ],
+          [
+            0,
+            113
+          ]
+        ],
+        "threshold": 0.5
+      }
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.8568833815495731,
+          1.0
+        ],
+        "specificity_95ci_wilson": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ],
+        "pr_auc_average_precision": 0.6571428571428571,
+        "brier": 0.22565673976188197,
+        "confusion_matrix": [
+          [
+            0,
+            12
+          ],
+          [
+            0,
+            23
+          ]
+        ],
+        "threshold": 0.5
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.9493488274035422,
+          1.0
+        ],
+        "specificity_95ci_wilson": [
+          0.0,
+          0.14311661845042686
+        ],
+        "pr_auc_average_precision": 0.7578947368421053,
+        "brier": 0.19776497645531055,
+        "confusion_matrix": [
+          [
+            0,
+            23
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "threshold": 0.5
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.7961166989641515,
+          1.0
+        ],
+        "specificity_95ci_wilson": [
+          0.0,
+          0.17587922364665765
+        ],
+        "pr_auc_average_precision": 0.45454545454545453,
+        "brier": 0.2817430263566431,
+        "confusion_matrix": [
+          [
+            0,
+            18
+          ],
+          [
+            0,
+            15
+          ]
+        ],
+        "threshold": 0.5
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.5,
+        "auroc_95ci": [
+          0.5,
+          0.5
+        ],
+        "balanced_accuracy": 0.5,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "sensitivity_95ci_wilson": [
+          0.8388748419471806,
+          1.0
+        ],
+        "specificity_95ci_wilson": [
+          0.0,
+          0.17587922364665765
+        ],
+        "pr_auc_average_precision": 0.5263157894736842,
+        "brier": 0.2618744025629523,
+        "confusion_matrix": [
+          [
+            0,
+            18
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "threshold": 0.5
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "spectral": {
+    "display_name": "Spectral logistic regression",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "name": "spectral",
+      "search": [
+        {
+          "C": 0.01,
+          "fold_auroc": [
+            0.6990171990171989,
+            0.6729323308270676,
+            0.7443609022556391
+          ],
+          "mean": 0.7054368106999686
+        },
+        {
+          "C": 0.1,
+          "fold_auroc": [
+            0.703931203931204,
+            0.6353383458646616,
+            0.7406015037593985
+          ],
+          "mean": 0.693290351185088
+        },
+        {
+          "C": 1,
+          "fold_auroc": [
+            0.6904176904176904,
+            0.5288220551378446,
+            0.7255639097744362
+          ],
+          "mean": 0.6482678851099904
+        },
+        {
+          "C": 10,
+          "fold_auroc": [
+            0.6732186732186732,
+            0.4862155388471179,
+            0.6854636591478697
+          ],
+          "mean": 0.6149659570712203
+        }
+      ],
+      "threshold": 0.5457127127639017,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.5648148148148148,
+        "auroc_95ci": [
+          0.3950617283950617,
+          0.7454475308641975
+        ],
+        "balanced_accuracy": 0.625,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.5833333333333334,
+        "sensitivity_95ci_wilson": [
+          0.47824760507320074,
+          0.8135673850128435
+        ],
+        "specificity_95ci_wilson": [
+          0.31951131254954973,
+          0.8067396863412435
+        ],
+        "pr_auc_average_precision": 0.7592997867438294,
+        "brier": 0.2374384193597693,
+        "confusion_matrix": [
+          [
+            7,
+            5
+          ],
+          [
+            9,
+            18
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.7816648230088495,
+        "auroc_95ci": [
+          0.7151548672566372,
+          0.8431381360619469
+        ],
+        "balanced_accuracy": 0.6706996681415929,
+        "sensitivity": 0.5132743362831859,
+        "specificity": 0.828125,
+        "sensitivity_95ci_wilson": [
+          0.42220800085413385,
+          0.6034678168759737
+        ],
+        "specificity_95ci_wilson": [
+          0.7178678837734179,
+          0.9012225769875536
+        ],
+        "pr_auc_average_precision": 0.8685650875911659,
+        "brier": 0.19976057588451931,
+        "confusion_matrix": [
+          [
+            53,
+            11
+          ],
+          [
+            55,
+            58
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      },
+      "weights_sha256": "22cd046633aad38bfc79f4aaf366b9dabfe6a6f1ca50c21050c9358e0492617e"
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.75,
+        "auroc_95ci": [
+          0.5850543478260869,
+          0.9094202898550725
+        ],
+        "balanced_accuracy": 0.6376811594202898,
+        "sensitivity": 0.6086956521739131,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.4078552239138171,
+          0.7784237720752205
+        ],
+        "specificity_95ci_wilson": [
+          0.39062208887279953,
+          0.8618799089087867
+        ],
+        "pr_auc_average_precision": 0.8469068582400869,
+        "brier": 0.19333772759122764,
+        "confusion_matrix": [
+          [
+            8,
+            4
+          ],
+          [
+            9,
+            14
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.642512077294686,
+        "auroc_95ci": [
+          0.5123641304347826,
+          0.7643568840579709
+        ],
+        "balanced_accuracy": 0.5896739130434783,
+        "sensitivity": 0.875,
+        "specificity": 0.30434782608695654,
+        "sensitivity_95ci_wilson": [
+          0.7791894627583916,
+          0.9328221577942649
+        ],
+        "specificity_95ci_wilson": [
+          0.15604024453214022,
+          0.508657562687592
+        ],
+        "pr_auc_average_precision": 0.8513176822021282,
+        "brier": 0.17614083801593952,
+        "confusion_matrix": [
+          [
+            7,
+            16
+          ],
+          [
+            9,
+            63
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.737037037037037,
+        "auroc_95ci": [
+          0.5518518518518518,
+          0.888888888888889
+        ],
+        "balanced_accuracy": 0.6666666666666666,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.41713547738519774,
+          0.8482367556028526
+        ],
+        "specificity_95ci_wilson": [
+          0.43749467295945105,
+          0.837212252491663
+        ],
+        "pr_auc_average_precision": 0.7609646526313193,
+        "brier": 0.21287793947660782,
+        "confusion_matrix": [
+          [
+            12,
+            6
+          ],
+          [
+            5,
+            10
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.7277777777777779,
+        "auroc_95ci": [
+          0.5540972222222222,
+          0.8710416666666665
+        ],
+        "balanced_accuracy": 0.7083333333333333,
+        "sensitivity": 0.75,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.531299122381256,
+          0.8881382985923343
+        ],
+        "specificity_95ci_wilson": [
+          0.43749467295945105,
+          0.837212252491663
+        ],
+        "pr_auc_average_precision": 0.7848356095333091,
+        "brier": 0.21262990846117694,
+        "confusion_matrix": [
+          [
+            12,
+            6
+          ],
+          [
+            5,
+            15
+          ]
+        ],
+        "threshold": 0.5457127127639017
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "periodic": {
+    "display_name": "Periodic/aperiodic features",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "name": "periodic",
+      "search": [
+        {
+          "C": 0.01,
+          "fold_auroc": [
+            0.699017199017199,
+            0.6842105263157894,
+            0.7080200501253133
+          ],
+          "mean": 0.697082591819434
+        },
+        {
+          "C": 0.1,
+          "fold_auroc": [
+            0.667076167076167,
+            0.6378446115288221,
+            0.68671679197995
+          ],
+          "mean": 0.6638791901949797
+        },
+        {
+          "C": 1,
+          "fold_auroc": [
+            0.6142506142506142,
+            0.6152882205513786,
+            0.606516290726817
+          ],
+          "mean": 0.6120183751762699
+        },
+        {
+          "C": 10,
+          "fold_auroc": [
+            0.5909090909090908,
+            0.5989974937343358,
+            0.5664160401002507
+          ],
+          "mean": 0.5854408749145591
+        }
+      ],
+      "threshold": 0.525471570860034,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.7407407407407406,
+        "auroc_95ci": [
+          0.5847993827160494,
+          0.8843364197530864
+        ],
+        "balanced_accuracy": 0.7453703703703703,
+        "sensitivity": 0.7407407407407407,
+        "specificity": 0.75,
+        "sensitivity_95ci_wilson": [
+          0.5532142868544692,
+          0.8682962543809281
+        ],
+        "specificity_95ci_wilson": [
+          0.46769466506643426,
+          0.9110583316059453
+        ],
+        "pr_auc_average_precision": 0.8844801363261376,
+        "brier": 0.2020348080028445,
+        "confusion_matrix": [
+          [
+            9,
+            3
+          ],
+          [
+            7,
+            20
+          ]
+        ],
+        "threshold": 0.525471570860034
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.8328263274336283,
+        "auroc_95ci": [
+          0.7744987555309735,
+          0.8944655696902655
+        ],
+        "balanced_accuracy": 0.745920907079646,
+        "sensitivity": 0.6637168141592921,
+        "specificity": 0.828125,
+        "sensitivity_95ci_wilson": [
+          0.5725022073633662,
+          0.7441662113079593
+        ],
+        "specificity_95ci_wilson": [
+          0.7178678837734179,
+          0.9012225769875536
+        ],
+        "pr_auc_average_precision": 0.9018181795090519,
+        "brier": 0.17898871998272475,
+        "confusion_matrix": [
+          [
+            53,
+            11
+          ],
+          [
+            38,
+            75
+          ]
+        ],
+        "threshold": 0.525471570860034
+      },
+      "weights_sha256": "d79fe0d8975c3c822599376bc62d66adb8b3e98b532d579b26b8a10ca17f3979"
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.782608695652174,
+        "auroc_95ci": [
+          0.6302536231884058,
+          0.9166666666666667
+        ],
+        "balanced_accuracy": 0.6394927536231885,
+        "sensitivity": 0.6956521739130435,
+        "specificity": 0.5833333333333334,
+        "sensitivity_95ci_wilson": [
+          0.49134243731240795,
+          0.8439597554678597
+        ],
+        "specificity_95ci_wilson": [
+          0.31951131254954973,
+          0.8067396863412435
+        ],
+        "pr_auc_average_precision": 0.8858521207332344,
+        "brier": 0.18049685577731114,
+        "confusion_matrix": [
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            16
+          ]
+        ],
+        "threshold": 0.525471570860034
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.7572463768115942,
+        "auroc_95ci": [
+          0.6666364734299516,
+          0.8354619565217392
+        ],
+        "balanced_accuracy": 0.6419082125603865,
+        "sensitivity": 0.8055555555555556,
+        "specificity": 0.4782608695652174,
+        "sensitivity_95ci_wilson": [
+          0.6996724105411147,
+          0.8804852062054944
+        ],
+        "specificity_95ci_wilson": [
+          0.29237157416646653,
+          0.6703726266357259
+        ],
+        "pr_auc_average_precision": 0.9202672479409191,
+        "brier": 0.1775875434044097,
+        "confusion_matrix": [
+          [
+            11,
+            12
+          ],
+          [
+            14,
+            58
+          ]
+        ],
+        "threshold": 0.525471570860034
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.7148148148148148,
+        "auroc_95ci": [
+          0.5185185185185185,
+          0.8871296296296295
+        ],
+        "balanced_accuracy": 0.6666666666666666,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.41713547738519774,
+          0.8482367556028526
+        ],
+        "specificity_95ci_wilson": [
+          0.43749467295945105,
+          0.837212252491663
+        ],
+        "pr_auc_average_precision": 0.7622678773659166,
+        "brier": 0.209614444251143,
+        "confusion_matrix": [
+          [
+            12,
+            6
+          ],
+          [
+            5,
+            10
+          ]
+        ],
+        "threshold": 0.525471570860034
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.7388888888888889,
+        "auroc_95ci": [
+          0.5555555555555556,
+          0.8918055555555554
+        ],
+        "balanced_accuracy": 0.6583333333333333,
+        "sensitivity": 0.65,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.43285427668523624,
+          0.818808175898918
+        ],
+        "specificity_95ci_wilson": [
+          0.43749467295945105,
+          0.837212252491663
+        ],
+        "pr_auc_average_precision": 0.7592206950691476,
+        "brier": 0.20879670161300573,
+        "confusion_matrix": [
+          [
+            12,
+            6
+          ],
+          [
+            7,
+            13
+          ]
+        ],
+        "threshold": 0.525471570860034
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "demographic": {
+    "display_name": "Age/sex confound baseline",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "name": "demographic",
+      "search": [
+        {
+          "C": 0.01,
+          "fold_auroc": [
+            0.5565110565110565,
+            0.5012531328320802,
+            0.7324561403508771
+          ],
+          "mean": 0.5967401098980046
+        },
+        {
+          "C": 0.1,
+          "fold_auroc": [
+            0.5565110565110565,
+            0.6278195488721805,
+            0.7324561403508771
+          ],
+          "mean": 0.6389289152447047
+        },
+        {
+          "C": 1,
+          "fold_auroc": [
+            0.6732186732186732,
+            0.6278195488721805,
+            0.7324561403508771
+          ],
+          "mean": 0.6778314541472437
+        },
+        {
+          "C": 10,
+          "fold_auroc": [
+            0.6732186732186732,
+            0.6278195488721805,
+            0.7324561403508771
+          ],
+          "mean": 0.6778314541472437
+        }
+      ],
+      "threshold": 0.6052257377717913,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.7345679012345679,
+        "auroc_95ci": [
+          0.5717206790123457,
+          0.8935956790123456
+        ],
+        "balanced_accuracy": 0.75,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.8333333333333334,
+        "sensitivity_95ci_wilson": [
+          0.47824760507320074,
+          0.8135673850128435
+        ],
+        "specificity_95ci_wilson": [
+          0.5519691377470266,
+          0.9530348578161463
+        ],
+        "pr_auc_average_precision": 0.8814051593420358,
+        "brier": 0.230532561940518,
+        "confusion_matrix": [
+          [
+            10,
+            2
+          ],
+          [
+            9,
+            18
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.6742948008849556,
+        "auroc_95ci": [
+          0.5840517837389381,
+          0.7441095132743362
+        ],
+        "balanced_accuracy": 0.6404867256637168,
+        "sensitivity": 0.5309734513274337,
+        "specificity": 0.75,
+        "sensitivity_95ci_wilson": [
+          0.43946269655912307,
+          0.6204475448111277
+        ],
+        "specificity_95ci_wilson": [
+          0.631837235413303,
+          0.8398507346902941
+        ],
+        "pr_auc_average_precision": 0.772659802808038,
+        "brier": 0.2299637831143674,
+        "confusion_matrix": [
+          [
+            48,
+            16
+          ],
+          [
+            53,
+            60
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      },
+      "weights_sha256": "7516c4ed5bebac883e397e9958c7de0e3dbf876ee962e296f975305b480fbc2d"
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.6213768115942029,
+        "auroc_95ci": [
+          0.423731884057971,
+          0.8161684782608696
+        ],
+        "balanced_accuracy": 0.5942028985507246,
+        "sensitivity": 0.5217391304347826,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.32962737336427406,
+          0.7076284258335335
+        ],
+        "specificity_95ci_wilson": [
+          0.39062208887279953,
+          0.8618799089087867
+        ],
+        "pr_auc_average_precision": 0.7415514021296296,
+        "brier": 0.24301110058740508,
+        "confusion_matrix": [
+          [
+            8,
+            4
+          ],
+          [
+            11,
+            12
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.5558574879227053,
+        "auroc_95ci": [
+          0.40484601449275365,
+          0.6994489734299516
+        ],
+        "balanced_accuracy": 0.5794082125603865,
+        "sensitivity": 0.6805555555555556,
+        "specificity": 0.4782608695652174,
+        "sensitivity_95ci_wilson": [
+          0.5660765126783435,
+          0.7767438972173802
+        ],
+        "specificity_95ci_wilson": [
+          0.29237157416646653,
+          0.6703726266357259
+        ],
+        "pr_auc_average_precision": 0.7803506735020047,
+        "brier": 0.21589249394702062,
+        "confusion_matrix": [
+          [
+            11,
+            12
+          ],
+          [
+            23,
+            49
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.5092592592592593,
+        "auroc_95ci": [
+          0.3037037037037037,
+          0.7213425925925925
+        ],
+        "balanced_accuracy": 0.5444444444444445,
+        "sensitivity": 0.5333333333333333,
+        "specificity": 0.5555555555555556,
+        "sensitivity_95ci_wilson": [
+          0.30116980025498397,
+          0.7519046463426261
+        ],
+        "specificity_95ci_wilson": [
+          0.33716415642042774,
+          0.7544048187299437
+        ],
+        "pr_auc_average_precision": 0.5089193137538521,
+        "brier": 0.27300024516195126,
+        "confusion_matrix": [
+          [
+            10,
+            8
+          ],
+          [
+            7,
+            8
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.4652777777777778,
+        "auroc_95ci": [
+          0.2929861111111111,
+          0.6585416666666665
+        ],
+        "balanced_accuracy": 0.5027777777777778,
+        "sensitivity": 0.45,
+        "specificity": 0.5555555555555556,
+        "sensitivity_95ci_wilson": [
+          0.2581978582556243,
+          0.6579146575496577
+        ],
+        "specificity_95ci_wilson": [
+          0.33716415642042774,
+          0.7544048187299437
+        ],
+        "pr_auc_average_precision": 0.5405971797141262,
+        "brier": 0.27941866546022953,
+        "confusion_matrix": [
+          [
+            10,
+            8
+          ],
+          [
+            11,
+            9
+          ]
+        ],
+        "threshold": 0.6052257377717913
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "artifact": {
+    "display_name": "Artifact confound baseline",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "name": "artifact",
+      "search": [
+        {
+          "C": 0.01,
+          "fold_auroc": [
+            0.581081081081081,
+            0.5037593984962406,
+            0.5263157894736842
+          ],
+          "mean": 0.5370520896836686
+        },
+        {
+          "C": 0.1,
+          "fold_auroc": [
+            0.5909090909090908,
+            0.5012531328320802,
+            0.5162907268170427
+          ],
+          "mean": 0.5361509835194046
+        },
+        {
+          "C": 1,
+          "fold_auroc": [
+            0.5921375921375921,
+            0.5025062656641603,
+            0.5225563909774437
+          ],
+          "mean": 0.5390667495930653
+        },
+        {
+          "C": 10,
+          "fold_auroc": [
+            0.597051597051597,
+            0.5050125313283208,
+            0.5213032581453635
+          ],
+          "mean": 0.5411224621750937
+        }
+      ],
+      "threshold": 0.4733212161971652,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.3549382716049383,
+        "auroc_95ci": [
+          0.1619598765432099,
+          0.5789351851851849
+        ],
+        "balanced_accuracy": 0.5324074074074074,
+        "sensitivity": 0.8148148148148148,
+        "specificity": 0.25,
+        "sensitivity_95ci_wilson": [
+          0.6330131638145156,
+          0.9181929285702346
+        ],
+        "specificity_95ci_wilson": [
+          0.08894166839405471,
+          0.5323053349335657
+        ],
+        "pr_auc_average_precision": 0.6293538991971179,
+        "brier": 0.2606398139470078,
+        "confusion_matrix": [
+          [
+            3,
+            9
+          ],
+          [
+            5,
+            22
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.5582134955752212,
+        "auroc_95ci": [
+          0.4678650442477876,
+          0.6409222898230088
+        ],
+        "balanced_accuracy": 0.511545907079646,
+        "sensitivity": 0.6637168141592921,
+        "specificity": 0.359375,
+        "sensitivity_95ci_wilson": [
+          0.5725022073633662,
+          0.7441662113079593
+        ],
+        "specificity_95ci_wilson": [
+          0.25288402291451745,
+          0.48179149390220904
+        ],
+        "pr_auc_average_precision": 0.6969715889048032,
+        "brier": 0.24751563030277113,
+        "confusion_matrix": [
+          [
+            23,
+            41
+          ],
+          [
+            38,
+            75
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      },
+      "weights_sha256": "d1bea675704459b0b9d70f28e57cb705b9d1a61580612788d5ad76fe5b9ad156"
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.6268115942028986,
+        "auroc_95ci": [
+          0.4290760869565217,
+          0.80625
+        ],
+        "balanced_accuracy": 0.6213768115942029,
+        "sensitivity": 0.8260869565217391,
+        "specificity": 0.4166666666666667,
+        "sensitivity_95ci_wilson": [
+          0.6286235235977385,
+          0.9302134643693744
+        ],
+        "specificity_95ci_wilson": [
+          0.19326031365875665,
+          0.6804886874504503
+        ],
+        "pr_auc_average_precision": 0.7590802097886964,
+        "brier": 0.23391413659986807,
+        "confusion_matrix": [
+          [
+            5,
+            7
+          ],
+          [
+            4,
+            19
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.5477053140096618,
+        "auroc_95ci": [
+          0.41390398550724633,
+          0.6811594202898551
+        ],
+        "balanced_accuracy": 0.5531400966183575,
+        "sensitivity": 0.8888888888888888,
+        "specificity": 0.21739130434782608,
+        "sensitivity_95ci_wilson": [
+          0.7957706176633595,
+          0.9426118036505066
+        ],
+        "specificity_95ci_wilson": [
+          0.09663978026586204,
+          0.4190348301626401
+        ],
+        "pr_auc_average_precision": 0.7868523989305911,
+        "brier": 0.23610286521999466,
+        "confusion_matrix": [
+          [
+            5,
+            18
+          ],
+          [
+            8,
+            64
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.5370370370370371,
+        "auroc_95ci": [
+          0.3257407407407407,
+          0.725925925925926
+        ],
+        "balanced_accuracy": 0.5722222222222222,
+        "sensitivity": 0.8666666666666667,
+        "specificity": 0.2777777777777778,
+        "sensitivity_95ci_wilson": [
+          0.6211801716767764,
+          0.9626387408969346
+        ],
+        "specificity_95ci_wilson": [
+          0.12499753379553993,
+          0.5087265656029746
+        ],
+        "pr_auc_average_precision": 0.48379261415468305,
+        "brier": 0.2516789245478939,
+        "confusion_matrix": [
+          [
+            5,
+            13
+          ],
+          [
+            2,
+            13
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.5583333333333333,
+        "auroc_95ci": [
+          0.3485416666666667,
+          0.7361111111111112
+        ],
+        "balanced_accuracy": 0.538888888888889,
+        "sensitivity": 0.8,
+        "specificity": 0.2777777777777778,
+        "sensitivity_95ci_wilson": [
+          0.5839825677481064,
+          0.919342337420202
+        ],
+        "specificity_95ci_wilson": [
+          0.12499753379553993,
+          0.5087265656029746
+        ],
+        "pr_auc_average_precision": 0.6258378937239233,
+        "brier": 0.245407707307363,
+        "confusion_matrix": [
+          [
+            5,
+            13
+          ],
+          [
+            4,
+            16
+          ]
+        ],
+        "threshold": 0.4733212161971652
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "eegnet": {
+    "display_name": "EEGNet adaptation",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7346437346437346,
+            0.7280701754385965,
+            0.7844611528822055
+          ],
+          "mean": 0.7490583543215122
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7223587223587223,
+            0.7142857142857142,
+            0.8145363408521303
+          ],
+          "mean": 0.7503935924988556
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7211302211302211,
+            0.7092731829573935,
+            0.8095238095238095
+          ],
+          "mean": 0.7466424045371415
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7223587223587223,
+            0.7080200501253132,
+            0.8020050125313283
+          ],
+          "mean": 0.7441279283384546
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.714987714987715,
+            0.7255639097744361,
+            0.788220551378446
+          ],
+          "mean": 0.7429240587135323
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7457002457002458,
+            0.719298245614035,
+            0.8107769423558897
+          ],
+          "mean": 0.7585918112233901
+        }
+      ],
+      "config": {
+        "lr": 0.003,
+        "dropout": 0.5
+      },
+      "threshold": 0.49468521277109784,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.8333333333333333,
+        "auroc_95ci": [
+          0.7020833333333334,
+          0.9506172839506174
+        ],
+        "balanced_accuracy": 0.8240740740740741,
+        "sensitivity": 0.8148148148148148,
+        "specificity": 0.8333333333333334,
+        "sensitivity_95ci_wilson": [
+          0.6330131638145156,
+          0.9181929285702346
+        ],
+        "specificity_95ci_wilson": [
+          0.5519691377470266,
+          0.9530348578161463
+        ],
+        "pr_auc_average_precision": 0.9218902752529865,
+        "brier": 0.16172788451073528,
+        "confusion_matrix": [
+          [
+            10,
+            2
+          ],
+          [
+            5,
+            22
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.9759402654867256,
+        "auroc_95ci": [
+          0.956858407079646,
+          0.9901168418141593
+        ],
+        "balanced_accuracy": 0.8987140486725664,
+        "sensitivity": 0.9380530973451328,
+        "specificity": 0.859375,
+        "sensitivity_95ci_wilson": [
+          0.8776301597761643,
+          0.969671825317382
+        ],
+        "specificity_95ci_wilson": [
+          0.7538371825842297,
+          0.9242142744396914
+        ],
+        "pr_auc_average_precision": 0.9869948284882573,
+        "brier": 0.09924412018151231,
+        "confusion_matrix": [
+          [
+            55,
+            9
+          ],
+          [
+            7,
+            106
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      },
+      "parameters": 1905
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.8478260869565217,
+        "auroc_95ci": [
+          0.7101449275362318,
+          0.9601449275362318
+        ],
+        "balanced_accuracy": 0.7047101449275363,
+        "sensitivity": 0.8260869565217391,
+        "specificity": 0.5833333333333334,
+        "sensitivity_95ci_wilson": [
+          0.6286235235977385,
+          0.9302134643693744
+        ],
+        "specificity_95ci_wilson": [
+          0.31951131254954973,
+          0.8067396863412435
+        ],
+        "pr_auc_average_precision": 0.9287325674414024,
+        "brier": 0.15299493747796383,
+        "confusion_matrix": [
+          [
+            7,
+            5
+          ],
+          [
+            4,
+            19
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.7228260869565217,
+        "auroc_95ci": [
+          0.5995169082125604,
+          0.8346316425120772
+        ],
+        "balanced_accuracy": 0.6419082125603865,
+        "sensitivity": 0.8055555555555556,
+        "specificity": 0.4782608695652174,
+        "sensitivity_95ci_wilson": [
+          0.6996724105411147,
+          0.8804852062054944
+        ],
+        "specificity_95ci_wilson": [
+          0.29237157416646653,
+          0.6703726266357259
+        ],
+        "pr_auc_average_precision": 0.8932679680741156,
+        "brier": 0.18575283778380336,
+        "confusion_matrix": [
+          [
+            11,
+            12
+          ],
+          [
+            14,
+            58
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.8666666666666667,
+        "auroc_95ci": [
+          0.7128703703703703,
+          0.9777777777777779
+        ],
+        "balanced_accuracy": 0.8777777777777778,
+        "sensitivity": 0.8666666666666667,
+        "specificity": 0.8888888888888888,
+        "sensitivity_95ci_wilson": [
+          0.6211801716767764,
+          0.9626387408969346
+        ],
+        "specificity_95ci_wilson": [
+          0.672002348698212,
+          0.9689804773543876
+        ],
+        "pr_auc_average_precision": 0.8561673511673512,
+        "brier": 0.15010493717012197,
+        "confusion_matrix": [
+          [
+            16,
+            2
+          ],
+          [
+            2,
+            13
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.8861111111111111,
+        "auroc_95ci": [
+          0.7666666666666667,
+          0.9820138888888889
+        ],
+        "balanced_accuracy": 0.7944444444444444,
+        "sensitivity": 0.7,
+        "specificity": 0.8888888888888888,
+        "sensitivity_95ci_wilson": [
+          0.4810271816464765,
+          0.8545227551323956
+        ],
+        "specificity_95ci_wilson": [
+          0.672002348698212,
+          0.9689804773543876
+        ],
+        "pr_auc_average_precision": 0.8812564573573043,
+        "brier": 0.1602981498745042,
+        "confusion_matrix": [
+          [
+            16,
+            2
+          ],
+          [
+            6,
+            14
+          ]
+        ],
+        "threshold": 0.49468521277109784
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "shallow": {
+    "display_name": "ShallowConvNet adaptation",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7137592137592137,
+            0.6629072681704261,
+            0.7857142857142857
+          ],
+          "mean": 0.7207935892146419
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.703931203931204,
+            0.6791979949874687,
+            0.7894736842105263
+          ],
+          "mean": 0.7242009610430663
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7235872235872236,
+            0.6704260651629073,
+            0.7857142857142858
+          ],
+          "mean": 0.7265758581548055
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7125307125307125,
+            0.6654135338345865,
+            0.7969924812030075
+          ],
+          "mean": 0.7249789091894355
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.703931203931204,
+            0.6904761904761905,
+            0.7882205513784462
+          ],
+          "mean": 0.7275426485952803
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.714987714987715,
+            0.7055137844611529,
+            0.7756892230576442
+          ],
+          "mean": 0.7320635741688374
+        }
+      ],
+      "config": {
+        "lr": 0.003,
+        "dropout": 0.5
+      },
+      "threshold": 0.6255505084991455,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.6944444444444444,
+        "auroc_95ci": [
+          0.5138117283950617,
+          0.8658179012345678
+        ],
+        "balanced_accuracy": 0.7222222222222222,
+        "sensitivity": 0.7777777777777778,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.5924307113336742,
+          0.8939276054763996
+        ],
+        "specificity_95ci_wilson": [
+          0.39062208887279953,
+          0.8618799089087867
+        ],
+        "pr_auc_average_precision": 0.8332491923923468,
+        "brier": 0.19892008964960065,
+        "confusion_matrix": [
+          [
+            8,
+            4
+          ],
+          [
+            6,
+            21
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.9715154867256637,
+        "auroc_95ci": [
+          0.9512271847345133,
+          0.9897089325221239
+        ],
+        "balanced_accuracy": 0.8761061946902655,
+        "sensitivity": 0.7522123893805309,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.6652007240089908,
+          0.822639812863051
+        ],
+        "specificity_95ci_wilson": [
+          0.9433759402071946,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.9855584749848695,
+        "brier": 0.09751943208812477,
+        "confusion_matrix": [
+          [
+            64,
+            0
+          ],
+          [
+            28,
+            85
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      },
+      "parameters": 7381
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.822463768115942,
+        "auroc_95ci": [
+          0.6647644927536233,
+          0.9456521739130435
+        ],
+        "balanced_accuracy": 0.6829710144927537,
+        "sensitivity": 0.782608695652174,
+        "specificity": 0.5833333333333334,
+        "sensitivity_95ci_wilson": [
+          0.5809651698373599,
+          0.9033602197341379
+        ],
+        "specificity_95ci_wilson": [
+          0.31951131254954973,
+          0.8067396863412435
+        ],
+        "pr_auc_average_precision": 0.9222032073630655,
+        "brier": 0.1672228290350506,
+        "confusion_matrix": [
+          [
+            7,
+            5
+          ],
+          [
+            5,
+            18
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.6793478260869565,
+        "auroc_95ci": [
+          0.5467240338164252,
+          0.7952898550724637
+        ],
+        "balanced_accuracy": 0.5803140096618358,
+        "sensitivity": 0.6388888888888888,
+        "specificity": 0.5217391304347826,
+        "sensitivity_95ci_wilson": [
+          0.5235248046738358,
+          0.7401832029382592
+        ],
+        "specificity_95ci_wilson": [
+          0.32962737336427406,
+          0.7076284258335335
+        ],
+        "pr_auc_average_precision": 0.874605351158245,
+        "brier": 0.19183901843627424,
+        "confusion_matrix": [
+          [
+            12,
+            11
+          ],
+          [
+            26,
+            46
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.8592592592592593,
+        "auroc_95ci": [
+          0.6943518518518519,
+          0.9760185185185184
+        ],
+        "balanced_accuracy": 0.711111111111111,
+        "sensitivity": 0.5333333333333333,
+        "specificity": 0.8888888888888888,
+        "sensitivity_95ci_wilson": [
+          0.30116980025498397,
+          0.7519046463426261
+        ],
+        "specificity_95ci_wilson": [
+          0.672002348698212,
+          0.9689804773543876
+        ],
+        "pr_auc_average_precision": 0.8728949907161981,
+        "brier": 0.15558915353724348,
+        "confusion_matrix": [
+          [
+            16,
+            2
+          ],
+          [
+            7,
+            8
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.8250000000000001,
+        "auroc_95ci": [
+          0.681875,
+          0.9472222222222222
+        ],
+        "balanced_accuracy": 0.7194444444444444,
+        "sensitivity": 0.55,
+        "specificity": 0.8888888888888888,
+        "sensitivity_95ci_wilson": [
+          0.34208534245034233,
+          0.7418021417443759
+        ],
+        "specificity_95ci_wilson": [
+          0.672002348698212,
+          0.9689804773543876
+        ],
+        "pr_auc_average_precision": 0.8709285219355256,
+        "brier": 0.17082414505240967,
+        "confusion_matrix": [
+          [
+            16,
+            2
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        "threshold": 0.6255505084991455
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "channel_cnn": {
+    "display_name": "Channel CNN adaptation",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7174447174447174,
+            0.694235588972431,
+            0.7318295739348372
+          ],
+          "mean": 0.7145032934506618
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7383292383292384,
+            0.6779448621553884,
+            0.7456140350877194
+          ],
+          "mean": 0.7206293785241155
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7444717444717445,
+            0.6660401002506265,
+            0.7418546365914787
+          ],
+          "mean": 0.7174554937712833
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7764127764127764,
+            0.6942355889724311,
+            0.7192982456140351
+          ],
+          "mean": 0.7299822036664142
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7641277641277641,
+            0.6879699248120301,
+            0.8045112781954886
+          ],
+          "mean": 0.7522029890450943
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7493857493857494,
+            0.6654135338345865,
+            0.793233082706767
+          ],
+          "mean": 0.7360107886423677
+        }
+      ],
+      "config": {
+        "lr": 0.003,
+        "dropout": 0.25
+      },
+      "threshold": 0.8323720296223959,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.8425925925925926,
+        "auroc_95ci": [
+          0.6959104938271605,
+          0.9645833333333332
+        ],
+        "balanced_accuracy": 0.8287037037037037,
+        "sensitivity": 0.7407407407407407,
+        "specificity": 0.9166666666666666,
+        "sensitivity_95ci_wilson": [
+          0.5532142868544692,
+          0.8682962543809281
+        ],
+        "specificity_95ci_wilson": [
+          0.646120088858883,
+          0.9851349055950829
+        ],
+        "pr_auc_average_precision": 0.9214704244635117,
+        "brier": 0.1482339729386925,
+        "confusion_matrix": [
+          [
+            11,
+            1
+          ],
+          [
+            7,
+            20
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 1.0,
+        "auroc_95ci": [
+          1.0,
+          1.0
+        ],
+        "balanced_accuracy": 0.9424778761061947,
+        "sensitivity": 0.8849557522123894,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.8130759219184795,
+          0.9315227922546372
+        ],
+        "specificity_95ci_wilson": [
+          0.9433759402071946,
+          1.0
+        ],
+        "pr_auc_average_precision": 1.0,
+        "brier": 0.019592289129157503,
+        "confusion_matrix": [
+          [
+            64,
+            0
+          ],
+          [
+            13,
+            100
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      },
+      "parameters": 52764
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.8442028985507247,
+        "auroc_95ci": [
+          0.7246376811594202,
+          0.9528985507246376
+        ],
+        "balanced_accuracy": 0.786231884057971,
+        "sensitivity": 0.7391304347826086,
+        "specificity": 0.8333333333333334,
+        "sensitivity_95ci_wilson": [
+          0.5352999516257462,
+          0.8745138395501366
+        ],
+        "specificity_95ci_wilson": [
+          0.5519691377470266,
+          0.9530348578161463
+        ],
+        "pr_auc_average_precision": 0.9304538347639707,
+        "brier": 0.17401873275724336,
+        "confusion_matrix": [
+          [
+            10,
+            2
+          ],
+          [
+            6,
+            17
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.7403381642512077,
+        "auroc_95ci": [
+          0.6228713768115942,
+          0.8415307971014493
+        ],
+        "balanced_accuracy": 0.6847826086956521,
+        "sensitivity": 0.5,
+        "specificity": 0.8695652173913043,
+        "sensitivity_95ci_wilson": [
+          0.3874709230948976,
+          0.6125290769051024
+        ],
+        "specificity_95ci_wilson": [
+          0.6787251772990404,
+          0.9546234090636876
+        ],
+        "pr_auc_average_precision": 0.896089155532835,
+        "brier": 0.17410158040748383,
+        "confusion_matrix": [
+          [
+            20,
+            3
+          ],
+          [
+            36,
+            36
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.8777777777777779,
+        "auroc_95ci": [
+          0.7444444444444444,
+          0.9888888888888889
+        ],
+        "balanced_accuracy": 0.7722222222222221,
+        "sensitivity": 0.6,
+        "specificity": 0.9444444444444444,
+        "sensitivity_95ci_wilson": [
+          0.357468301206246,
+          0.8017550385865841
+        ],
+        "specificity_95ci_wilson": [
+          0.7424269921812741,
+          0.990124809021697
+        ],
+        "pr_auc_average_precision": 0.8253060856204872,
+        "brier": 0.12982890220538632,
+        "confusion_matrix": [
+          [
+            17,
+            1
+          ],
+          [
+            6,
+            9
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.8250000000000001,
+        "auroc_95ci": [
+          0.6874305555555555,
+          0.9486805555555555
+        ],
+        "balanced_accuracy": 0.6972222222222222,
+        "sensitivity": 0.45,
+        "specificity": 0.9444444444444444,
+        "sensitivity_95ci_wilson": [
+          0.2581978582556243,
+          0.6579146575496577
+        ],
+        "specificity_95ci_wilson": [
+          0.7424269921812741,
+          0.990124809021697
+        ],
+        "pr_auc_average_precision": 0.8284925542293964,
+        "brier": 0.16634723398941265,
+        "confusion_matrix": [
+          [
+            17,
+            1
+          ],
+          [
+            11,
+            9
+          ]
+        ],
+        "threshold": 0.8323720296223959
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "wavelet_cnn": {
+    "display_name": "Wavelet CNN adaptation",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7260442260442261,
+            0.6516290726817042,
+            0.7067669172932332
+          ],
+          "mean": 0.6948134053397211
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7285012285012286,
+            0.655388471177945,
+            0.6979949874686717
+          ],
+          "mean": 0.6939615623826151
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.742014742014742,
+            0.6578947368421053,
+            0.6954887218045114
+          ],
+          "mean": 0.6984660668871197
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7346437346437347,
+            0.6578947368421053,
+            0.6867167919799498
+          ],
+          "mean": 0.69308508782193
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.726044226044226,
+            0.6616541353383458,
+            0.6666666666666666
+          ],
+          "mean": 0.6847883426830794
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7272727272727273,
+            0.6729323308270677,
+            0.6854636591478696
+          ],
+          "mean": 0.6952229057492215
+        }
+      ],
+      "config": {
+        "lr": 0.001,
+        "dropout": 0.25
+      },
+      "threshold": 0.8667966524759928,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.6728395061728395,
+        "auroc_95ci": [
+          0.4952932098765432,
+          0.8412808641975307
+        ],
+        "balanced_accuracy": 0.7314814814814815,
+        "sensitivity": 0.6296296296296297,
+        "specificity": 0.8333333333333334,
+        "sensitivity_95ci_wilson": [
+          0.4422923441210239,
+          0.784674870390344
+        ],
+        "specificity_95ci_wilson": [
+          0.5519691377470266,
+          0.9530348578161463
+        ],
+        "pr_auc_average_precision": 0.8520980144025205,
+        "brier": 0.25121115100132246,
+        "confusion_matrix": [
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            17
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 1.0,
+        "auroc_95ci": [
+          1.0,
+          1.0
+        ],
+        "balanced_accuracy": 0.8539823008849557,
+        "sensitivity": 0.7079646017699115,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.6183975397243283,
+          0.7838569380473553
+        ],
+        "specificity_95ci_wilson": [
+          0.9433759402071946,
+          1.0
+        ],
+        "pr_auc_average_precision": 1.0,
+        "brier": 0.02050909569102747,
+        "confusion_matrix": [
+          [
+            64,
+            0
+          ],
+          [
+            33,
+            80
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      },
+      "parameters": 25665
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.6666666666666666,
+        "auroc_95ci": [
+          0.49275362318840576,
+          0.8405797101449275
+        ],
+        "balanced_accuracy": 0.5942028985507246,
+        "sensitivity": 0.5217391304347826,
+        "specificity": 0.6666666666666666,
+        "sensitivity_95ci_wilson": [
+          0.32962737336427406,
+          0.7076284258335335
+        ],
+        "specificity_95ci_wilson": [
+          0.39062208887279953,
+          0.8618799089087867
+        ],
+        "pr_auc_average_precision": 0.8194557130624708,
+        "brier": 0.2627829278522305,
+        "confusion_matrix": [
+          [
+            8,
+            4
+          ],
+          [
+            11,
+            12
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.7065217391304347,
+        "auroc_95ci": [
+          0.5766908212560385,
+          0.8191878019323672
+        ],
+        "balanced_accuracy": 0.6422101449275363,
+        "sensitivity": 0.4583333333333333,
+        "specificity": 0.8260869565217391,
+        "sensitivity_95ci_wilson": [
+          0.34828627057626194,
+          0.5726013271401095
+        ],
+        "specificity_95ci_wilson": [
+          0.6286235235977385,
+          0.9302134643693744
+        ],
+        "pr_auc_average_precision": 0.8826154976794214,
+        "brier": 0.1929852025054996,
+        "confusion_matrix": [
+          [
+            19,
+            4
+          ],
+          [
+            39,
+            33
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.7259259259259259,
+        "auroc_95ci": [
+          0.5222222222222221,
+          0.8853703703703703
+        ],
+        "balanced_accuracy": 0.6333333333333333,
+        "sensitivity": 0.26666666666666666,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.10897453325692374,
+          0.5195043405598057
+        ],
+        "specificity_95ci_wilson": [
+          0.8241207763533425,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.7557127797355502,
+        "brier": 0.23797415640767908,
+        "confusion_matrix": [
+          [
+            18,
+            0
+          ],
+          [
+            11,
+            4
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.7361111111111112,
+        "auroc_95ci": [
+          0.5830555555555555,
+          0.8805555555555555
+        ],
+        "balanced_accuracy": 0.625,
+        "sensitivity": 0.25,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.11186170140766569,
+          0.468700877618744
+        ],
+        "specificity_95ci_wilson": [
+          0.8241207763533425,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.7789614571837282,
+        "brier": 0.21805379659716534,
+        "confusion_matrix": [
+          [
+            18,
+            0
+          ],
+          [
+            15,
+            5
+          ]
+        ],
+        "threshold": 0.8667966524759928
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "graph": {
+    "display_name": "Graph attention adaptation",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7100737100737101,
+            0.7167919799498746,
+            0.7431077694235589
+          ],
+          "mean": 0.7233244864823812
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7211302211302212,
+            0.736842105263158,
+            0.7406015037593985
+          ],
+          "mean": 0.7328579433842592
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7137592137592137,
+            0.6967418546365916,
+            0.7443609022556391
+          ],
+          "mean": 0.7182873235504815
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7063882063882064,
+            0.7005012531328321,
+            0.7280701754385965
+          ],
+          "mean": 0.7116532116532118
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7051597051597052,
+            0.7280701754385965,
+            0.7431077694235589
+          ],
+          "mean": 0.7254458833406202
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7076167076167076,
+            0.7005012531328321,
+            0.7531328320802005
+          ],
+          "mean": 0.7204169309432468
+        }
+      ],
+      "config": {
+        "lr": 0.0003,
+        "dropout": 0.5
+      },
+      "threshold": 0.44237786531448364,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.7283950617283951,
+        "auroc_95ci": [
+          0.5724537037037037,
+          0.8734567901234568
+        ],
+        "balanced_accuracy": 0.75,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.8333333333333334,
+        "sensitivity_95ci_wilson": [
+          0.47824760507320074,
+          0.8135673850128435
+        ],
+        "specificity_95ci_wilson": [
+          0.5519691377470266,
+          0.9530348578161463
+        ],
+        "pr_auc_average_precision": 0.8875670609563024,
+        "brier": 0.2178971931373206,
+        "confusion_matrix": [
+          [
+            10,
+            2
+          ],
+          [
+            9,
+            18
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.7771017699115045,
+        "auroc_95ci": [
+          0.7049156526548672,
+          0.8463772123893806
+        ],
+        "balanced_accuracy": 0.6605365044247787,
+        "sensitivity": 0.5398230088495575,
+        "specificity": 0.78125,
+        "sensitivity_95ci_wilson": [
+          0.44813144015193007,
+          0.6288960130383923
+        ],
+        "specificity_95ci_wilson": [
+          0.6656721604337418,
+          0.8649768059328052
+        ],
+        "pr_auc_average_precision": 0.8608471638905502,
+        "brier": 0.21768234438738476,
+        "confusion_matrix": [
+          [
+            50,
+            14
+          ],
+          [
+            52,
+            61
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      },
+      "parameters": 13473
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.8188405797101449,
+        "auroc_95ci": [
+          0.6683876811594203,
+          0.9456521739130436
+        ],
+        "balanced_accuracy": 0.7445652173913043,
+        "sensitivity": 0.7391304347826086,
+        "specificity": 0.75,
+        "sensitivity_95ci_wilson": [
+          0.5352999516257462,
+          0.8745138395501366
+        ],
+        "specificity_95ci_wilson": [
+          0.46769466506643426,
+          0.9110583316059453
+        ],
+        "pr_auc_average_precision": 0.9226168985312323,
+        "brier": 0.17708530876842887,
+        "confusion_matrix": [
+          [
+            9,
+            3
+          ],
+          [
+            6,
+            17
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.6926328502415459,
+        "auroc_95ci": [
+          0.5656400966183576,
+          0.7974788647342994
+        ],
+        "balanced_accuracy": 0.631340579710145,
+        "sensitivity": 0.9583333333333334,
+        "specificity": 0.30434782608695654,
+        "sensitivity_95ci_wilson": [
+          0.8845072325868389,
+          0.9857291925330748
+        ],
+        "specificity_95ci_wilson": [
+          0.15604024453214022,
+          0.508657562687592
+        ],
+        "pr_auc_average_precision": 0.8785123254732838,
+        "brier": 0.17802575127542686,
+        "confusion_matrix": [
+          [
+            7,
+            16
+          ],
+          [
+            3,
+            69
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.8222222222222222,
+        "auroc_95ci": [
+          0.659074074074074,
+          0.9426851851851852
+        ],
+        "balanced_accuracy": 0.7222222222222222,
+        "sensitivity": 0.6666666666666666,
+        "specificity": 0.7777777777777778,
+        "sensitivity_95ci_wilson": [
+          0.41713547738519774,
+          0.8482367556028526
+        ],
+        "specificity_95ci_wilson": [
+          0.5478541568378739,
+          0.9099907189139831
+        ],
+        "pr_auc_average_precision": 0.8494801012192317,
+        "brier": 0.1817521931744988,
+        "confusion_matrix": [
+          [
+            14,
+            4
+          ],
+          [
+            5,
+            10
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.7666666666666666,
+        "auroc_95ci": [
+          0.6054166666666667,
+          0.9070138888888888
+        ],
+        "balanced_accuracy": 0.663888888888889,
+        "sensitivity": 0.55,
+        "specificity": 0.7777777777777778,
+        "sensitivity_95ci_wilson": [
+          0.34208534245034233,
+          0.7418021417443759
+        ],
+        "specificity_95ci_wilson": [
+          0.5478541568378739,
+          0.9099907189139831
+        ],
+        "pr_auc_average_precision": 0.8332001753226013,
+        "brier": 0.20866175172446147,
+        "confusion_matrix": [
+          [
+            14,
+            4
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        "threshold": 0.44237786531448364
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  },
+  "transformer": {
+    "display_name": "Spectral-token Transformer",
+    "intended_use": "Research PD/control comparison; no diagnostic or symptom tracking claim",
+    "training_people": {
+      "assigned": 220,
+      "retained": 177,
+      "retained_PD": 113,
+      "retained_control": 64,
+      "excluded_PD": 29,
+      "excluded_control": 14
+    },
+    "selection": {
+      "search": [
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7199017199017199,
+            0.7368421052631579,
+            0.7117794486215538
+          ],
+          "mean": 0.7228410912621438
+        },
+        {
+          "config": {
+            "lr": 0.0003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.683046683046683,
+            0.731829573934837,
+            0.7130325814536341
+          ],
+          "mean": 0.7093029461450514
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7162162162162162,
+            0.7218045112781954,
+            0.7192982456140351
+          ],
+          "mean": 0.7191063243694823
+        },
+        {
+          "config": {
+            "lr": 0.001,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7592137592137592,
+            0.719298245614035,
+            0.7155388471177945
+          ],
+          "mean": 0.7313502839818629
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.25
+          },
+          "fold_auroc": [
+            0.7616707616707616,
+            0.7268170426065163,
+            0.7042606516290727
+          ],
+          "mean": 0.7309161519687835
+        },
+        {
+          "config": {
+            "lr": 0.003,
+            "dropout": 0.5
+          },
+          "fold_auroc": [
+            0.7248157248157248,
+            0.7005012531328321,
+            0.7030075187969924
+          ],
+          "mean": 0.709441498915183
+        }
+      ],
+      "config": {
+        "lr": 0.001,
+        "dropout": 0.5
+      },
+      "threshold": 0.7077250480651855,
+      "validation": {
+        "participants": 39,
+        "pd_prevalence": 0.6923076923076923,
+        "auroc": 0.7222222222222222,
+        "auroc_95ci": [
+          0.5740740740740741,
+          0.8596450617283949
+        ],
+        "balanced_accuracy": 0.7407407407407407,
+        "sensitivity": 0.48148148148148145,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.3074322697621846,
+          0.6601438424504771
+        ],
+        "specificity_95ci_wilson": [
+          0.7575059933447592,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.8857778988386922,
+        "brier": 0.1989198453927733,
+        "confusion_matrix": [
+          [
+            12,
+            0
+          ],
+          [
+            14,
+            13
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      },
+      "training": {
+        "participants": 177,
+        "pd_prevalence": 0.6384180790960452,
+        "auroc": 0.8433351769911505,
+        "auroc_95ci": [
+          0.7906975940265487,
+          0.8970582134955752
+        ],
+        "balanced_accuracy": 0.6215431415929203,
+        "sensitivity": 0.2743362831858407,
+        "specificity": 0.96875,
+        "sensitivity_95ci_wilson": [
+          0.2005141227614801,
+          0.362996975826693
+        ],
+        "specificity_95ci_wilson": [
+          0.8930270822904169,
+          0.9913878616538281
+        ],
+        "pr_auc_average_precision": 0.9095930177304639,
+        "brier": 0.18628109425269393,
+        "confusion_matrix": [
+          [
+            62,
+            2
+          ],
+          [
+            82,
+            31
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      },
+      "parameters": 17857
+    },
+    "test_metrics": {
+      "internal_test": {
+        "participants": 35,
+        "pd_prevalence": 0.6571428571428571,
+        "auroc": 0.8115942028985507,
+        "auroc_95ci": [
+          0.6521739130434782,
+          0.9475543478260868
+        ],
+        "balanced_accuracy": 0.717391304347826,
+        "sensitivity": 0.43478260869565216,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.25634635325674215,
+          0.6318862491498354
+        ],
+        "specificity_95ci_wilson": [
+          0.7575059933447592,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.9045319113472621,
+        "brier": 0.17302569081983957,
+        "confusion_matrix": [
+          [
+            12,
+            0
+          ],
+          [
+            13,
+            10
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      },
+      "tel_aviv": {
+        "participants": 95,
+        "pd_prevalence": 0.7578947368421053,
+        "auroc": 0.7856280193236714,
+        "auroc_95ci": [
+          0.6727053140096618,
+          0.8862469806763285
+        ],
+        "balanced_accuracy": 0.7056159420289855,
+        "sensitivity": 0.5416666666666666,
+        "specificity": 0.8695652173913043,
+        "sensitivity_95ci_wilson": [
+          0.4273986728598905,
+          0.651713729423738
+        ],
+        "specificity_95ci_wilson": [
+          0.6787251772990404,
+          0.9546234090636876
+        ],
+        "pr_auc_average_precision": 0.9166863942041499,
+        "brier": 0.16136213529198687,
+        "confusion_matrix": [
+          [
+            20,
+            3
+          ],
+          [
+            33,
+            39
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      },
+      "unm_on": {
+        "participants": 33,
+        "pd_prevalence": 0.45454545454545453,
+        "auroc": 0.7407407407407407,
+        "auroc_95ci": [
+          0.5481481481481482,
+          0.8871296296296296
+        ],
+        "balanced_accuracy": 0.6333333333333333,
+        "sensitivity": 0.26666666666666666,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.10897453325692374,
+          0.5195043405598057
+        ],
+        "specificity_95ci_wilson": [
+          0.8241207763533425,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.7758586520691784,
+        "brier": 0.19928534536580483,
+        "confusion_matrix": [
+          [
+            18,
+            0
+          ],
+          [
+            11,
+            4
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      },
+      "unm_off": {
+        "participants": 38,
+        "pd_prevalence": 0.5263157894736842,
+        "auroc": 0.7361111111111112,
+        "auroc_95ci": [
+          0.5735416666666666,
+          0.8875694444444444
+        ],
+        "balanced_accuracy": 0.575,
+        "sensitivity": 0.15,
+        "specificity": 1.0,
+        "sensitivity_95ci_wilson": [
+          0.052368745896216595,
+          0.36041886474075696
+        ],
+        "specificity_95ci_wilson": [
+          0.8241207763533425,
+          1.0
+        ],
+        "pr_auc_average_precision": 0.7928543759775959,
+        "brier": 0.20340953480461713,
+        "confusion_matrix": [
+          [
+            18,
+            0
+          ],
+          [
+            17,
+            3
+          ]
+        ],
+        "threshold": 0.7077250480651855
+      }
+    },
+    "limitations": [
+      "Single-site development",
+      "Engineering QC without expert validation",
+      "Iowa internal test exploratory",
+      "External cohorts now examined"
+    ],
+    "lock_fingerprint": "d0d50c7f684da8eb2e281b167e3b449f52b1cfadd4f72ed5545d3c786089a7a4"
+  }
+}

@@ -1,6 +1,6 @@
 # Expanded PD model comparison
 
-Status: archive completed and reconciled; protocol v2 implemented and local comparison running as of 26 September 2026. See PD_PROTOCOL_V2.md for the frozen design. Final results and PDF remain pending until all locked evaluations finish.
+Status: completed on 26 September 2026. The reconciled archive, all 126 neural fits, classical baselines, locked evaluations, diagnostics and reviewed 17-page PDF are complete. See [the results](PD_COMPARISON_RESULTS.md), [verification record](PD_COMPARISON_VERIFICATION.md) and [frozen protocol](PD_PROTOCOL_V2.md).
 
 This supersedes the starting protocol's permission to train before all downloads finish. The completed experiment in PD_PILOT_RESULTS.md remains a pilot: 80 participants passed training QC, 15 passed validation QC, and 20 of the 22 assigned internal-test participants passed QC. The six EEGNet tuning configurations were not six different model families.
 

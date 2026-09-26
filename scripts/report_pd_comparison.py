@@ -1,6 +1,7 @@
 """Generate aggregate-only Markdown, JSON, model cards and a typeset PDF after testing."""
 
 import json
+import statistics
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -67,6 +68,8 @@ def main():
     md = []
     story = []
     styles = getSampleStyleSheet()
+    styles["Heading1"].keepWithNext = True
+    styles["Heading2"].keepWithNext = True
     styles.add(
         ParagraphStyle(
             name="BodyEEG",
@@ -147,6 +150,9 @@ def main():
         paragraph(
             f"The age/sex-only external AUROC was {fmt(primary['demographic']['auroc'])} and the artifact-only AUROC was {fmt(primary['artifact']['auroc'])}. Strong confound-only discrimination would weaken a claim that EEG models learned disease-specific physiology."
         )
+        paragraph(
+            "Model rankings changed across sites: the channel CNN led New Mexico ON (AUROC 0.878), while EEGNet led New Mexico OFF (0.886). The Transformer missed 33 of 72 retained PD participants on the primary test at its frozen threshold. Its primary AUROC gain over spectral regression was 0.143, with an exploratory multiplicity-adjusted paired interval of 0.036 to 0.270. This supports a ranking improvement in this retained cohort; it does not establish superiority over all other models or a consistently strong operating point across sites."
+        )
     else:
         paragraph(
             "The primary external comparison could not be estimated because both classes did not survive the frozen eligibility/QC policy. This is an important negative result; no external winner is claimed."
@@ -193,6 +199,81 @@ def main():
     )
     paragraph(
         "Coverage is an essential part of the result. A score measured only among clean recordings does not describe everyone recruited. Exclusion rates can differ by diagnosis, age, motor symptoms and site. No excluded person was reassigned to another split or given a substitute session selected for better model performance."
+    )
+    heading("Demographic balance and exclusions by diagnosis", 2)
+    profiles = {}
+    profile_rows = []
+    for endpoint, label in [("train", "Training"), ("validation", "Validation")] + list(
+        ENDPOINTS.items()
+    ):
+        rr = [
+            r
+            for r in preparation
+            if r["endpoint"] == endpoint
+            or (endpoint.startswith("unm_") and r["endpoint"] == "unm_control")
+        ]
+        profiles[endpoint] = {}
+        for diagnosis in [0, 1]:
+            group = [r for r in rr if r["label"] == diagnosis]
+            retained = [r for r in group if r["status"] == "ready"]
+            ages = []
+            for r in retained:
+                try:
+                    ages.append(float(r["age"]))
+                except (TypeError, ValueError):
+                    pass
+            female = sum(r["sex"] in ["F", "Female"] for r in retained)
+            male = sum(r["sex"] in ["M", "Male"] for r in retained)
+            age_text = (
+                f"{statistics.mean(ages):.1f} ({statistics.stdev(ages):.1f})"
+                if len(ages) > 1
+                else "unavailable"
+            )
+            excluded = len(group) - len(retained)
+            profile_rows.append(
+                [
+                    label + (" / PD" if diagnosis else " / control"),
+                    f"{excluded}/{len(group)}",
+                    age_text,
+                    f"{female}/{male}",
+                    len(retained) - len(ages),
+                ]
+            )
+            profiles[endpoint][str(diagnosis)] = {
+                "assigned": len(group),
+                "retained": len(retained),
+                "excluded": excluded,
+                "age_mean": statistics.mean(ages) if ages else None,
+                "age_sd": statistics.stdev(ages) if len(ages) > 1 else None,
+                "age_missing": len(retained) - len(ages),
+                "female": female,
+                "male": male,
+                "sex_missing": len(retained) - female - male,
+            }
+    table(
+        [
+            "Cohort / diagnosis",
+            "Excluded / assigned",
+            "Age mean (SD)",
+            "Female / male",
+            "Age missing",
+        ],
+        profile_rows,
+        [176, 77, 78, 71, 54],
+    )
+    paragraph(
+        "Demographics describe retained people; exclusion fractions use all assigned people. In the primary external cohort, QC excluded 44/116 PD participants (37.9%) and 5/28 controls (17.9%). This differential selection is a material limitation even though every model uses the same retained participants."
+    )
+    reasons = Counter(
+        reason
+        for r in preparation
+        for rejected in r.get("rejected_windows", [])
+        for reason in rejected["reasons"]
+    )
+    paragraph(
+        "Window rejection reasons across the selected recordings: "
+        + "; ".join(f"{name}: {count:,}" for name, count in sorted(reasons.items()))
+        + ". One window may have multiple reasons, and counts are not counts of unique people. One New Mexico session was excluded for ambiguous eyes-open event timing."
     )
     heading("3. Methods and safeguards")
     protocol = (docs / "PD_PROTOCOL_V2.md").read_text()
@@ -306,18 +387,25 @@ def main():
         heading(ENDPOINTS[endpoint], 2)
         rows = []
         for g, d in groups.items():
+            g = {
+                "age_under_65": "Age below 65",
+                "age_65_plus": "Age 65 or older",
+                "female": "Female",
+                "male": "Male",
+            }[g]
+            count_text = f"{d['class_counts']['0']} / {d['class_counts']['1']}"
             if "models" not in d:
-                rows.append([g, str(d["class_counts"]), d["not_estimated"]])
+                rows.append([g, count_text, d["not_estimated"]])
                 continue
             rows.append(
                 [
                     g,
-                    str(d["class_counts"]),
+                    count_text,
                     "; ".join(f"{NAMES[n]} {m['auroc']:.3f}" for n, m in d["models"].items()),
                 ]
             )
         table(
-            ["Stratum", "Counts (0/1)", "AUROC by model / reason not estimated"],
+            ["Stratum", "Control / PD", "AUROC by model / reason not estimated"],
             rows,
             [90, 70, 296],
         )
@@ -344,6 +432,11 @@ def main():
     paragraph(
         f"Device: {bench['device']}; {bench['platform']}. Conservative neural campaign forecast: {bench['forecast_seconds'] / 3600:.2f} hours, using maximum epochs and 25% margin. Recorded neural fit time: {total / 3600:.2f} hours; this excludes separate preprocessing, representation creation, benchmarks, reporting and test/bootstrap evaluation. The six architectures use different parameter counts; identical tuning counts do not imply identical compute."
     )
+    campaign_state = read("campaign-status.json")
+    if "elapsed_seconds" in campaign_state:
+        paragraph(
+            f"The automated campaign, including fitting, test preprocessing, evaluation, subgroup diagnostics and initial report generation, completed in {campaign_state['elapsed_seconds'] / 60:.1f} minutes. Development preprocessing, the benchmark, permutation check and later report review happened separately."
+        )
     paragraph("Registry fingerprint: " + reg["fingerprint"], True)
     environment = read("environment.json")
     paragraph(
@@ -385,6 +478,8 @@ def main():
     aggregate = {
         "archive": archive,
         "coverage": coverage,
+        "demographic_profiles": profiles,
+        "window_rejection_reasons": dict(reasons),
         "benchmark": bench,
         "test_results": result,
         "permutation_check": perm,
