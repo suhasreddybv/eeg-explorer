@@ -57,3 +57,9 @@ Install on another Mac from the project directory with:
 ```
 
 Service logs are under local `data/archive-service/`; download progress and retry history stay on the SSD. The service waits for the mounted drive rather than recreating its mount directory on the internal disk. A `PAUSE` file remains the safe stop control.
+
+### Source-balanced scheduling (25 September 2026)
+
+The three concurrent transfer slots are shared across eligible sources, preferring the source with fewer active transfers and using dispatch counts to break ties. A slow source cannot fill every newly available slot while another eligible source waits. A source on cooldown does not block healthy sources. The global concurrency limit, persistent retries, resumable partial files, source checksums/ETags and verification receipts remain enforced.
+
+`download-status.json` now includes `received_bytes_by_host`, counting payload bytes received per source during the current worker run. Measure differences over a stable interval from the same run to estimate throughput; counters reset on restart and include bytes later rejected by integrity checks. Estimate completion separately for each source using remaining manifest bytes and receipts. PhysioNet entries with unknown lengths require an approximate source budget, so its ETA is provisional. Short measurements include metadata traffic and do not guarantee sustained throughput.

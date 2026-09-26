@@ -217,3 +217,52 @@ def test_dns_outage_cools_host_before_more_files_are_attempted(tmp_path):
     status = json.loads((tmp_path / "download-status.json").read_text())
     assert len(calls) == 1 and status["state"] == "paused"
     assert status["retry_pending"] == 1 and status["host_cooldowns"]
+
+
+def test_sources_share_bounded_slots_and_account_bytes(tmp_path):
+    import threading
+    from collections import Counter
+
+    data = b"verified EEG"
+    hosts = ["physionet.org", "s3.amazonaws.com"]
+    items = [
+        {
+            "url": f"https://{host}/{i}.edf",
+            "path": f"data/{h}/{i}.edf",
+            "bytes": len(data),
+            "hash_algorithm": "sha256",
+            "checksum": hashlib.sha256(data).hexdigest(),
+            "cohort": "healthy_control",
+            "dataset": f"source-{h}",
+        }
+        for h, host in enumerate(hosts)
+        for i in range(6)
+    ]
+    archive = Archive(tmp_path, {"files": items}, workers=3, reserve_gib=0)
+    archive.client.close()
+    barrier = threading.Barrier(3, timeout=5)
+    lock = threading.Lock()
+    calls = []
+    active = peak = 0
+
+    def respond(request):
+        nonlocal active, peak
+        with lock:
+            calls.append(request.url.host)
+            first_wave = len(calls) <= 3
+            active += 1
+            peak = max(peak, active)
+        if first_wave:
+            barrier.wait()
+        with lock:
+            active -= 1
+        return httpx.Response(200, content=data)
+
+    archive.client = httpx.Client(transport=httpx.MockTransport(respond))
+    archive.run()
+    assert set(calls[:3]) == set(hosts)
+    assert peak == 3
+    assert Counter(calls) == {h: 6 for h in hosts}
+    assert archive.status["received_bytes_by_host"] == {h: 6 * len(data) for h in hosts}
+    assert archive.status["verified_files"] == 12
+    assert not archive.status["failures"]

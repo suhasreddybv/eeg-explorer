@@ -38,6 +38,7 @@ class Archive:
             "verified_files": 0,
             "verified_bytes": 0,
             "received_bytes_this_run": 0,
+            "received_bytes_by_host": {},
             "cohort_bytes": {},
             "cohort_files": {},
             "active_files": {},
@@ -168,6 +169,8 @@ class Archive:
                             f.write(chunk)
                             with self.lock:
                                 self.status["received_bytes_this_run"] += len(chunk)
+                                by_host = self.status["received_bytes_by_host"]
+                                by_host[url.hostname] = by_host.get(url.hostname, 0) + len(chunk)
                                 self.status["active_files"][item["path"]] = f.tell()
                             self.checkpoint()
                         f.flush()
@@ -275,6 +278,7 @@ class Archive:
         try:
             with ThreadPoolExecutor(max_workers=self.workers) as pool:
                 active = {}
+                dispatched = {host: 0 for host in queues}
                 while active or any(queues.values()):
                     try:
                         self.guard()
@@ -282,14 +286,26 @@ class Archive:
                         for future in active:
                             future.cancel()
                         break
-                    for host, queue in queues.items():
-                        while (
-                            queue
-                            and len(active) < self.workers
-                            and max(queue[0][0], hosts[host]["until"]) <= time.time()
-                        ):
-                            _, rank, item = heapq.heappop(queue)
-                            active[pool.submit(self.download, item)] = (host, rank, item)
+                    while len(active) < self.workers:
+                        ready = [
+                            host
+                            for host, queue in queues.items()
+                            if queue and max(queue[0][0], hosts[host]["until"]) <= time.time()
+                        ]
+                        if not ready:
+                            break
+                        # Give eligible sources with fewer active transfers first access.
+                        # Dispatch count breaks ties fairly, including with one worker.
+                        host = min(
+                            ready,
+                            key=lambda h: (
+                                sum(entry[0] == h for entry in active.values()),
+                                dispatched[h],
+                            ),
+                        )
+                        _, rank, item = heapq.heappop(queues[host])
+                        active[pool.submit(self.download, item)] = (host, rank, item)
+                        dispatched[host] += 1
                     if not active:
                         self.status["state"] = "waiting_to_retry"
                         persist()
