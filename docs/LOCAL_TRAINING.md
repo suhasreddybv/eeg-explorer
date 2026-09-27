@@ -123,3 +123,7 @@ The independent Mac job `local.eeg-explorer.comparison.v3` runs preparation, aux
 The v3 usage ledger initially assigns 11,211 candidate recordings across four supervised and nine auxiliary sources; the other ten sources and non-rest PD recordings have explicit exclusions. Candidate counts precede montage/QC checks and do not equal independent people. The initial representative-record preprocessing benchmark forecast 1.15 hours with a 2x margin. Training estimates are recorded separately after data preparation.
 
 All 63 local tests and Ruff passed before initial service installation. Final artifacts require an independent review and a new visually inspected PDF; the v2 PDF is preserved.
+
+### V3 header recovery (27 September 2026)
+
+The initial independent run stopped after 4,420 cached recordings because the header-repair wrapper assumed UTF-8 while an Iowa BrainVision header contained a legacy-encoded microvolt symbol. The underlying MNE reader already supports the source; the wrapper now inspects and repairs companion references as bytes without transcoding header content. Original signals and headers remain unchanged. The interrupted source produced 59 accepted windows after recovery, and its first 1,024 samples exactly matched the native reader. All 355 remaining Iowa BrainVision headers opened successfully. Eleven targeted v3 tests passed, including four encoding/repair combinations. Completed caches, QC rules, cohort registry and preliminary results are preserved; no training had begun.

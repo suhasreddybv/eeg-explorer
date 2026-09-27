@@ -1,6 +1,7 @@
 """All-duration, participant-grouped v3 features and an explicit archive usage ledger."""
 
 import json
+import os
 import re
 import time
 import tempfile
@@ -304,7 +305,7 @@ def extract(raw, interval, role):
 
 @contextmanager
 def safe_raw(path):
-    """Repair only an impossible EDF wall-clock second in a temporary copy."""
+    """Apply narrow header repairs without transcoding headers or changing source files."""
     if path.suffix.lower() == ".edf":
         with path.open("rb") as f:
             header = f.read(256)
@@ -319,13 +320,15 @@ def safe_raw(path):
                     yield raw
             return
     if path.suffix.lower() == ".vhdr":
-        header = path.read_text(encoding="utf-8-sig")
-        references = re.findall(r"^(DataFile|MarkerFile)=(.+)$", header, re.MULTILINE)
-        missing = any(not (path.parent / value.strip()).exists() for _, value in references)
+        header = path.read_bytes()
+        references = re.findall(rb"^(DataFile|MarkerFile)=([^\r\n]+)", header, re.MULTILINE)
+        missing = any(
+            not (path.parent / os.fsdecode(value.strip())).exists() for _, value in references
+        )
         if missing:
             replacements = {
-                "DataFile": path.with_suffix(".eeg"),
-                "MarkerFile": path.with_suffix(".vmrk"),
+                b"DataFile": path.with_suffix(".eeg"),
+                b"MarkerFile": path.with_suffix(".vmrk"),
             }
             if not all(p.exists() for p in replacements.values()):
                 raise FileNotFoundError("Canonical BrainVision companions unavailable")
@@ -333,12 +336,12 @@ def safe_raw(path):
                 copy = Path(td) / path.name
                 for key, value in replacements.items():
                     header = re.sub(
-                        r"^" + key + r"=.+$",
-                        lambda m: key + "=" + str(value),
+                        rb"^" + key + rb"=[^\r\n]+",
+                        lambda m: key + b"=" + os.fsencode(value),
                         header,
                         flags=re.MULTILINE,
                     )
-                copy.write_text(header)
+                copy.write_bytes(header)
                 with read_raw(copy) as raw:
                     yield raw
             return

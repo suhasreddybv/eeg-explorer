@@ -100,3 +100,43 @@ def test_feature_summary_balances_sessions():
     ]
     _, rich = summary_features({"records": records})
     np.testing.assert_allclose(rich[: 17 * 34], 2)
+
+
+@pytest.mark.parametrize("encoding", ["cp1252", "utf-8"])
+@pytest.mark.parametrize("repair", [False, True])
+def test_brainvision_header_preserves_encoding_and_original_bytes(
+    tmp_path, monkeypatch, encoding, repair
+):
+    from contextlib import contextmanager
+    from pd_pipeline import cohort_v3
+
+    header = tmp_path / "record.vhdr"
+    stem = "misspelling" if repair else "record"
+    content = (
+        f"Brain Vision Header\r\nCodepage={encoding}\r\n"
+        f"DataFile={stem}.eeg\r\nMarkerFile={stem}.vmrk\r\n"
+        "Ch1=Fp1,,0.1,µV\r\n"
+    ).encode(encoding)
+    header.write_bytes(content)
+    (tmp_path / "record.eeg").write_bytes(b"samples-unchanged")
+    (tmp_path / "record.vmrk").write_bytes(b"markers-unchanged")
+    captured = []
+
+    @contextmanager
+    def fake_read(path):
+        captured.append((path, path.read_bytes()))
+        yield object()
+
+    monkeypatch.setattr(cohort_v3, "read_raw", fake_read)
+    with cohort_v3.safe_raw(header):
+        pass
+    assert header.read_bytes() == content
+    assert (tmp_path / "record.eeg").read_bytes() == b"samples-unchanged"
+    assert (tmp_path / "record.vmrk").read_bytes() == b"markers-unchanged"
+    assert "Ch1=Fp1,,0.1,µV\r\n".encode(encoding) in captured[0][1]
+    if repair:
+        assert captured[0][0] != header
+        assert b"misspelling" not in captured[0][1]
+        assert not captured[0][0].exists()
+    else:
+        assert captured[0] == (header, content)
