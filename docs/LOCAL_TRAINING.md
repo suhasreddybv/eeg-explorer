@@ -113,3 +113,13 @@ Preparation and reproduction commands, from the project root:
 ```
 
 The report generator `scripts/report_pd_comparison.py` uses a separate document runtime with `reportlab` and `pypdf`. It refuses to report until the locked test results and diagnostics exist. It writes aggregate Markdown/JSON and model cards under `docs/`, and `output/pdf/PD_Classifier_Comparison_Report.pdf`. The final 17-page PDF passed rendered-page visual review on 26 September 2026. Local run artifacts include identities and predictions and must remain ignored by Git. The completed local campaign took 78.3 minutes, including its recorded training-to-report stages; the separate permutation check, initial preparation and final editorial review are outside this elapsed time. All 126 neural fits and locked model artifacts are preserved. See [the verification record](PD_COMPARISON_VERIFICATION.md).
+
+## Expanded-data development v3 (27 September 2026)
+
+V1/v2 are preserved as preliminary studies. The user approved PD-versus-control development using compatible auxiliary EEG pretraining, with cross-site AUROC primary and within-site results separate. The frozen design is [PD_PROTOCOL_V3.md](PD_PROTOCOL_V3.md). It uses all compatible recording duration and repeated sessions, with canonical participants kept together. Every archived dataset has an explicit role or exclusion. There is no fresh confirmatory site remaining among the four previously examined PD sites.
+
+The independent Mac job `local.eeg-explorer.comparison.v3` runs preparation, auxiliary pretraining, supervised benchmarks, nested model comparison, outer evaluation, final research fitting and aggregate reporting. It does not call Codex. Status and errors are in ignored `data/pd-runs/v3/campaign-status.json`; completed fits and data caches resume with hash checks. Each training stage is benchmarked before launch, and a forecast above 96 hours stops for user notification. Completed data preparation and benchmarks are not a claim of a trained or improved model.
+
+The v3 usage ledger initially assigns 11,211 candidate recordings across four supervised and nine auxiliary sources; the other ten sources and non-rest PD recordings have explicit exclusions. Candidate counts precede montage/QC checks and do not equal independent people. The initial representative-record preprocessing benchmark forecast 1.15 hours with a 2x margin. Training estimates are recorded separately after data preparation.
+
+All 63 local tests and Ruff passed before initial service installation. Final artifacts require an independent review and a new visually inspected PDF; the v2 PDF is preserved.
