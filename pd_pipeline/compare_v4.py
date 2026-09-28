@@ -192,17 +192,34 @@ class FoldContext:
             return np.stack([p["b4"] for p in people])
         if name == "b5":
             return np.stack([p["b5"] for p in people])
+        if name == "b2":
+            # B-2 alone, no C3 z-scores. Used by the T2 montage variants:
+            # the cached normative vector is a 17-channel quantity, so
+            # feeding it to a montage model would leak electrodes the
+            # montage does not have into a "wearable" result.
+            return np.stack([p["b2"] for p in people])
         if name == "b3_tangent":
-            identity = np.eye(17)
+            # Dimension follows the covariances themselves (17 for T1, k for
+            # a T2 montage), never a hardcoded 17.
+            present = next((p["cov"] for p in people if p["cov"] is not None), None)
+            width = 17 if present is None else present.shape[-1]
+            identity = np.eye(width)
+            empty = len(tangent_vector(identity, identity))
             rows = []
             for p in people:
                 if p["cov"] is None:
-                    rows.append(np.zeros(len(tangent_vector(identity, identity))))
+                    rows.append(np.zeros(empty))
                     continue
                 if self.regime == "T" and self.recentred is not None:
                     rows.append(tangent_vector(self.recentred[p["key"]], identity))
                 else:
-                    rows.append(tangent_vector(p["cov"].astype("float64"), self.tangent_reference))
+                    reference = (
+                        self.tangent_reference
+                        if self.tangent_reference is not None
+                        and self.tangent_reference.shape[-1] == width
+                        else identity
+                    )
+                    rows.append(tangent_vector(p["cov"].astype("float64"), reference))
             return np.stack(rows)
         if name == "compact":
             # F6: B-1 + B-2 + the C3 z-scores, capped at 250 features.
@@ -254,11 +271,11 @@ def _equal_site_auroc(people, indices, scores):
     return per_site
 
 
-def inner_evaluate(people, train_indices, family, params, regime, normative_pool, seed=SEED, get_context=None):
+def inner_evaluate(people, train_indices, family, params, regime, normative_pool, seed=SEED, get_context=None, family_specs=None):
     """Inner loop for one candidate: leave-one-site-out across the training
     sites (cross component) plus 3 stratified participant folds (within
     component), returning the D3 score and per-person OOF probabilities."""
-    spec = FAMILIES[family]
+    spec = (family_specs or FAMILIES)[family]
     get_context = get_context or context_factory()
     train_people = [people[i] for i in train_indices]
     sites = sorted({p["site"] for p in train_people})
@@ -315,13 +332,15 @@ def inner_evaluate(people, train_indices, family, params, regime, normative_pool
     }
 
 
-def select_family(people, train_indices, family, regime, normative_pool, seed=SEED, get_context=None):
+def select_family(people, train_indices, family, regime, normative_pool, seed=SEED, get_context=None, family_specs=None):
     """Pick this family's hyper-parameters by the D3 objective, using inner
     folds of the training people only."""
     results = []
-    for params in FAMILIES[family]["grid"]:
+    family_specs = family_specs or FAMILIES
+    for params in family_specs[family]["grid"]:
         evaluation = inner_evaluate(
-            people, train_indices, family, params, regime, normative_pool, seed, get_context
+            people, train_indices, family, params, regime, normative_pool, seed, get_context,
+            family_specs,
         )
         results.append({"params": params, **evaluation})
     best = max(results, key=lambda r: r["score"])
@@ -353,15 +372,16 @@ def build_normative_pool(run=RUN, archive=ARCHIVE):
     return pool
 
 
-def variants():
+def variants(family_specs=None):
     """Every (family, regime) pair the frozen protocol allows. Regime T is
     offered only where a transductive method survived Stage 6's guardrail."""
-    out = [(family, "I") for family in FAMILIES]
-    out += [(family, "T") for family in FAMILIES if family in TRANSDUCTIVE_METHODS]
+    family_specs = family_specs or FAMILIES
+    out = [(family, "I") for family in family_specs]
+    out += [(family, "T") for family in family_specs if family in TRANSDUCTIVE_METHODS]
     return out
 
 
-def run_fold(people, split, normative_pool, seed=SEED):
+def run_fold(people, split, normative_pool, seed=SEED, family_specs=None):
     """One outer fold: select each family by D3 on the training people,
     stack their inner-OOF probabilities, refit level-0 on the full outer
     training set, and score the held-out people."""
@@ -372,14 +392,15 @@ def run_fold(people, split, normative_pool, seed=SEED):
     validate_disjoint(train_people, test_people)
     y_train = np.array([p["y"] for p in train_people])
     get_context = context_factory()
+    family_specs = family_specs or FAMILIES
 
     selections = {}
     oof_columns = {}
     outer_scores = {}
-    for family, regime in variants():
+    for family, regime in variants(family_specs):
         label = f"{family}|{regime}"
         best, all_candidates = select_family(
-            people, train_indices, family, regime, normative_pool, seed, get_context
+            people, train_indices, family, regime, normative_pool, seed, get_context, family_specs
         )
         selections[label] = {
             "params": best["params"],
@@ -395,7 +416,7 @@ def run_fold(people, split, normative_pool, seed=SEED):
 
         # Refit on the whole outer-training set and score the held-out people.
         context = get_context(train_people, people, regime, normative_pool, seed)
-        spec = FAMILIES[family]
+        spec = family_specs[family]
         model = spec["build"](best["params"])
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
@@ -405,7 +426,7 @@ def run_fold(people, split, normative_pool, seed=SEED):
             )[:, 1]
 
     # Pre-declared stacker S: inductive level-0 families only.
-    inductive = [f"{family}|I" for family in FAMILIES]
+    inductive = [f"{family}|I" for family in family_specs]
     stacker = NonNegativeStacker(C=1.0).fit(
         np.column_stack([oof_columns[label] for label in inductive]), y_train
     )
@@ -420,7 +441,8 @@ def run_fold(people, split, normative_pool, seed=SEED):
 
     # Secondary transductive stack: swap in the T variant where one exists.
     transductive = [
-        f"{family}|T" if family in TRANSDUCTIVE_METHODS else f"{family}|I" for family in FAMILIES
+        f"{family}|T" if family in TRANSDUCTIVE_METHODS else f"{family}|I"
+        for family in family_specs
     ]
     stacker_t = NonNegativeStacker(C=1.0).fit(
         np.column_stack([oof_columns[label] for label in transductive]), y_train

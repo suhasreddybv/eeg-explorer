@@ -220,3 +220,27 @@ def greedy_channel_search(score_fn, k_max=8, channels=None):
             {"k": len(chosen), "channels": [CHANNELS[i] for i in chosen], "score": float(best_score)}
         )
     return trace
+
+
+def montage_families():
+    """T2 families (protocol S9: F1, F2, F3, F4, F5), with two montage-safe
+    substitutions:
+
+    - F0 (v3-rich) and F6 (compact) are excluded: both are defined on the
+      17-channel representation, so neither is a wearable claim.
+    - F2 uses the `b2` block rather than `b2_c3`. The C3 z-scores are
+      derived from a 17-channel normative model; scoring a 4-channel
+      headband against them would quietly reintroduce electrodes the
+      montage does not have. Refitting normative models per montage over
+      the 467-person auxiliary pool was out of scope for this run, so the
+      montage F2 is B-2 alone -- recorded, not silently substituted.
+    """
+    from .models_v4 import FAMILIES
+
+    specs = {}
+    for name in ("F1_relative_svm", "F2_specparam_enet", "F3_riemann_logistic", "F4_leapd", "F5_entropy_logistic"):
+        spec = dict(FAMILIES[name])
+        if name == "F2_specparam_enet":
+            spec["block"] = "b2"
+        specs[name] = spec
+    return specs
