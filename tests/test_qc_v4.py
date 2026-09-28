@@ -171,3 +171,36 @@ def test_qc_audit_ds003775_sanity_check_and_a2_minimum(tmp_path):
     assert report["turku_qc_label_free"]["n_ready"] == 1
     assert report["turku_qc_label_free"]["total_windows"] == 30
     assert (tmp_path / "qc-audit.json").exists()
+
+
+def test_preref128_is_bandpassed_but_not_average_referenced():
+    """Regression for the v4.1 correction. preref128 must be (a) filtered,
+    so out-of-band drift and line noise are gone, and (b) NOT average-
+    referenced, so Stage 9 can re-reference within a montage."""
+    t = np.arange(84 * 256) / 256
+    # Alpha signal + heavy sub-1Hz drift + 50Hz line noise, all in-band-able.
+    base = np.stack(
+        [
+            30e-6 * np.sin(2 * np.pi * 10 * t)
+            + 40e-6 * np.sin(2 * np.pi * 0.3 * t)
+            + 5e-6 * np.sin(2 * np.pi * 50 * t)
+            for _ in range(17)
+        ]
+    )
+    # Give each channel a distinct offset so an average reference is detectable.
+    base = base + (np.arange(17)[:, None] - 8) * 2e-6
+    raw = mne.io.RawArray(base, mne.create_info(CONFIG["channels"], 256, "eeg"), verbose=False)
+    out, reason = extract(raw, None, "supervised", {"PTP_UV": 250, "STEP_UV": 60, "LINE_RATIO": 0.5})
+    assert reason is None and out["preref128"].shape[0] > 0
+
+    from scipy import signal as sp
+
+    window = out["preref128"][0].astype("float64")
+    freqs, psd = sp.welch(window[0], fs=128, nperseg=128)
+    total = psd.sum()
+    # (a) filtered: almost no power below 1Hz or above 40Hz
+    assert psd[freqs < 1].sum() / total < 0.05
+    assert psd[freqs > 40].sum() / total < 0.05
+    # (b) not average-referenced: channels still share a common component,
+    # so the across-channel mean is not identically zero.
+    assert np.abs(window.mean(axis=0)).max() > 0

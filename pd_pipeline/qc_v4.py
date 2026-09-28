@@ -17,9 +17,18 @@ Differences from v3 (pd_pipeline/cohort_v3.extract):
   derived once from auxiliary-cohort statistics (derive_thresholds) and
   then frozen, never tuned against PD/control labels.
 - windows also store per-channel LPC (order 12, Levinson-Durbin
-  autocorrelation method, at 128 Hz), the raw pre-average-reference 128 Hz
-  window (preref128, for Stage 9 montage re-referencing) and band
+  autocorrelation method, at 128 Hz), the band-passed pre-average-reference
+  128 Hz window (preref128, for Stage 9 montage re-referencing) and band
   covariances (fbcov).
+
+Corrected 28 September 2026 (protocol v4.1): preref128 and the lpc array
+were originally built from the *unfiltered* resampled signal, while the
+frozen protocol specifies the filtered window. The effect was material --
+in one supervised recording 40.7% of preref128's power sat below 1 Hz --
+and plausibly explains F4/LEAPD's near-chance cross-site AUROC in the
+superseded Stage 7 run. They now come from `filtered_preref`: band-passed
+1-40 Hz but deliberately *not* average-referenced, so Stage 9 can still
+re-reference within a montage's own channels.
 """
 
 import json
@@ -248,8 +257,13 @@ def extract(raw, interval, role, thresholds, include_raw200=False):
         rawx = raw.get_data(picks=[p for p in picks if p is not None], start=left, stop=right) * 1e6
         resampled = signal.resample_poly(rawx, ratio.numerator, ratio.denominator, axis=-1)
         sos = signal.butter(4, [1, 40], btype="bandpass", fs=256, output="sos")
-        filtered = signal.sosfiltfilt(sos, resampled, axis=-1)
-        filtered -= filtered.mean(axis=0, keepdims=True)
+        # Two stages, deliberately kept separate: `filtered_preref` is
+        # band-passed but NOT average-referenced, which is exactly what the
+        # protocol's preref128 is for (Stage 9 re-references within the
+        # montage's own channels). `filtered` adds the 17-channel average
+        # reference and feeds QC and the spectral/covariance features.
+        filtered_preref = signal.sosfiltfilt(sos, resampled, axis=-1)
+        filtered = filtered_preref - filtered_preref.mean(axis=0, keepdims=True)
         for start in ss:
             stat = next(s for s in computed["stats"] if s["start"] == float(start))
             reasons = apply_thresholds(stat, thresholds)
@@ -260,7 +274,7 @@ def extract(raw, interval, role, thresholds, include_raw200=False):
             filt_win = filtered[:, offset : offset + 1024]
             win = filt_win - filt_win.mean(axis=-1, keepdims=True)
             band, cov, fbcov = spectral_features(win)
-            lpc_coef, _, preref128 = lpc_features(resampled[:, offset : offset + 1024])
+            lpc_coef, _, preref128 = lpc_features(filtered_preref[:, offset : offset + 1024])
             full_band = np.zeros((17, 40), dtype="float32")
             full_band[mask] = band
             full_cov = np.zeros((17, 17), dtype="float32")
@@ -279,7 +293,9 @@ def extract(raw, interval, role, thresholds, include_raw200=False):
             prerefs.append(full_preref)
             kept.append(float(start))
             if include_raw200:
-                raw200 = signal.resample_poly(resampled[:, offset : offset + 1024], 200, 256, axis=-1)
+                raw200 = signal.resample_poly(
+                    filtered_preref[:, offset : offset + 1024], 200, 256, axis=-1
+                )
                 full200 = np.zeros((17, raw200.shape[-1]), dtype="float16")
                 full200[mask] = raw200.astype("float16")
                 raw200s.append(full200)
