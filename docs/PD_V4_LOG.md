@@ -26,3 +26,11 @@ Aggregate, no-participant-data stage log. Full artifacts stay under ignored `dat
 - Added `tests/test_locked_site_v4.py` (7 tests): the label loader's two-lock refusal, and the PD-group coding resolution logic (including a flipped-coding case and an ambiguous-input case that must raise, not guess).
 - Added the `v4` optional dependency extra (pyriemann, fooof — specparam 2.0 isn't released stable yet, antropy, lightgbm, mne-connectivity, openpyxl, braindecode); `uv.lock` refreshed; `uv run ruff check .` and `uv run pytest -q` both green (79 passed).
 - **Next:** Stage 2 (protocol v4 freeze — `docs/PD_PROTOCOL_V4.md` — must be written and hashed before any supervised model is fitted).
+
+## Stage 2: protocol v4 freeze (28 September 2026)
+
+- Wrote `docs/PD_PROTOCOL_V4.md`, modelled on `PD_PROTOCOL_V3.md`: hypotheses (H1–H6), cohort/session/duration rules (A1/A2), QC v4 rule (numeric thresholds pending Stage 4's label-free derivation — the rule is frozen now, values appended before any supervised QC report), feature families B-1…B-7 and v3-rich, harmonisation regimes C1–C3 and the prevalence stress test, the F0–F8/S model grid and D3 selection objective, the Turku locked-site licence/label-sealing summary from Stage 1, the T2 montage table and re-referencing rule, the T3 output schema/fusion approach, evaluation design, and all six gates (G1–G6) with G1 already resolved.
+- Implemented `scripts/run_pd_v4.py:policy()`/`freeze_policy()`, hashing the protocol doc and every `pd_pipeline/*_v4.py` module (plus the reused v3 modules) into `data/pd-runs/v4/implementation-policy.json`, mirroring `run_pd_v3.py`. Frozen; a re-freeze after any source change now raises rather than silently overwriting.
+- Added `tests/test_run_pd_v4.py`: freeze is idempotent, and refuses when the hashed source changes after freezing.
+- `uv run ruff check .` and `uv run pytest -q` both green (81 passed).
+- **Next:** Stage 3 (cohort v4 registry — `cohort_v4.build()`, session selection, Turku `locked_test` records, confound audit). This is the first stage that starts implementing real pipeline logic against the frozen protocol rather than scaffolding/documentation.
