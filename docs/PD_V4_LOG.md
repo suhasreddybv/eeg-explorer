@@ -34,3 +34,15 @@ Aggregate, no-participant-data stage log. Full artifacts stay under ignored `dat
 - Added `tests/test_run_pd_v4.py`: freeze is idempotent, and refuses when the hashed source changes after freezing.
 - `uv run ruff check .` and `uv run pytest -q` both green (81 passed).
 - **Next:** Stage 3 (cohort v4 registry — `cohort_v4.build()`, session selection, Turku `locked_test` records, confound audit). This is the first stage that starts implementing real pipeline logic against the frozen protocol rather than scaffolding/documentation.
+
+## Stage 3: cohort v4 registry (28 September 2026)
+
+- `cohort_v4.build()` reuses `cohort_v3.build` **unmodified** (`cohort_v4.build_v3 is cohort_v3.build`, asserted in a test) to get archive extraction/labelling/dedup, redirecting its intermediate artifacts to a v4-owned scratch path so `data/pd-runs/v3/` is never touched (verified: v3's `registry.json`/`usage-summary.json` mtimes still 27 Sep, unchanged after the run).
+- **A1 one-session-per-person** implemented per site (UCSD: PD→`ses-on`/control→`ses-hc`; New Mexico: PD→the session with `sess{1,2}_Med == "ON"`/control→their single session; Iowa: earliest by `days_since_first_session` from each subject's `_sessions.tsv`; Tel Aviv: already one recording, no `ses-` subfolders). Raises rather than guesses whenever a person doesn't resolve to exactly one recording.
+- **Result: 537 supervised people, one record each** — matches v3's independently-reported "537 assigned people" exactly, and every site×diagnosis cell (Iowa 110/202, Tel Aviv 28/116, UCSD 16/15, UNM 25/25) matches v3's reported assigned counts exactly. Strong cross-check that A1 didn't drop or duplicate anyone.
+- Added 40 Turku `locked_test` records (label/age/sex all `None` — genuinely absent from the registry, not just hidden) from the Stage 1 manifest.
+- **Confound audit** (`data/pd-runs/v4/confound-audit.json`): session count is now `{1}` for every supervised person (structurally eliminates v3's UCSD/UNM session-count confound, which previously gave metadata AUROC 1.000, by construction rather than by a model choice). Age/sex-only leave-one-site-out AUROC is now near chance everywhere (Iowa 0.539, Tel Aviv 0.486, UCSD 0.496, UNM 0.510) — the expected result per protocol §2.2. Accepted-window/acceptance-fraction components are deferred to a Stage 4 addendum since they require QC-extracted windows that don't exist yet.
+- Added `clinical.json` (Iowa: age-at-visit/MoCA/UPDRS-III/disease-duration/LEDD from the chosen session's `_sessions.tsv`; Tel Aviv: same fields directly from `participants.tsv`) — 456 entries, kept separate from the registry, used only in Stage 10.
+- Added `tests/test_cohort_v4.py` (10 tests): per-site A1 rules, the ambiguous-case raise, Turku label-absence, and clinical-data parsing.
+- `uv run ruff check .` and `uv run pytest -q` both green (91 passed).
+- **Next:** Stage 4 (QC v4 — label-free threshold derivation on auxiliary cohorts, then full-archive re-extraction). This is a full-archive compute stage requiring its own benchmark and 96-hour forecast gate before launch.
