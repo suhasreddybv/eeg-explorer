@@ -50,14 +50,16 @@ Processing order per recording: (1) pick the 17 channels; (2) resample to 256 Hz
 
 **Threshold derivation (label-free):** compute each QC statistic's distribution on the auxiliary cohorts only, including ds003775 (which v3's fixed thresholds rejected entirely — §3 of `PD_V3_RESULTS.md`). Set `PTP_UV`, `STEP_UV`, `LINE_RATIO` at the 99th percentile of auxiliary clean-rest windows, rounded, ceilings `PTP_UV ≤ 250`, `STEP_UV ≤ 60`, `LINE_RATIO ≤ 0.5`. Do not tune QC on PD/control separation, ever.
 
-> **Numeric values:** derived in Stage 4 from the auxiliary cohorts and appended here as an addendum *before* any supervised-site QC report is produced, per the label-free-first freeze order below. Placeholder until Stage 4 runs:
-> `PTP_UV = <pending>`, `STEP_UV = <pending>`, `LINE_RATIO = <pending>`.
+> **Numeric values (Stage 4 addendum, frozen 28 September 2026):** derived from 389,702 clean windows across 10,590 auxiliary recordings, before any supervised-site or Turku recording was processed:
+> `PTP_UV = 250`, `STEP_UV = 60`, `LINE_RATIO = 0.5` — all three at the protocol ceiling (the raw 99th-percentile values exceeded the ceiling). See `data/pd-runs/v4/qc-thresholds.json`.
 
 **Report:** exclusion rate by site × diagnosis under v3 QC vs v4 QC (label-aware, descriptive, produced after the freeze); ds003775 acceptance under v4 QC.
 
 ## 5. Representations (`features_v4.py`)
 
-Per-window: `psd` (Welch, 1-s segments, 50% overlap, 1–40 Hz, 1 Hz resolution, 17×40; 2–35 Hz subset retained for v3-compatible families), `cov` (17×17 OAS-shrunk broadband covariance), `fbcov` (θ 4–8 / α 8–13 / β 13–30 Hz band covariances), `lpc` (order-12 LPC per channel at 128 Hz, plus prediction-error variance), `ent` (sample entropy m=2 r=0.2·SD, permutation entropy order 5 delay 1, Higuchi FD kmax 10, Lempel-Ziv complexity), `raw200` (Track E only, 200 Hz float16 17×800), `preref128` (filtered window at 128 Hz before average referencing, for Stage 9 montage re-referencing).
+Per-window: `psd` (Welch, 1-s segments, 50% overlap, 1–40 Hz, 1 Hz resolution, 17×40; 2–35 Hz subset retained for v3-compatible families), `cov` (17×17 broadband covariance, fixed 10% isotropic shrinkage toward the identity — matching v3's convention (`PD_PROTOCOL_V3.md`), not data-driven OAS shrinkage; implemented in `qc_v4.spectral_features`, corrected here to match Stage 4's actual implementation before any supervised fit), `fbcov` (θ 4–8 / α 8–13 / β 13–30 Hz band covariances, same fixed shrinkage), `lpc` (order-12 LPC per channel at 128 Hz, Levinson-Durbin autocorrelation method, plus prediction-error variance), `ent` (sample entropy m=2 r=0.2·SD, permutation entropy order 5 delay 1, Higuchi FD kmax 10, Lempel-Ziv complexity), `raw200` (Track E only, 200 Hz float16 17×800), `preref128` (filtered window at 128 Hz before average referencing, for Stage 9 montage re-referencing).
+
+**QC thresholds (frozen in Stage 4, label-free, from 389,702 clean windows across 10,590 auxiliary recordings):** `PTP_UV = 250`, `STEP_UV = 60`, `LINE_RATIO = 0.5` (all three at the protocol's ceiling — the raw 99th-percentile values were higher). See `data/pd-runs/v4/qc-thresholds.json` and `qc-audit.json`.
 
 Per-person (15-window primary):
 
