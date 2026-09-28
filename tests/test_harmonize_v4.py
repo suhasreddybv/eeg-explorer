@@ -126,6 +126,40 @@ def test_prevalence_stress_reports_each_requested_prevalence():
         assert entry["subset_size"] > 0
 
 
+def test_label_free_stress_invariant_case_gives_zero_spread():
+    """The label-free companion must also report exactly zero spread for a
+    scorer that ignores the site statistics."""
+    rng = np.random.default_rng(8)
+    y = np.array([0] * 40 + [1] * 40)
+    X = np.column_stack([y + rng.normal(0, 0.3, len(y))])
+    result = hv.prevalence_stress_label_free(
+        X, y, lambda Xf, s: Xf[:, 0], n_resamples=5, n_labellings=20
+    )
+    assert result["spread_mean"] == pytest.approx(0.0, abs=1e-12)
+    assert result["min_rank_correlation"] == pytest.approx(1.0, abs=1e-9)
+    assert result["passed"] is True
+
+
+def test_label_free_stress_never_uses_true_labels_in_its_verdict():
+    """Permuting the true labels must not change the label-free verdict:
+    y only drives the stratified resampling scheme, never the criterion."""
+    rng = np.random.default_rng(9)
+    n = 80
+    X = rng.normal(size=(n, 2))
+    y = np.array([0] * 40 + [1] * 40)
+
+    def scorer(X_full, stats_rows):
+        return X_full[:, 0] - stats_rows[:, 0].mean()
+
+    first = hv.prevalence_stress_label_free(X, y, scorer, n_resamples=5, n_labellings=30)
+    # Same class balance, different assignment of which rows are PD.
+    y_permuted = rng.permutation(y)
+    second = hv.prevalence_stress_label_free(X, y_permuted, scorer, n_resamples=5, n_labellings=30)
+    # Verdicts come from synthetic labellings, so both runs judge the same
+    # underlying score-stability question and agree.
+    assert first["passed"] == second["passed"]
+
+
 def test_normative_sources_exclude_the_young_cohort():
     # ds004148 is protocol-listed but its cohort is 18-28, so it must not
     # appear as a usable normative source.

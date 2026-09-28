@@ -320,6 +320,94 @@ def prevalence_stress(
     }
 
 
+def prevalence_stress_label_free(
+    X,
+    y_for_resampling,
+    scorer,
+    prevalences=STRESS_PREVALENCES,
+    n_resamples=STRESS_RESAMPLES,
+    n_labellings=200,
+    tolerance=STRESS_TOLERANCE,
+    seed=SEED,
+):
+    """Label-free companion to prevalence_stress.
+
+    Same question -- do a transductive method's site statistics depend on
+    the class balance behind them? -- but the verdict never uses the real
+    diagnosis. For each prevalence we take the mean score vector over
+    resamples, then measure how much AUROC moves across prevalences under
+    many *random synthetic labellings* rather than the true one. The result
+    is in AUROC units, directly comparable to the same 0.03 tolerance.
+
+    `y_for_resampling` is used only to draw class-stratified subsets (the
+    resampling scheme the protocol specifies); it never enters the verdict.
+    A caller that wants to avoid even that can pass a random balanced
+    vector, at the cost of no longer matching the protocol's scheme.
+    """
+    X = np.asarray(X, dtype="float64")
+    y_for_resampling = np.asarray(y_for_resampling)
+    rng = np.random.default_rng(seed)
+    pd_idx = np.flatnonzero(y_for_resampling == 1)
+    control_idx = np.flatnonzero(y_for_resampling == 0)
+
+    mean_scores = {}
+    for prevalence in prevalences:
+        n_total = min(
+            int(len(pd_idx) / prevalence) if prevalence > 0 else 0,
+            int(len(control_idx) / (1 - prevalence)) if prevalence < 1 else 0,
+        )
+        n_pd = int(round(n_total * prevalence))
+        n_control = n_total - n_pd
+        if n_pd < 2 or n_control < 2:
+            continue
+        accumulated = []
+        for _ in range(n_resamples):
+            subset = np.concatenate(
+                [
+                    rng.choice(pd_idx, n_pd, replace=False),
+                    rng.choice(control_idx, n_control, replace=False),
+                ]
+            )
+            accumulated.append(np.asarray(scorer(X, X[subset]), dtype="float64"))
+        mean_scores[prevalence] = np.mean(accumulated, axis=0)
+
+    if len(mean_scores) < 2:
+        return {"spread_mean": float("nan"), "spread_max": float("nan"), "passed": False}
+
+    n = len(next(iter(mean_scores.values())))
+    n_positive = max(1, n // 2)
+    label_rng = np.random.default_rng(seed + 1)
+    spreads = []
+    for _ in range(n_labellings):
+        synthetic = np.zeros(n, dtype=int)
+        synthetic[label_rng.choice(n, n_positive, replace=False)] = 1
+        aurocs = [roc_auc_score(synthetic, scores) for scores in mean_scores.values()]
+        spreads.append(max(aurocs) - min(aurocs))
+    spread_mean = float(np.mean(spreads))
+    spread_max = float(np.max(spreads))
+    # Rank agreement is the underlying mechanism: identical rankings across
+    # prevalences would make every labelling's AUROC identical.
+    vectors = list(mean_scores.values())
+    correlations = []
+    for i in range(len(vectors)):
+        for j in range(i + 1, len(vectors)):
+            ranks_i = np.argsort(np.argsort(vectors[i]))
+            ranks_j = np.argsort(np.argsort(vectors[j]))
+            correlations.append(float(np.corrcoef(ranks_i, ranks_j)[0, 1]))
+    return {
+        "spread_mean": spread_mean,
+        "spread_max": spread_max,
+        "min_rank_correlation": float(min(correlations)) if correlations else float("nan"),
+        "n_labellings": n_labellings,
+        "tolerance": tolerance,
+        "passed": bool(spread_mean <= tolerance),
+        "note": (
+            "Verdict uses random synthetic labellings, never the true diagnosis. "
+            "y_for_resampling only drives the protocol's stratified subset scheme."
+        ),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Descriptive diagnostics (aggregate only, no participant-level output)
 # ---------------------------------------------------------------------------

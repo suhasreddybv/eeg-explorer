@@ -6,17 +6,17 @@ Writes data/pd-runs/v4/harmonisation-report.json.
 Two things to read carefully alongside the output:
 
 1. Aggregation rule. docs/PD_PROTOCOL_V4.md defines the pass criterion per
-   outer site but does not state how to aggregate across sites. This runner
-   adopts the conservative reading -- a method must pass at EVERY outer site
-   to enter the pre-declared pipeline -- because the pipeline is applied to
-   all sites. Per-site results are reported either way.
+   outer site but does not state how to aggregate across sites. Reviewed
+   decision (28 Sep 2026): MAJORITY of outer sites must pass, i.e. >=3 of 4.
+   Note 2-of-4 is a tie, not a majority, so it fails. Per-site results are
+   reported either way so the rule is auditable.
 
 2. The guardrail is label-aware on the test site. The frozen protocol
    prescribes computing AUROC on the held-out site, which necessarily uses
-   that site's labels before the outer evaluation. The criterion is
-   stability-only (spread across prevalences), so it cannot be used to pick
-   whichever method scores highest -- but it is a real qualification of
-   non-negotiable #4 and is flagged in docs/PD_V4_LOG.md rather than buried.
+   that site's labels before the outer evaluation -- a real qualification of
+   non-negotiable #4. Reviewed decision: run BOTH the frozen label-aware
+   criterion (primary) and a label-free variant (sensitivity check, verdict
+   from random synthetic labellings only) and report whether they agree.
 
 The scorer here is a simple pre-declared logistic regression, not the Stage 7
 stacker: the guardrail decides pipeline membership *before* the models exist,
@@ -85,6 +85,7 @@ def main():
 
     # --- prevalence stress test, per outer site, for C2 and C1
     stress = {"C2": {}, "C1": {}}
+    stress_lf = {"C2": {}, "C1": {}}
     for site in sorted(set(sites)):
         test_mask = sites == site
         train_mask = ~test_mask
@@ -106,9 +107,14 @@ def main():
         stress["C2"][site] = hv.prevalence_stress(
             X[test_mask], y[test_mask], c2_scorer, n_resamples=hv.STRESS_RESAMPLES, seed=SEED
         )
+        stress_lf["C2"][site] = hv.prevalence_stress_label_free(
+            X[test_mask], y[test_mask], c2_scorer, n_resamples=hv.STRESS_RESAMPLES, seed=SEED
+        )
         print(
-            f"  C2 {site}: spread={stress['C2'][site]['spread']:.4f} "
-            f"passed={stress['C2'][site]['passed']}"
+            f"  C2 {site}: label-aware spread={stress['C2'][site]['spread']:.4f} "
+            f"passed={stress['C2'][site]['passed']} | "
+            f"label-free spread={stress_lf['C2'][site]['spread_mean']:.4f} "
+            f"passed={stress_lf['C2'][site]['passed']}"
         )
 
         # C1 on the per-person Riemannian mean covariances.
@@ -138,23 +144,57 @@ def main():
         stress["C1"][site] = hv.prevalence_stress(
             index_matrix, cov_y[cov_test], c1_scorer, n_resamples=25, seed=SEED
         )
+        stress_lf["C1"][site] = hv.prevalence_stress_label_free(
+            index_matrix, cov_y[cov_test], c1_scorer, n_resamples=25, seed=SEED
+        )
         print(
-            f"  C1 {site}: spread={stress['C1'][site]['spread']:.4f} "
-            f"passed={stress['C1'][site]['passed']}"
+            f"  C1 {site}: label-aware spread={stress['C1'][site]['spread']:.4f} "
+            f"passed={stress['C1'][site]['passed']} | "
+            f"label-free spread={stress_lf['C1'][site]['spread_mean']:.4f} "
+            f"passed={stress_lf['C1'][site]['passed']}"
         )
 
     report["descriptive"] = descriptive
-    report["prevalence_stress"] = stress
-    report["summary"] = {
-        method: {
-            "all_sites_passed": all(v["passed"] for v in per_site.values()) if per_site else None,
-            "max_spread": max((v["spread"] for v in per_site.values()), default=None),
+    report["prevalence_stress_label_aware"] = stress
+    report["prevalence_stress_label_free"] = stress_lf
+
+    def verdict(per_site, key):
+        """Majority rule (reviewed 28 Sep 2026): >= 3 of 4 outer sites must
+        pass. 2 of 4 is a tie, not a majority, so it fails."""
+        if not per_site:
+            return None
+        n_pass = sum(1 for v in per_site.values() if v["passed"])
+        n_total = len(per_site)
+        return {
+            "sites_passed": n_pass,
+            "sites_total": n_total,
+            "majority_required": n_total // 2 + 1,
+            "passed": n_pass >= n_total // 2 + 1,
+            "max_spread": max(v[key] for v in per_site.values()),
+            "per_site_spread": {s: v[key] for s, v in per_site.items()},
+        }
+
+    summary = {}
+    for method in ("C1", "C2"):
+        label_aware = verdict(stress[method], "spread")
+        label_free = verdict(stress_lf[method], "spread_mean")
+        summary[method] = {
+            "label_aware": label_aware,
+            "label_free": label_free,
+            "criteria_agree": (
+                None
+                if (label_aware is None or label_free is None)
+                else label_aware["passed"] == label_free["passed"]
+            ),
             "tolerance": hv.STRESS_TOLERANCE,
         }
-        for method, per_site in stress.items()
-    }
+    summary["aggregation_rule"] = "majority of outer sites (>=3 of 4); 2 of 4 is a tie, not a majority"
+    summary["pre_declared_transductive_methods"] = [
+        m for m in ("C1", "C2") if summary[m]["label_aware"] and summary[m]["label_aware"]["passed"]
+    ]
+    report["summary"] = summary
     (RUN / "harmonisation-report.json").write_text(json.dumps(report, indent=2))
-    print("\nSUMMARY:", json.dumps(report["summary"], indent=2))
+    print("\nSUMMARY:", json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":

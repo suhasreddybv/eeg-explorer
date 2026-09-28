@@ -93,9 +93,25 @@ Aggregate, no-participant-data stage log. Full artifacts stay under ignored `dat
   | C2 (robust per-site z) | 0.0067 | 0.0119 | **0.0444** | **0.0314** | **fails at UCSD and UNM** |
 
   Tolerance is 0.03. C2 fails at exactly the two smallest sites (UCSD n=31, UNM n=50), where a per-site median/IQR estimated from a subset is noisy and moves with class balance — precisely the failure mode the guardrail exists to detect. **Per the frozen protocol, C2 is therefore excluded from the pre-declared transductive pipeline**, so `S(T)` rests on C1 (family F3); the C2-based T-variants of F1/F2/F4/F5/F6 are reported descriptively but are not pre-declared. This decision was made by a pre-declared stability rule, not by looking at which method scored better.
-- **Two things that need flagging, not burying:**
-  1. **The protocol does not state how to aggregate the per-site pass/fail.** This stage adopts the conservative reading — a method must pass at *every* outer site to be pre-declared — because the pipeline is applied to all sites. Per-site numbers are reported either way so the choice is auditable.
-  2. **The guardrail is label-aware on the test site.** The frozen protocol prescribes computing AUROC on the held-out site, which necessarily uses that site's labels before the outer evaluation — a real qualification of non-negotiable #4 ("no outer-test tuning"). The mitigation is that the criterion is *stability only* (spread across prevalences), so it cannot be used to select whichever method performs best, and the identical criterion was applied to both methods. Worth Suhas's explicit review before Stage 7 locks anything.
+### Reviewed decisions (28 September 2026)
+
+Two interpretation gaps were raised for review before Stage 7 locks anything, and both were resolved by Suhas:
+
+1. **Aggregation rule → majority of outer sites (≥3 of 4).** The protocol defines the per-site criterion but never how to aggregate. Note that 2 of 4 is a *tie, not a majority*, so C2's 2/4 still fails; the exclusion is unchanged from the conservative reading, just reached by a different route.
+2. **Label-aware guardrail → run both and compare.** The frozen protocol computes AUROC on the held-out site, which necessarily reads that site's labels before the outer evaluation — a real qualification of non-negotiable #4. A label-free companion (`prevalence_stress_label_free`) was added: same resampling scheme, but the verdict comes from many *random synthetic labellings* rather than the true diagnosis, yielding a number in the same AUROC units and comparable to the same 0.03 tolerance. The frozen label-aware criterion remains primary and governs pipeline membership; the label-free result is a sensitivity check.
+
+**Both criteria, side by side (spread; tolerance 0.03):**
+
+| | Iowa | Tel Aviv | UCSD | UNM | Sites passing | Verdict |
+|---|---|---|---|---|---|---|
+| C1 label-aware (primary) | 0.0019 | 0.0020 | 0.0039 | 0.0038 | 4/4 | passes |
+| C1 label-free (check) | 0.0009 | 0.0027 | 0.0046 | 0.0059 | 4/4 | passes |
+| C2 label-aware (primary) | 0.0067 | 0.0119 | **0.0444** | **0.0314** | 2/4 | **fails** |
+| C2 label-free (check) | 0.0056 | 0.0122 | **0.0355** | 0.0237 | 3/4 | passes |
+
+- **C1 is robust: both criteria agree it passes at every site.**
+- **C2's exclusion is NOT robust — the two criteria disagree.** Both agree UCSD fails; the disagreement is entirely about UNM, which sits just above tolerance under the label-aware criterion (0.0314) and just below it under the label-free one (0.0237). C2 is a genuinely borderline method, not a clear failure.
+- **Decision applied:** the frozen (label-aware) criterion governs, so **C2 is excluded from the pre-declared transductive pipeline** and `S(T)` rests on C1 (family F3). The C2-based T-variants of F1/F2/F4/F5/F6 are reported descriptively only. The borderline nature of this call must be stated in the final report, because a defensible alternative criterion would have retained C2.
 - Descriptive finding: the site-identity probe barely moves under C2 (macro-AUROC 0.774 → 0.775), i.e. C2 removes first-order per-site location/scale but substantial site information survives in higher-order structure.
 - Added `tests/test_harmonize_v4.py` (10 tests) including the protocol's required invariant case — a site-independent scorer gives spread exactly 0 — plus a positive control that a prevalence-sensitive scorer is flagged.
 - `uv run ruff check .` and `uv run pytest -q` both green (120 passed).
