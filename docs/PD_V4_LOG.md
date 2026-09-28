@@ -76,3 +76,27 @@ Aggregate, no-participant-data stage log. Full artifacts stay under ignored `dat
 - No leakage test was added in this stage: `features_v4.py` deliberately contains zero fitted transforms (everything fold-dependent — scalers, tangent-space reference, LEAPD hyperplanes, normative models — is deferred to `harmonize_v4.py`/`models_v4.py`), so there is nothing to leakage-test yet; that test lands with those modules in Stage 6/7.
 - `uv run ruff check .` and `uv run pytest -q` both green (110 passed).
 - **Next:** Stage 6 (harmonisation: C1 Riemannian re-centering, C2 robust per-site standardisation, C3 normative z-scores, and the prevalence stress test).
+
+## Stage 6: harmonisation and the prevalence guardrail (28 September 2026)
+
+- Implemented `harmonize_v4.py`: C1 `recenter_riemann`/`rescale_dispersion`, C2 `site_statistics`/`robust_site_z`, C3 `normative_fit`/`normative_z` (spline quantile regression, 5th/50th/95th percentile, natural cubic spline on age with 4 df plus sex), `prevalence_stress`, and the descriptive `site_identity_probe`/`per_site_medians`.
+- **Defined and documented the C3 "38 regional features"** the protocol deferred to implementation: 5 regions × 4 relative band powers (20) + 5 regional specparam exponents (5) + 5 regional offsets (5) + 5 regional alpha-adjusted powers (5) + 3 global spectral-shape descriptors (3) = 38. Names are enumerated by `features_v4.normative_feature_names()`.
+- **Resolved two source-coding ambiguities from official BIDS sidecars rather than guessing:** ds004796 codes sex as `0=male, 1=female` (from its `participants.json` `Levels`), and ds004504's `Group` is `A=Alzheimer, F=Frontotemporal, C=Healthy`, so only the 29 `C` participants enter the normative pool.
+- **ds004148 is a protocol-listed normative source that contributes zero people:** its entire cohort is aged 18–28, so none meet the ≥40y healthy-adult rule. Recorded in `NORMATIVE_SOURCE_NOTE` and tested, rather than silently dropped. Final normative pool: **467 healthy adults ≥40y** with cached features (360 ds005385 + 79 ds004796 + 29 ds004504 controls), before per-fold training controls are added.
+- Caught a bug in my own diagnostic query that would have silently dropped all 29 ds004504 controls: those 88 people are canonically merged with ds006036 under one person key, so a `person → dataset` dict overwrites the label. `normative_source_people()` tests membership against the person's whole dataset set instead.
+- **C3 sanity check on real data:** control median z = −0.04 (≈0 against a healthy normative model, as expected) vs PD median z = +0.22. Descriptive only, but the right direction.
+- **Prevalence stress test, run on all four outer sites for both transductive methods:**
+
+  | Method | Iowa | Tel Aviv | UCSD | UNM | Verdict |
+  |---|---|---|---|---|---|
+  | C1 (Riemannian re-centering) | 0.0019 | 0.0020 | 0.0039 | 0.0038 | **passes everywhere** |
+  | C2 (robust per-site z) | 0.0067 | 0.0119 | **0.0444** | **0.0314** | **fails at UCSD and UNM** |
+
+  Tolerance is 0.03. C2 fails at exactly the two smallest sites (UCSD n=31, UNM n=50), where a per-site median/IQR estimated from a subset is noisy and moves with class balance — precisely the failure mode the guardrail exists to detect. **Per the frozen protocol, C2 is therefore excluded from the pre-declared transductive pipeline**, so `S(T)` rests on C1 (family F3); the C2-based T-variants of F1/F2/F4/F5/F6 are reported descriptively but are not pre-declared. This decision was made by a pre-declared stability rule, not by looking at which method scored better.
+- **Two things that need flagging, not burying:**
+  1. **The protocol does not state how to aggregate the per-site pass/fail.** This stage adopts the conservative reading — a method must pass at *every* outer site to be pre-declared — because the pipeline is applied to all sites. Per-site numbers are reported either way so the choice is auditable.
+  2. **The guardrail is label-aware on the test site.** The frozen protocol prescribes computing AUROC on the held-out site, which necessarily uses that site's labels before the outer evaluation — a real qualification of non-negotiable #4 ("no outer-test tuning"). The mitigation is that the criterion is *stability only* (spread across prevalences), so it cannot be used to select whichever method performs best, and the identical criterion was applied to both methods. Worth Suhas's explicit review before Stage 7 locks anything.
+- Descriptive finding: the site-identity probe barely moves under C2 (macro-AUROC 0.774 → 0.775), i.e. C2 removes first-order per-site location/scale but substantial site information survives in higher-order structure.
+- Added `tests/test_harmonize_v4.py` (10 tests) including the protocol's required invariant case — a site-independent scorer gives spread exactly 0 — plus a positive control that a prevalence-sensitive scorer is flagged.
+- `uv run ruff check .` and `uv run pytest -q` both green (120 passed).
+- **Next:** Stage 7 (T1 nested comparison, stacking, negative controls; gates G2–G4) — the first stage that fits supervised models, so the implementation policy must be re-frozen and the outer lock respected.

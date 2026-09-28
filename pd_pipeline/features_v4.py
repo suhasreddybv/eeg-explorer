@@ -385,6 +385,61 @@ def v3_rich(tokens, cov, mask):
 
 
 # ---------------------------------------------------------------------------
+# C3 normative feature subset (the "38 regional features" the protocol
+# defers to implementation -- itemised here so the list is documented)
+# ---------------------------------------------------------------------------
+
+# Cached-vector layouts, relied on below:
+#   b1 = [relative_spectrum (17x40 = 680), alpha_theta_ratio, alpha_peak_frequency,
+#         spectral_centroid, spectral_edge_90]                       -> 684
+#   b2 = [per-channel 17 x (exponent, offset, r_squared, peak_cf, peak_pw,
+#         adjusted[theta, pre_alpha, alpha, beta]) = 153,
+#         then 5 regions x (exponent, alpha_adjusted) = 10]          -> 163
+B2_FIELDS_PER_CHANNEL = 5 + len(BANDS)  # exponent, offset, r2, peak_cf, peak_pw + 4 bands
+
+
+def normative_feature_names():
+    """The 38 features the C3 normative model is fit on: 5 regions x 4
+    relative band powers (20) + 5 regional specparam exponents (5) + 5
+    regional offsets (5) + 5 regional alpha-adjusted powers (5) + 3 global
+    spectral-shape descriptors (3)."""
+    names = []
+    for region in REGIONS:
+        for band in BANDS:
+            names.append(f"b1_relative_{band}_{region}")
+    for region in REGIONS:
+        names.append(f"b2_exponent_{region}")
+    for region in REGIONS:
+        names.append(f"b2_offset_{region}")
+    for region in REGIONS:
+        names.append(f"b2_alpha_adjusted_{region}")
+    names += ["b1_alpha_peak_frequency", "b1_spectral_centroid", "b1_spectral_edge_90"]
+    return names
+
+
+def normative_features(cached):
+    """Extract the 38 normative features from one person's cached arrays.
+    `cached` is a loaded features npz (or dict) with 'b1' and 'b2'."""
+    b1 = np.asarray(cached["b1"])
+    b2 = np.asarray(cached["b2"])
+    relative = b1[: 17 * 40].reshape(17, 40)
+    per_channel = b2[: 17 * B2_FIELDS_PER_CHANNEL].reshape(17, B2_FIELDS_PER_CHANNEL)
+    values = []
+    for region, idxs in REGION_IDX.items():
+        for band, (lo, hi) in BANDS.items():
+            band_bins = (FREQS >= lo) & (FREQS <= hi)
+            values.append(np.nanmean(relative[np.ix_(idxs, band_bins)]))
+    for field_offset in (0, 1):  # exponent, offset
+        for region, idxs in REGION_IDX.items():
+            values.append(np.nanmean(per_channel[idxs, field_offset]))
+    alpha_adjusted_col = 5 + list(BANDS).index("alpha")
+    for region, idxs in REGION_IDX.items():
+        values.append(np.nanmean(per_channel[idxs, alpha_adjusted_col]))
+    values += [float(b1[681]), float(b1[682]), float(b1[683])]
+    return np.array(values, dtype="float64")
+
+
+# ---------------------------------------------------------------------------
 # Person-level, label-free caching
 # ---------------------------------------------------------------------------
 
