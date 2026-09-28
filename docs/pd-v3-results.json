@@ -1,0 +1,3434 @@
+{
+  "results": {
+    "cross_site": {
+      "sites": {
+        "iowa": {
+          "rich_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6761319105323447,
+            "auroc_95ci": [
+              0.6061961174413697,
+              0.7390848254657261
+            ],
+            "balanced_accuracy": 0.6279013685416289,
+            "sensitivity": 0.4619883040935672,
+            "specificity": 0.7938144329896907,
+            "sensitivity_95ci_wilson": [
+              0.38891997042277004,
+              0.5367269551537779
+            ],
+            "specificity_95ci_wilson": [
+              0.7028707214143316,
+              0.8623729855549568
+            ],
+            "pr_auc_average_precision": 0.7823989930693277,
+            "brier": 0.2857011178410066,
+            "confusion_matrix": [
+              [
+                77,
+                20
+              ],
+              [
+                92,
+                79
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.07162235485621271,
+              "ci95": [
+                0.013439741966600386,
+                0.12962259600892256
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7416651594622294,
+            "auroc_95ci": [
+              0.6758199192138421,
+              0.8008726713691445
+            ],
+            "balanced_accuracy": 0.6543678784590342,
+            "sensitivity": 0.47368421052631576,
+            "specificity": 0.8350515463917526,
+            "sensitivity_95ci_wilson": [
+              0.40024960551336747,
+              0.5482751891165503
+            ],
+            "specificity_95ci_wilson": [
+              0.7487353960515549,
+              0.8958407610186864
+            ],
+            "pr_auc_average_precision": 0.8468514946090805,
+            "brier": 0.20794055619227877,
+            "confusion_matrix": [
+              [
+                81,
+                16
+              ],
+              [
+                90,
+                81
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.13715560378609748,
+              "ci95": [
+                0.081987399770905,
+                0.19347079037800685
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6792066075842528,
+            "auroc_95ci": [
+              0.6107177307529994,
+              0.7404609031168988
+            ],
+            "balanced_accuracy": 0.640441309459215,
+            "sensitivity": 0.45614035087719296,
+            "specificity": 0.8247422680412371,
+            "sensitivity_95ci_wilson": [
+              0.38327014158930256,
+              0.5309378494605603
+            ],
+            "specificity_95ci_wilson": [
+              0.737143589002599,
+              0.8875994555424038
+            ],
+            "pr_auc_average_precision": 0.8019436691884122,
+            "brier": 0.2398959592873766,
+            "confusion_matrix": [
+              [
+                80,
+                17
+              ],
+              [
+                93,
+                78
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.07469705190812082,
+              "ci95": [
+                0.006630192319286021,
+                0.14294628323385783
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.604509555676132,
+            "auroc_95ci": [
+              0.5313136793874722,
+              0.6712500753602219
+            ],
+            "balanced_accuracy": 0.5611925001507204,
+            "sensitivity": 0.38011695906432746,
+            "specificity": 0.7422680412371134,
+            "sensitivity_95ci_wilson": [
+              0.31075130395388745,
+              0.45475053824907136
+            ],
+            "specificity_95ci_wilson": [
+              0.6471740604185197,
+              0.8189040839245778
+            ],
+            "pr_auc_average_precision": 0.7318752326142943,
+            "brier": 0.408029620070413,
+            "confusion_matrix": [
+              [
+                72,
+                25
+              ],
+              [
+                106,
+                65
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6794779043829505,
+            "auroc_95ci": [
+              0.6081818592873937,
+              0.7418520528124435
+            ],
+            "balanced_accuracy": 0.553023452101043,
+            "sensitivity": 0.19883040935672514,
+            "specificity": 0.9072164948453608,
+            "sensitivity_95ci_wilson": [
+              0.14591834770221057,
+              0.26497652417351536
+            ],
+            "specificity_95ci_wilson": [
+              0.8329911632283566,
+              0.9504167815185518
+            ],
+            "pr_auc_average_precision": 0.7779125252258663,
+            "brier": 0.3141673816203645,
+            "confusion_matrix": [
+              [
+                88,
+                9
+              ],
+              [
+                137,
+                34
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.07496834870681857,
+              "ci95": [
+                0.016639536986796877,
+                0.136254295532646
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7461264845963705,
+            "auroc_95ci": [
+              0.6824516187375657,
+              0.8043678784590342
+            ],
+            "balanced_accuracy": 0.649906553324893,
+            "sensitivity": 0.4853801169590643,
+            "specificity": 0.8144329896907216,
+            "sensitivity_95ci_wilson": [
+              0.41161906981424606,
+              0.5597835938690416
+            ],
+            "specificity_95ci_wilson": [
+              0.7256389658130932,
+              0.8792709662066717
+            ],
+            "pr_auc_average_precision": 0.8504678186615622,
+            "brier": 0.20601280214639311,
+            "confusion_matrix": [
+              [
+                79,
+                18
+              ],
+              [
+                88,
+                83
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.14161692892023858,
+              "ci95": [
+                0.08675318020136241,
+                0.19798637487188764
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7089889672635197,
+            "auroc_95ci": [
+              0.6425468740579972,
+              0.7710857900765659
+            ],
+            "balanced_accuracy": 0.5999577982757581,
+            "sensitivity": 0.25146198830409355,
+            "specificity": 0.9484536082474226,
+            "sensitivity_95ci_wilson": [
+              0.19238262749326213,
+              0.3214626551226281
+            ],
+            "specificity_95ci_wilson": [
+              0.8849564458853718,
+              0.9777839489624893
+            ],
+            "pr_auc_average_precision": 0.822357809588193,
+            "brier": 0.2685054324914232,
+            "confusion_matrix": [
+              [
+                92,
+                5
+              ],
+              [
+                128,
+                43
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.10447941158738772,
+              "ci95": [
+                0.0470775305962501,
+                0.16290920600470243
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7089889672635197,
+            "auroc_95ci": [
+              0.6425468740579972,
+              0.7710857900765659
+            ],
+            "balanced_accuracy": 0.5999577982757581,
+            "sensitivity": 0.25146198830409355,
+            "specificity": 0.9484536082474226,
+            "sensitivity_95ci_wilson": [
+              0.19238262749326213,
+              0.3214626551226281
+            ],
+            "specificity_95ci_wilson": [
+              0.8849564458853718,
+              0.9777839489624893
+            ],
+            "pr_auc_average_precision": 0.822357809588193,
+            "brier": 0.2685054324914232,
+            "confusion_matrix": [
+              [
+                92,
+                5
+              ],
+              [
+                128,
+                43
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.10447941158738772,
+              "ci95": [
+                0.0470775305962501,
+                0.16290920600470243
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "tel_aviv": {
+          "rich_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6158503026967529,
+            "auroc_95ci": [
+              0.47109933957072103,
+              0.7553728673637864
+            ],
+            "balanced_accuracy": 0.5833791964777105,
+            "sensitivity": 0.9493670886075949,
+            "specificity": 0.21739130434782608,
+            "sensitivity_95ci_wilson": [
+              0.8769228272429488,
+              0.9801359572199815
+            ],
+            "specificity_95ci_wilson": [
+              0.09663978026586204,
+              0.4190348301626401
+            ],
+            "pr_auc_average_precision": 0.8129342029068539,
+            "brier": 0.1965171153240602,
+            "confusion_matrix": [
+              [
+                5,
+                18
+              ],
+              [
+                4,
+                75
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.22124380847550906,
+              "ci95": [
+                0.08253990093560806,
+                0.3621422674738581
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.690148596587782,
+            "auroc_95ci": [
+              0.581714364336819,
+              0.7947303247110622
+            ],
+            "balanced_accuracy": 0.5635663181067694,
+            "sensitivity": 0.8227848101265823,
+            "specificity": 0.30434782608695654,
+            "sensitivity_95ci_wilson": [
+              0.7242380412359362,
+              0.8913957335191265
+            ],
+            "specificity_95ci_wilson": [
+              0.15604024453214022,
+              0.508657562687592
+            ],
+            "pr_auc_average_precision": 0.8980732119340796,
+            "brier": 0.1704453807481159,
+            "confusion_matrix": [
+              [
+                7,
+                16
+              ],
+              [
+                14,
+                65
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.2955421023665382,
+              "ci95": [
+                0.14529444138690162,
+                0.4446890478811227
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.7892129884424877,
+            "auroc_95ci": [
+              0.6873968079251513,
+              0.8778205833791966
+            ],
+            "balanced_accuracy": 0.6640066042927903,
+            "sensitivity": 0.9367088607594937,
+            "specificity": 0.391304347826087,
+            "sensitivity_95ci_wilson": [
+              0.8602511483722118,
+              0.9726651351199317
+            ],
+            "specificity_95ci_wilson": [
+              0.22157622792477952,
+              0.592144776086183
+            ],
+            "pr_auc_average_precision": 0.9349009473454344,
+            "brier": 0.14650473152314122,
+            "confusion_matrix": [
+              [
+                9,
+                14
+              ],
+              [
+                5,
+                74
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.39460649422124383,
+              "ci95": [
+                0.2603192074848651,
+                0.5157127132636212
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.39460649422124383,
+            "auroc_95ci": [
+              0.27239955971381397,
+              0.5102228948816729
+            ],
+            "balanced_accuracy": 0.3943313153549807,
+            "sensitivity": 0.6582278481012658,
+            "specificity": 0.13043478260869565,
+            "sensitivity_95ci_wilson": [
+              0.5484909943250701,
+              0.7532902678097645
+            ],
+            "specificity_95ci_wilson": [
+              0.04537659093631238,
+              0.32127482270095964
+            ],
+            "pr_auc_average_precision": 0.7485836135314081,
+            "brier": 0.3883546492687981,
+            "confusion_matrix": [
+              [
+                3,
+                20
+              ],
+              [
+                27,
+                52
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6274078150798018,
+            "auroc_95ci": [
+              0.47907952669235,
+              0.7669303797468354
+            ],
+            "balanced_accuracy": 0.5806274078150798,
+            "sensitivity": 0.9873417721518988,
+            "specificity": 0.17391304347826086,
+            "sensitivity_95ci_wilson": [
+              0.9317242812303406,
+              0.9977620061449501
+            ],
+            "specificity_95ci_wilson": [
+              0.06978653563062565,
+              0.3713764764022614
+            ],
+            "pr_auc_average_precision": 0.806541332930839,
+            "brier": 0.19407818239071173,
+            "confusion_matrix": [
+              [
+                4,
+                19
+              ],
+              [
+                1,
+                78
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.23280132085855798,
+              "ci95": [
+                0.0913593835993397,
+                0.3764515685195377
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6978536048431481,
+            "auroc_95ci": [
+              0.5872179416620804,
+              0.8013346175013758
+            ],
+            "balanced_accuracy": 0.5663181067694001,
+            "sensitivity": 0.7848101265822784,
+            "specificity": 0.34782608695652173,
+            "sensitivity_95ci_wilson": [
+              0.682128319163289,
+              0.8610779526794132
+            ],
+            "specificity_95ci_wilson": [
+              0.1881127593879773,
+              0.55109664622737
+            ],
+            "pr_auc_average_precision": 0.9018804768848174,
+            "brier": 0.1686913005455773,
+            "confusion_matrix": [
+              [
+                8,
+                15
+              ],
+              [
+                17,
+                62
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.30324711062190424,
+              "ci95": [
+                0.15133461750137597,
+                0.4507567418822233
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6906989543203081,
+            "auroc_95ci": [
+              0.5756741882223445,
+              0.8018849752339021
+            ],
+            "balanced_accuracy": 0.5742982938910292,
+            "sensitivity": 0.9746835443037974,
+            "specificity": 0.17391304347826086,
+            "sensitivity_95ci_wilson": [
+              0.9123141537110886,
+              0.9930296326934152
+            ],
+            "specificity_95ci_wilson": [
+              0.06978653563062565,
+              0.3713764764022614
+            ],
+            "pr_auc_average_precision": 0.8947710132263422,
+            "brier": 0.17780393331162597,
+            "confusion_matrix": [
+              [
+                4,
+                19
+              ],
+              [
+                2,
+                77
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.2960924600990643,
+              "ci95": [
+                0.15244909190974132,
+                0.4282058337919646
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.690148596587782,
+            "auroc_95ci": [
+              0.581714364336819,
+              0.7947303247110622
+            ],
+            "balanced_accuracy": 0.5635663181067694,
+            "sensitivity": 0.8227848101265823,
+            "specificity": 0.30434782608695654,
+            "sensitivity_95ci_wilson": [
+              0.7242380412359362,
+              0.8913957335191265
+            ],
+            "specificity_95ci_wilson": [
+              0.15604024453214022,
+              0.508657562687592
+            ],
+            "pr_auc_average_precision": 0.8980732119340796,
+            "brier": 0.1704453807481159,
+            "confusion_matrix": [
+              [
+                7,
+                16
+              ],
+              [
+                14,
+                65
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.2955421023665382,
+              "ci95": [
+                0.14529444138690162,
+                0.4446890478811227
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "ucsd": {
+          "rich_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.768888888888889,
+            "auroc_95ci": [
+              0.5688888888888889,
+              0.9288888888888889
+            ],
+            "balanced_accuracy": 0.7,
+            "sensitivity": 0.4666666666666667,
+            "specificity": 0.9333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.24809535365737387,
+              0.698830199745016
+            ],
+            "specificity_95ci_wilson": [
+              0.7018347012621998,
+              0.9881331045067315
+            ],
+            "pr_auc_average_precision": 0.8363848631239936,
+            "brier": 0.20243543945512746,
+            "confusion_matrix": [
+              [
+                14,
+                1
+              ],
+              [
+                8,
+                7
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.24,
+              "ci95": [
+                0.004444444444444473,
+                0.4844444444444444
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.8311111111111111,
+            "auroc_95ci": [
+              0.6577777777777778,
+              0.96
+            ],
+            "balanced_accuracy": 0.7333333333333334,
+            "sensitivity": 0.6666666666666666,
+            "specificity": 0.8,
+            "sensitivity_95ci_wilson": [
+              0.41713547738519774,
+              0.8482367556028526
+            ],
+            "specificity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "pr_auc_average_precision": 0.8627352277352276,
+            "brier": 0.19378095360982725,
+            "confusion_matrix": [
+              [
+                12,
+                3
+              ],
+              [
+                5,
+                10
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.30222222222222217,
+              "ci95": [
+                0.12,
+                0.5023333333333327
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6266666666666667,
+            "auroc_95ci": [
+              0.41777777777777775,
+              0.8266666666666667
+            ],
+            "balanced_accuracy": 0.5333333333333333,
+            "sensitivity": 0.26666666666666666,
+            "specificity": 0.8,
+            "sensitivity_95ci_wilson": [
+              0.10897453325692374,
+              0.5195043405598057
+            ],
+            "specificity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "pr_auc_average_precision": 0.6567130116260551,
+            "brier": 0.2417118817332069,
+            "confusion_matrix": [
+              [
+                12,
+                3
+              ],
+              [
+                11,
+                4
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.09777777777777774,
+              "ci95": [
+                -0.10666666666666669,
+                0.30666666666666664
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.528888888888889,
+            "auroc_95ci": [
+              0.3111111111111111,
+              0.7334444444444439
+            ],
+            "balanced_accuracy": 0.5,
+            "sensitivity": 0.6,
+            "specificity": 0.4,
+            "sensitivity_95ci_wilson": [
+              0.357468301206246,
+              0.8017550385865841
+            ],
+            "specificity_95ci_wilson": [
+              0.1982449614134158,
+              0.6425316987937539
+            ],
+            "pr_auc_average_precision": 0.5510111008013372,
+            "brier": 0.2709722066034412,
+            "confusion_matrix": [
+              [
+                6,
+                9
+              ],
+              [
+                6,
+                9
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.808888888888889,
+            "auroc_95ci": [
+              0.6177777777777779,
+              0.9556666666666662
+            ],
+            "balanced_accuracy": 0.6666666666666667,
+            "sensitivity": 0.4,
+            "specificity": 0.9333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.1982449614134158,
+              0.6425316987937539
+            ],
+            "specificity_95ci_wilson": [
+              0.7018347012621998,
+              0.9881331045067315
+            ],
+            "pr_auc_average_precision": 0.8613723699839853,
+            "brier": 0.18478694012763813,
+            "confusion_matrix": [
+              [
+                14,
+                1
+              ],
+              [
+                9,
+                6
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.28,
+              "ci95": [
+                0.048777777777777774,
+                0.52
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.8222222222222222,
+            "auroc_95ci": [
+              0.6487777777777778,
+              0.9511111111111111
+            ],
+            "balanced_accuracy": 0.7333333333333334,
+            "sensitivity": 0.6666666666666666,
+            "specificity": 0.8,
+            "sensitivity_95ci_wilson": [
+              0.41713547738519774,
+              0.8482367556028526
+            ],
+            "specificity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "pr_auc_average_precision": 0.8598037758395813,
+            "brier": 0.19450987837466288,
+            "confusion_matrix": [
+              [
+                12,
+                3
+              ],
+              [
+                5,
+                10
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.2933333333333332,
+              "ci95": [
+                0.11555555555555552,
+                0.4800000000000001
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6577777777777778,
+            "auroc_95ci": [
+              0.45333333333333337,
+              0.8444444444444444
+            ],
+            "balanced_accuracy": 0.5333333333333333,
+            "sensitivity": 0.13333333333333333,
+            "specificity": 0.9333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.03736125910306537,
+              0.37881982832322364
+            ],
+            "specificity_95ci_wilson": [
+              0.7018347012621998,
+              0.9881331045067315
+            ],
+            "pr_auc_average_precision": 0.6534896705548879,
+            "brier": 0.2291303710274434,
+            "confusion_matrix": [
+              [
+                14,
+                1
+              ],
+              [
+                13,
+                2
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.12888888888888883,
+              "ci95": [
+                -0.07999999999999996,
+                0.3377777777777778
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6577777777777778,
+            "auroc_95ci": [
+              0.45333333333333337,
+              0.8444444444444444
+            ],
+            "balanced_accuracy": 0.5333333333333333,
+            "sensitivity": 0.13333333333333333,
+            "specificity": 0.9333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.03736125910306537,
+              0.37881982832322364
+            ],
+            "specificity_95ci_wilson": [
+              0.7018347012621998,
+              0.9881331045067315
+            ],
+            "pr_auc_average_precision": 0.6534896705548879,
+            "brier": 0.2291303710274434,
+            "confusion_matrix": [
+              [
+                14,
+                1
+              ],
+              [
+                13,
+                2
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.12888888888888883,
+              "ci95": [
+                -0.07999999999999996,
+                0.3377777777777778
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "unm": {
+          "rich_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.7777777777777777,
+            "auroc_95ci": [
+              0.6212121212121212,
+              0.9065656565656566
+            ],
+            "balanced_accuracy": 0.6792929292929293,
+            "sensitivity": 0.6363636363636364,
+            "specificity": 0.7222222222222222,
+            "sensitivity_95ci_wilson": [
+              0.42951708090131013,
+              0.8026679532963387
+            ],
+            "specificity_95ci_wilson": [
+              0.4912734343970254,
+              0.8750024662044601
+            ],
+            "pr_auc_average_precision": 0.7843879757934782,
+            "brier": 0.21745441981754943,
+            "confusion_matrix": [
+              [
+                13,
+                5
+              ],
+              [
+                8,
+                14
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.06818181818181812,
+              "ci95": [
+                -0.12121212121212122,
+                0.26010101010101006
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.787878787878788,
+            "auroc_95ci": [
+              0.638888888888889,
+              0.9090909090909091
+            ],
+            "balanced_accuracy": 0.6616161616161615,
+            "sensitivity": 0.5454545454545454,
+            "specificity": 0.7777777777777778,
+            "sensitivity_95ci_wilson": [
+              0.3465979532073494,
+              0.7307970581918668
+            ],
+            "specificity_95ci_wilson": [
+              0.5478541568378739,
+              0.9099907189139831
+            ],
+            "pr_auc_average_precision": 0.8363936962393257,
+            "brier": 0.1993682003471873,
+            "confusion_matrix": [
+              [
+                14,
+                4
+              ],
+              [
+                10,
+                12
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0782828282828284,
+              "ci95": [
+                -0.1035984848484849,
+                0.25757575757575746
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.702020202020202,
+            "auroc_95ci": [
+              0.5327651515151516,
+              0.8560606060606061
+            ],
+            "balanced_accuracy": 0.696969696969697,
+            "sensitivity": 0.7272727272727273,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.5184826598759762,
+              0.8684923971201053
+            ],
+            "specificity_95ci_wilson": [
+              0.43749467295945105,
+              0.837212252491663
+            ],
+            "pr_auc_average_precision": 0.7250206458853239,
+            "brier": 0.22703104537908364,
+            "confusion_matrix": [
+              [
+                12,
+                6
+              ],
+              [
+                6,
+                16
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.007575757575757569,
+              "ci95": [
+                -0.12878787878787867,
+                0.12380050505050477
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.7095959595959596,
+            "auroc_95ci": [
+              0.5429292929292929,
+              0.8662247474747471
+            ],
+            "balanced_accuracy": 0.6287878787878788,
+            "sensitivity": 0.5909090909090909,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.3873481847631513,
+              0.7674418380352814
+            ],
+            "specificity_95ci_wilson": [
+              0.43749467295945105,
+              0.837212252491663
+            ],
+            "pr_auc_average_precision": 0.7218568850394411,
+            "brier": 0.21413541498145525,
+            "confusion_matrix": [
+              [
+                12,
+                6
+              ],
+              [
+                9,
+                13
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.7651515151515151,
+            "auroc_95ci": [
+              0.606060606060606,
+              0.8964646464646464
+            ],
+            "balanced_accuracy": 0.6742424242424242,
+            "sensitivity": 0.6818181818181818,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.47318597741042745,
+              0.8363940681864375
+            ],
+            "specificity_95ci_wilson": [
+              0.43749467295945105,
+              0.837212252491663
+            ],
+            "pr_auc_average_precision": 0.7834924900543037,
+            "brier": 0.21855395717009163,
+            "confusion_matrix": [
+              [
+                12,
+                6
+              ],
+              [
+                7,
+                15
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.05555555555555558,
+              "ci95": [
+                -0.1262626262626263,
+                0.2399621212121209
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.7790404040404041,
+            "auroc_95ci": [
+              0.6287878787878788,
+              0.9028093434343433
+            ],
+            "balanced_accuracy": 0.702020202020202,
+            "sensitivity": 0.6818181818181818,
+            "specificity": 0.7222222222222222,
+            "sensitivity_95ci_wilson": [
+              0.47318597741042745,
+              0.8363940681864375
+            ],
+            "specificity_95ci_wilson": [
+              0.4912734343970254,
+              0.8750024662044601
+            ],
+            "pr_auc_average_precision": 0.8287929768763056,
+            "brier": 0.19862364606822797,
+            "confusion_matrix": [
+              [
+                13,
+                5
+              ],
+              [
+                7,
+                15
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.06944444444444453,
+              "ci95": [
+                -0.10732323232323238,
+                0.24242424242424243
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6843434343434344,
+            "auroc_95ci": [
+              0.5125000000000001,
+              0.8409722222222219
+            ],
+            "balanced_accuracy": 0.5808080808080808,
+            "sensitivity": 0.2727272727272727,
+            "specificity": 0.8888888888888888,
+            "sensitivity_95ci_wilson": [
+              0.13150760287989469,
+              0.4815173401240238
+            ],
+            "specificity_95ci_wilson": [
+              0.672002348698212,
+              0.9689804773543876
+            ],
+            "pr_auc_average_precision": 0.7540302600512623,
+            "brier": 0.23014442977794256,
+            "confusion_matrix": [
+              [
+                16,
+                2
+              ],
+              [
+                16,
+                6
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.025252525252525193,
+              "ci95": [
+                -0.16167929292929295,
+                0.11363636363636365
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.702020202020202,
+            "auroc_95ci": [
+              0.5327651515151516,
+              0.8560606060606061
+            ],
+            "balanced_accuracy": 0.696969696969697,
+            "sensitivity": 0.7272727272727273,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.5184826598759762,
+              0.8684923971201053
+            ],
+            "specificity_95ci_wilson": [
+              0.43749467295945105,
+              0.837212252491663
+            ],
+            "pr_auc_average_precision": 0.7250206458853239,
+            "brier": 0.22703104537908364,
+            "confusion_matrix": [
+              [
+                12,
+                6
+              ],
+              [
+                6,
+                16
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.007575757575757569,
+              "ci95": [
+                -0.12878787878787867,
+                0.12380050505050477
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        }
+      },
+      "macro_site_auroc": {
+        "rich_lr": 0.7096622199739411,
+        "rich_svm": 0.7627009137599776,
+        "scratch_neural": 0.6992766161784022,
+        "spectral_lr": 0.559400224595556,
+        "ssl_hybrid_lr": 0.7202315308757891,
+        "ssl_hybrid_svm": 0.7613106789255362,
+        "ssl_neural": 0.68545228342626,
+        "selected_pipeline": 0.6897338859123204
+      }
+    },
+    "within_site": {
+      "sites": {
+        "iowa": {
+          "rich_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6954241273286308,
+            "auroc_95ci": [
+              0.6291628986555736,
+              0.7621164164707301
+            ],
+            "balanced_accuracy": 0.6174413697473925,
+            "sensitivity": 0.5029239766081871,
+            "specificity": 0.7319587628865979,
+            "sensitivity_95ci_wilson": [
+              0.42874771858479094,
+              0.5769717486785515
+            ],
+            "specificity_95ci_wilson": [
+              0.6362205885733584,
+              0.8100244432445008
+            ],
+            "pr_auc_average_precision": 0.7807470572418418,
+            "brier": 0.2589394513129957,
+            "confusion_matrix": [
+              [
+                71,
+                26
+              ],
+              [
+                85,
+                86
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.061674805570627544,
+              "ci95": [
+                -0.00042955326460479516,
+                0.12576264544522814
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.71761017664436,
+            "auroc_95ci": [
+              0.6558645324651836,
+              0.7778742388617592
+            ],
+            "balanced_accuracy": 0.6671489720865738,
+            "sensitivity": 0.6023391812865497,
+            "specificity": 0.7319587628865979,
+            "sensitivity_95ci_wilson": [
+              0.5275116154829348,
+              0.6726697387340516
+            ],
+            "specificity_95ci_wilson": [
+              0.6362205885733584,
+              0.8100244432445008
+            ],
+            "pr_auc_average_precision": 0.8414183341400927,
+            "brier": 0.20000853755099007,
+            "confusion_matrix": [
+              [
+                71,
+                26
+              ],
+              [
+                68,
+                103
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.08386085488635675,
+              "ci95": [
+                0.027641375776210203,
+                0.1399296135527824
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.667329836619039,
+            "auroc_95ci": [
+              0.5983571471634411,
+              0.7349731717610176
+            ],
+            "balanced_accuracy": 0.6320612527883283,
+            "sensitivity": 0.5321637426900585,
+            "specificity": 0.7319587628865979,
+            "sensitivity_95ci_wilson": [
+              0.4574939396857719,
+              0.6054202002109953
+            ],
+            "specificity_95ci_wilson": [
+              0.6362205885733584,
+              0.8100244432445008
+            ],
+            "pr_auc_average_precision": 0.8064794284608917,
+            "brier": 0.2320044026368312,
+            "confusion_matrix": [
+              [
+                71,
+                26
+              ],
+              [
+                80,
+                91
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.03358051486103575,
+              "ci95": [
+                -0.02833996503285715,
+                0.09730662567070597
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6337493217580032,
+            "auroc_95ci": [
+              0.5644721770060892,
+              0.6977753662506782
+            ],
+            "balanced_accuracy": 0.5803641405920299,
+            "sensitivity": 0.5730994152046783,
+            "specificity": 0.5876288659793815,
+            "sensitivity_95ci_wilson": [
+              0.4981588273157148,
+              0.6448278542678468
+            ],
+            "specificity_95ci_wilson": [
+              0.4881546966424227,
+              0.680426759822102
+            ],
+            "pr_auc_average_precision": 0.7685545312886325,
+            "brier": 0.26738572529184745,
+            "confusion_matrix": [
+              [
+                57,
+                40
+              ],
+              [
+                73,
+                98
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.691625972146862,
+            "auroc_95ci": [
+              0.6244589136070418,
+              0.7602972207150177
+            ],
+            "balanced_accuracy": 0.6156025803339965,
+            "sensitivity": 0.6023391812865497,
+            "specificity": 0.6288659793814433,
+            "sensitivity_95ci_wilson": [
+              0.5275116154829348,
+              0.6726697387340516
+            ],
+            "specificity_95ci_wilson": [
+              0.5295376612248862,
+              0.7183762453405912
+            ],
+            "pr_auc_average_precision": 0.7661427342465353,
+            "brier": 0.2663217520950837,
+            "confusion_matrix": [
+              [
+                61,
+                36
+              ],
+              [
+                68,
+                103
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0578766503888587,
+              "ci95": [
+                -0.004765780430457625,
+                0.1228100319527341
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7178211852655694,
+            "auroc_95ci": [
+              0.654633146439983,
+              0.777239705793694
+            ],
+            "balanced_accuracy": 0.6735395189003437,
+            "sensitivity": 0.6666666666666666,
+            "specificity": 0.6804123711340206,
+            "sensitivity_95ci_wilson": [
+              0.5930342849353151,
+              0.7329753490752055
+            ],
+            "specificity_95ci_wilson": [
+              0.582266326033009,
+              0.7648131431586593
+            ],
+            "pr_auc_average_precision": 0.8368807436559133,
+            "brier": 0.20058568136228636,
+            "confusion_matrix": [
+              [
+                66,
+                31
+              ],
+              [
+                57,
+                114
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.08407186350756612,
+              "ci95": [
+                0.02392687044070653,
+                0.14379634653644435
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.6704045336709471,
+            "auroc_95ci": [
+              0.6045608006269971,
+              0.7361804425152227
+            ],
+            "balanced_accuracy": 0.6256707059745583,
+            "sensitivity": 0.4678362573099415,
+            "specificity": 0.7835051546391752,
+            "sensitivity_95ci_wilson": [
+              0.3945797997890047,
+              0.5425060603142281
+            ],
+            "specificity_95ci_wilson": [
+              0.6915983782533729,
+              0.8538122161906773
+            ],
+            "pr_auc_average_precision": 0.8013160121699543,
+            "brier": 0.23806825865553805,
+            "confusion_matrix": [
+              [
+                76,
+                21
+              ],
+              [
+                91,
+                80
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.03665521191294385,
+              "ci95": [
+                -0.019777536625067777,
+                0.09610086212093799
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 268,
+            "pd_prevalence": 0.6380597014925373,
+            "auroc": 0.7153192258998009,
+            "auroc_95ci": [
+              0.6510957376258516,
+              0.7750105504310604
+            ],
+            "balanced_accuracy": 0.6559956592512208,
+            "sensitivity": 0.631578947368421,
+            "specificity": 0.6804123711340206,
+            "sensitivity_95ci_wilson": [
+              0.557128625878821,
+              0.7002474009715899
+            ],
+            "specificity_95ci_wilson": [
+              0.582266326033009,
+              0.7648131431586593
+            ],
+            "pr_auc_average_precision": 0.8422302550541835,
+            "brier": 0.20520518757005102,
+            "confusion_matrix": [
+              [
+                66,
+                31
+              ],
+              [
+                63,
+                108
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.08156990414179766,
+              "ci95": [
+                0.023934406462892684,
+                0.13998914812805208
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "tel_aviv": {
+          "rich_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.658778205833792,
+            "auroc_95ci": [
+              0.5288112272977434,
+              0.7859246009906439
+            ],
+            "balanced_accuracy": 0.6089708310401761,
+            "sensitivity": 0.6962025316455697,
+            "specificity": 0.5217391304347826,
+            "sensitivity_95ci_wilson": [
+              0.5876533928859551,
+              0.7865553721612399
+            ],
+            "specificity_95ci_wilson": [
+              0.32962737336427406,
+              0.7076284258335335
+            ],
+            "pr_auc_average_precision": 0.8544966163361631,
+            "brier": 0.19536062053287645,
+            "confusion_matrix": [
+              [
+                12,
+                11
+              ],
+              [
+                24,
+                55
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.06439185470555875,
+              "ci95": [
+                -0.10678315905338467,
+                0.2311640066042927
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.7391304347826088,
+            "auroc_95ci": [
+              0.620789763346175,
+              0.8398458998348927
+            ],
+            "balanced_accuracy": 0.6722619702806825,
+            "sensitivity": 0.8227848101265823,
+            "specificity": 0.5217391304347826,
+            "sensitivity_95ci_wilson": [
+              0.7242380412359362,
+              0.8913957335191265
+            ],
+            "specificity_95ci_wilson": [
+              0.32962737336427406,
+              0.7076284258335335
+            ],
+            "pr_auc_average_precision": 0.9096588297878192,
+            "brier": 0.1531590607516138,
+            "confusion_matrix": [
+              [
+                12,
+                11
+              ],
+              [
+                14,
+                65
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.14474408365437552,
+              "ci95": [
+                -0.01267198679141438,
+                0.29279031370390757
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6917996697853604,
+            "auroc_95ci": [
+              0.5800770500825536,
+              0.798569069895432
+            ],
+            "balanced_accuracy": 0.5880572372041827,
+            "sensitivity": 0.7848101265822784,
+            "specificity": 0.391304347826087,
+            "sensitivity_95ci_wilson": [
+              0.682128319163289,
+              0.8610779526794132
+            ],
+            "specificity_95ci_wilson": [
+              0.22157622792477952,
+              0.592144776086183
+            ],
+            "pr_auc_average_precision": 0.8864356836598168,
+            "brier": 0.17619286860557992,
+            "confusion_matrix": [
+              [
+                9,
+                14
+              ],
+              [
+                17,
+                62
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.09741331865712721,
+              "ci95": [
+                -0.03137039075399006,
+                0.22729774353329657
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.5943863511282332,
+            "auroc_95ci": [
+              0.46283709411117224,
+              0.7248348926802421
+            ],
+            "balanced_accuracy": 0.5418271876719868,
+            "sensitivity": 0.8227848101265823,
+            "specificity": 0.2608695652173913,
+            "sensitivity_95ci_wilson": [
+              0.7242380412359362,
+              0.8913957335191265
+            ],
+            "specificity_95ci_wilson": [
+              0.12548616044986347,
+              0.4647000483742537
+            ],
+            "pr_auc_average_precision": 0.8274997522067825,
+            "brier": 0.2216733255042867,
+            "confusion_matrix": [
+              [
+                6,
+                17
+              ],
+              [
+                14,
+                65
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.6615299944964227,
+            "auroc_95ci": [
+              0.5376995046780407,
+              0.7842597688497523
+            ],
+            "balanced_accuracy": 0.5998899284534948,
+            "sensitivity": 0.7215189873417721,
+            "specificity": 0.4782608695652174,
+            "sensitivity_95ci_wilson": [
+              0.6141755025997595,
+              0.8083182643890088
+            ],
+            "specificity_95ci_wilson": [
+              0.29237157416646653,
+              0.6703726266357259
+            ],
+            "pr_auc_average_precision": 0.8646544072929019,
+            "brier": 0.19723256694766864,
+            "confusion_matrix": [
+              [
+                11,
+                12
+              ],
+              [
+                22,
+                57
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.06714364336818945,
+              "ci95": [
+                -0.1023665382498623,
+                0.2289625756741881
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.7473858007705009,
+            "auroc_95ci": [
+              0.6235140341221794,
+              0.8525316455696201
+            ],
+            "balanced_accuracy": 0.6975784259768849,
+            "sensitivity": 0.8734177215189873,
+            "specificity": 0.5217391304347826,
+            "sensitivity_95ci_wilson": [
+              0.7824364133349648,
+              0.9297673653032448
+            ],
+            "specificity_95ci_wilson": [
+              0.32962737336427406,
+              0.7076284258335335
+            ],
+            "pr_auc_average_precision": 0.9115269139246184,
+            "brier": 0.15180454089866635,
+            "confusion_matrix": [
+              [
+                12,
+                11
+              ],
+              [
+                10,
+                69
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.15299944964226764,
+              "ci95": [
+                -0.013249862410566887,
+                0.3109658778205833
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.7820583379196479,
+            "auroc_95ci": [
+              0.6840946615299945,
+              0.8690148596587781
+            ],
+            "balanced_accuracy": 0.6532746285085305,
+            "sensitivity": 0.7848101265822784,
+            "specificity": 0.5217391304347826,
+            "sensitivity_95ci_wilson": [
+              0.682128319163289,
+              0.8610779526794132
+            ],
+            "specificity_95ci_wilson": [
+              0.32962737336427406,
+              0.7076284258335335
+            ],
+            "pr_auc_average_precision": 0.9319048817341549,
+            "brier": 0.1502008442384772,
+            "confusion_matrix": [
+              [
+                12,
+                11
+              ],
+              [
+                17,
+                62
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.1876719867914146,
+              "ci95": [
+                0.0401761144744085,
+                0.3390478811227296
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 102,
+            "pd_prevalence": 0.7745098039215687,
+            "auroc": 0.7105118326912494,
+            "auroc_95ci": [
+              0.5943725921849201,
+              0.8222344523940561
+            ],
+            "balanced_accuracy": 0.6351128233351678,
+            "sensitivity": 0.8354430379746836,
+            "specificity": 0.43478260869565216,
+            "sensitivity_95ci_wilson": [
+              0.738543347728053,
+              0.9012329279977964
+            ],
+            "specificity_95ci_wilson": [
+              0.25634635325674215,
+              0.6318862491498354
+            ],
+            "pr_auc_average_precision": 0.8897347921317125,
+            "brier": 0.1618209546937982,
+            "confusion_matrix": [
+              [
+                10,
+                13
+              ],
+              [
+                13,
+                66
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.11612548156301616,
+              "ci95": [
+                -0.02976059438635123,
+                0.2548293891029169
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "ucsd": {
+          "rich_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6488888888888888,
+            "auroc_95ci": [
+              0.4444444444444444,
+              0.8266666666666668
+            ],
+            "balanced_accuracy": 0.6,
+            "sensitivity": 0.4666666666666667,
+            "specificity": 0.7333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.24809535365737387,
+              0.698830199745016
+            ],
+            "specificity_95ci_wilson": [
+              0.4804956594401943,
+              0.8910254667430761
+            ],
+            "pr_auc_average_precision": 0.6679493253788583,
+            "brier": 0.2965555367544444,
+            "confusion_matrix": [
+              [
+                11,
+                4
+              ],
+              [
+                8,
+                7
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.11111111111111116,
+              "ci95": [
+                -0.3067777777777778,
+                0.0755555555555556
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.7822222222222223,
+            "auroc_95ci": [
+              0.5998888888888889,
+              0.9333333333333333
+            ],
+            "balanced_accuracy": 0.6666666666666667,
+            "sensitivity": 0.5333333333333333,
+            "specificity": 0.8,
+            "sensitivity_95ci_wilson": [
+              0.30116980025498397,
+              0.7519046463426261
+            ],
+            "specificity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "pr_auc_average_precision": 0.8163783559435733,
+            "brier": 0.20694407958623715,
+            "confusion_matrix": [
+              [
+                12,
+                3
+              ],
+              [
+                7,
+                8
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.022222222222222254,
+              "ci95": [
+                -0.16888888888888887,
+                0.2088888888888889
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6266666666666667,
+            "auroc_95ci": [
+              0.4177777777777778,
+              0.8133333333333334
+            ],
+            "balanced_accuracy": 0.6,
+            "sensitivity": 0.5333333333333333,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.30116980025498397,
+              0.7519046463426261
+            ],
+            "specificity_95ci_wilson": [
+              0.41713547738519774,
+              0.8482367556028526
+            ],
+            "pr_auc_average_precision": 0.6597362095996308,
+            "brier": 0.2477602450945994,
+            "confusion_matrix": [
+              [
+                10,
+                5
+              ],
+              [
+                7,
+                8
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.1333333333333333,
+              "ci95": [
+                -0.35566666666666674,
+                0.0623333333333329
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.76,
+            "auroc_95ci": [
+              0.5688888888888889,
+              0.9333333333333333
+            ],
+            "balanced_accuracy": 0.7,
+            "sensitivity": 0.8,
+            "specificity": 0.6,
+            "sensitivity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "specificity_95ci_wilson": [
+              0.357468301206246,
+              0.8017550385865841
+            ],
+            "pr_auc_average_precision": 0.7060775456427629,
+            "brier": 0.20759383599366826,
+            "confusion_matrix": [
+              [
+                9,
+                6
+              ],
+              [
+                3,
+                12
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6355555555555555,
+            "auroc_95ci": [
+              0.4222222222222223,
+              0.8178888888888883
+            ],
+            "balanced_accuracy": 0.6,
+            "sensitivity": 0.5333333333333333,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.30116980025498397,
+              0.7519046463426261
+            ],
+            "specificity_95ci_wilson": [
+              0.41713547738519774,
+              0.8482367556028526
+            ],
+            "pr_auc_average_precision": 0.6906049457365246,
+            "brier": 0.30048002577175276,
+            "confusion_matrix": [
+              [
+                10,
+                5
+              ],
+              [
+                7,
+                8
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.12444444444444447,
+              "ci95": [
+                -0.34222222222222215,
+                0.08444444444444454
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.7733333333333333,
+            "auroc_95ci": [
+              0.5865555555555555,
+              0.9288888888888889
+            ],
+            "balanced_accuracy": 0.6666666666666667,
+            "sensitivity": 0.5333333333333333,
+            "specificity": 0.8,
+            "sensitivity_95ci_wilson": [
+              0.30116980025498397,
+              0.7519046463426261
+            ],
+            "specificity_95ci_wilson": [
+              0.5481455128483065,
+              0.9295245065301844
+            ],
+            "pr_auc_average_precision": 0.7983963701355006,
+            "brier": 0.2004769748068484,
+            "confusion_matrix": [
+              [
+                12,
+                3
+              ],
+              [
+                7,
+                8
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.013333333333333308,
+              "ci95": [
+                -0.1956666666666668,
+                0.21777777777777774
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.6311111111111112,
+            "auroc_95ci": [
+              0.4266666666666667,
+              0.8178888888888883
+            ],
+            "balanced_accuracy": 0.5666666666666667,
+            "sensitivity": 0.6,
+            "specificity": 0.5333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.357468301206246,
+              0.8017550385865841
+            ],
+            "specificity_95ci_wilson": [
+              0.30116980025498397,
+              0.7519046463426261
+            ],
+            "pr_auc_average_precision": 0.6857647303963094,
+            "brier": 0.24567048407734332,
+            "confusion_matrix": [
+              [
+                8,
+                7
+              ],
+              [
+                6,
+                9
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.12888888888888883,
+              "ci95": [
+                -0.3422222222222221,
+                0.07111111111111112
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 30,
+            "pd_prevalence": 0.5,
+            "auroc": 0.7288888888888889,
+            "auroc_95ci": [
+              0.5288888888888889,
+              0.9066666666666666
+            ],
+            "balanced_accuracy": 0.6666666666666666,
+            "sensitivity": 0.6,
+            "specificity": 0.7333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.357468301206246,
+              0.8017550385865841
+            ],
+            "specificity_95ci_wilson": [
+              0.4804956594401943,
+              0.8910254667430761
+            ],
+            "pr_auc_average_precision": 0.7202483812483812,
+            "brier": 0.21647396215467907,
+            "confusion_matrix": [
+              [
+                11,
+                4
+              ],
+              [
+                6,
+                9
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": -0.03111111111111109,
+              "ci95": [
+                -0.23122222222222236,
+                0.15999999999999992
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        },
+        "unm": {
+          "rich_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6540404040404041,
+            "auroc_95ci": [
+              0.4620580808080808,
+              0.8181818181818181
+            ],
+            "balanced_accuracy": 0.5328282828282829,
+            "sensitivity": 0.45454545454545453,
+            "specificity": 0.6111111111111112,
+            "sensitivity_95ci_wilson": [
+              0.2692029418081331,
+              0.6534020467926505
+            ],
+            "specificity_95ci_wilson": [
+              0.3861904160223791,
+              0.7969475342783638
+            ],
+            "pr_auc_average_precision": 0.6761561910366078,
+            "brier": 0.2843033761067942,
+            "confusion_matrix": [
+              [
+                11,
+                7
+              ],
+              [
+                12,
+                10
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0782828282828284,
+              "ci95": [
+                -0.11111111111111105,
+                0.2828282828282828
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "rich_svm": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.606060606060606,
+            "auroc_95ci": [
+              0.41919191919191917,
+              0.7803030303030303
+            ],
+            "balanced_accuracy": 0.595959595959596,
+            "sensitivity": 0.6363636363636364,
+            "specificity": 0.5555555555555556,
+            "sensitivity_95ci_wilson": [
+              0.42951708090131013,
+              0.8026679532963387
+            ],
+            "specificity_95ci_wilson": [
+              0.33716415642042774,
+              0.7544048187299437
+            ],
+            "pr_auc_average_precision": 0.6778121573415662,
+            "brier": 0.24956462025086332,
+            "confusion_matrix": [
+              [
+                10,
+                8
+              ],
+              [
+                8,
+                14
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.030303030303030276,
+              "ci95": [
+                -0.1717171717171717,
+                0.23484848484848475
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "scratch_neural": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.5808080808080808,
+            "auroc_95ci": [
+              0.39646464646464646,
+              0.7601641414141411
+            ],
+            "balanced_accuracy": 0.5833333333333333,
+            "sensitivity": 0.5,
+            "specificity": 0.6666666666666666,
+            "sensitivity_95ci_wilson": [
+              0.3072210627372502,
+              0.6927789372627497
+            ],
+            "specificity_95ci_wilson": [
+              0.43749467295945105,
+              0.837212252491663
+            ],
+            "pr_auc_average_precision": 0.6925514340680418,
+            "brier": 0.26059363114157963,
+            "confusion_matrix": [
+              [
+                12,
+                6
+              ],
+              [
+                11,
+                11
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.005050505050505083,
+              "ci95": [
+                -0.18434343434343436,
+                0.20460858585858555
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "spectral_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.5757575757575757,
+            "auroc_95ci": [
+              0.38383838383838387,
+              0.755050505050505
+            ],
+            "balanced_accuracy": 0.5303030303030303,
+            "sensitivity": 0.7272727272727273,
+            "specificity": 0.3333333333333333,
+            "sensitivity_95ci_wilson": [
+              0.5184826598759762,
+              0.8684923971201053
+            ],
+            "specificity_95ci_wilson": [
+              0.1627877475083369,
+              0.5625053270405489
+            ],
+            "pr_auc_average_precision": 0.6667207755160857,
+            "brier": 0.2694863695477532,
+            "confusion_matrix": [
+              [
+                6,
+                12
+              ],
+              [
+                6,
+                16
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_lr": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6439393939393939,
+            "auroc_95ci": [
+              0.4570075757575758,
+              0.8005050505050505
+            ],
+            "balanced_accuracy": 0.5555555555555556,
+            "sensitivity": 0.5,
+            "specificity": 0.6111111111111112,
+            "sensitivity_95ci_wilson": [
+              0.3072210627372502,
+              0.6927789372627497
+            ],
+            "specificity_95ci_wilson": [
+              0.3861904160223791,
+              0.7969475342783638
+            ],
+            "pr_auc_average_precision": 0.7156624256195989,
+            "brier": 0.31566352478343024,
+            "confusion_matrix": [
+              [
+                11,
+                7
+              ],
+              [
+                11,
+                11
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.06818181818181823,
+              "ci95": [
+                -0.11616161616161613,
+                0.2626893939393937
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_hybrid_svm": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6212121212121212,
+            "auroc_95ci": [
+              0.4418560606060606,
+              0.7879419191919189
+            ],
+            "balanced_accuracy": 0.601010101010101,
+            "sensitivity": 0.5909090909090909,
+            "specificity": 0.6111111111111112,
+            "sensitivity_95ci_wilson": [
+              0.3873481847631513,
+              0.7674418380352814
+            ],
+            "specificity_95ci_wilson": [
+              0.3861904160223791,
+              0.7969475342783638
+            ],
+            "pr_auc_average_precision": 0.6971361734675652,
+            "brier": 0.24094581892285558,
+            "confusion_matrix": [
+              [
+                11,
+                7
+              ],
+              [
+                9,
+                13
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.045454545454545525,
+              "ci95": [
+                -0.16161616161616166,
+                0.2449494949494948
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "ssl_neural": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6237373737373738,
+            "auroc_95ci": [
+              0.44185606060606064,
+              0.7828282828282828
+            ],
+            "balanced_accuracy": 0.5050505050505051,
+            "sensitivity": 0.45454545454545453,
+            "specificity": 0.5555555555555556,
+            "sensitivity_95ci_wilson": [
+              0.2692029418081331,
+              0.6534020467926505
+            ],
+            "specificity_95ci_wilson": [
+              0.33716415642042774,
+              0.7544048187299437
+            ],
+            "pr_auc_average_precision": 0.7225099685116476,
+            "brier": 0.24257529050323773,
+            "confusion_matrix": [
+              [
+                10,
+                8
+              ],
+              [
+                12,
+                10
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.04797979797979812,
+              "ci95": [
+                -0.11117424242424252,
+                0.21976010101010074
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          },
+          "selected_pipeline": {
+            "participants": 40,
+            "pd_prevalence": 0.55,
+            "auroc": 0.6161616161616162,
+            "auroc_95ci": [
+              0.4368686868686869,
+              0.7929292929292929
+            ],
+            "balanced_accuracy": 0.601010101010101,
+            "sensitivity": 0.5909090909090909,
+            "specificity": 0.6111111111111112,
+            "sensitivity_95ci_wilson": [
+              0.3873481847631513,
+              0.7674418380352814
+            ],
+            "specificity_95ci_wilson": [
+              0.3861904160223791,
+              0.7969475342783638
+            ],
+            "pr_auc_average_precision": 0.7156700233156081,
+            "brier": 0.25904323575401345,
+            "confusion_matrix": [
+              [
+                11,
+                7
+              ],
+              [
+                9,
+                13
+              ]
+            ],
+            "threshold": null,
+            "threshold_policy": "Per-fold inner out-of-fold selection",
+            "paired_auroc_gain_vs_spectral": {
+              "gain": 0.04040404040404055,
+              "ci95": [
+                -0.1742424242424242,
+                0.2550505050505051
+              ],
+              "interpretation": "Exploratory, unadjusted multiple comparisons"
+            }
+          }
+        }
+      },
+      "macro_site_auroc": {
+        "rich_lr": 0.664282906522929,
+        "rich_svm": 0.7112558599274492,
+        "scratch_neural": 0.6416510634697867,
+        "spectral_lr": 0.6409733121609531,
+        "ssl_hybrid_lr": 0.6581627290345585,
+        "ssl_hybrid_svm": 0.7149381101453812,
+        "ssl_neural": 0.67682783910977,
+        "selected_pipeline": 0.6927203909103888
+      }
+    }
+  },
+  "coverage": {
+    "ucsd / control": {
+      "assigned_groups": 16,
+      "retained_groups": 15,
+      "accepted_windows": 616
+    },
+    "ucsd / PD": {
+      "assigned_groups": 15,
+      "retained_groups": 15,
+      "accepted_windows": 1131
+    },
+    "unm / PD": {
+      "assigned_groups": 25,
+      "retained_groups": 22,
+      "accepted_windows": 503
+    },
+    "unm / control": {
+      "assigned_groups": 25,
+      "retained_groups": 18,
+      "accepted_windows": 255
+    },
+    "ds003775 / auxiliary": {
+      "assigned_groups": 111,
+      "retained_groups": 0,
+      "accepted_windows": 0
+    },
+    "ds004148 / auxiliary": {
+      "assigned_groups": 13,
+      "retained_groups": 13,
+      "accepted_windows": 9719
+    },
+    "ds004504 / auxiliary": {
+      "assigned_groups": 88,
+      "retained_groups": 87,
+      "accepted_windows": 17313
+    },
+    "ds004796 / auxiliary": {
+      "assigned_groups": 79,
+      "retained_groups": 79,
+      "accepted_windows": 27654
+    },
+    "ds005385 / auxiliary": {
+      "assigned_groups": 608,
+      "retained_groups": 604,
+      "accepted_windows": 117949
+    },
+    "tel_aviv / control": {
+      "assigned_groups": 28,
+      "retained_groups": 23,
+      "accepted_windows": 1293
+    },
+    "tel_aviv / PD": {
+      "assigned_groups": 116,
+      "retained_groups": 79,
+      "accepted_windows": 4139
+    },
+    "ds007864 / auxiliary": {
+      "assigned_groups": 1,
+      "retained_groups": 1,
+      "accepted_windows": 23277
+    },
+    "iowa / control": {
+      "assigned_groups": 110,
+      "retained_groups": 97,
+      "accepted_windows": 4294
+    },
+    "iowa / PD": {
+      "assigned_groups": 202,
+      "retained_groups": 171,
+      "accepted_windows": 8535
+    },
+    "bigp3bci / auxiliary": {
+      "assigned_groups": 308,
+      "retained_groups": 176,
+      "accepted_windows": 125392
+    }
+  },
+  "recording_statuses": {
+    "ready": 7988,
+    "no_accepted_windows": 367,
+    "Ambiguous eyes-open interval": 1,
+    "incompatible_montage": 2855
+  },
+  "archive_usage": {
+    "ds002778": {
+      "recordings": 46,
+      "supervised": 46
+    },
+    "ds003194": {
+      "recordings": 29,
+      "excluded_dataset": 29
+    },
+    "ds003195": {
+      "recordings": 20,
+      "excluded_dataset": 20
+    },
+    "ds003490": {
+      "recordings": 75,
+      "supervised": 75
+    },
+    "ds003506": {
+      "recordings": 84,
+      "excluded_dataset": 84
+    },
+    "ds003509": {
+      "recordings": 84,
+      "excluded_dataset": 84
+    },
+    "ds003775": {
+      "recordings": 153,
+      "auxiliary": 153
+    },
+    "ds004148": {
+      "recordings": 195,
+      "auxiliary": 195
+    },
+    "ds004504": {
+      "recordings": 88,
+      "auxiliary": 88
+    },
+    "ds004574": {
+      "recordings": 146,
+      "excluded_dataset": 146
+    },
+    "ds004579": {
+      "recordings": 139,
+      "excluded_dataset": 139
+    },
+    "ds004580": {
+      "recordings": 147,
+      "excluded_dataset": 147
+    },
+    "ds004584": {
+      "recordings": 149,
+      "excluded_dataset": 149
+    },
+    "ds004796": {
+      "recordings": 235,
+      "auxiliary": 235
+    },
+    "ds005048": {
+      "recordings": 27,
+      "excluded_dataset": 27
+    },
+    "ds005385": {
+      "recordings": 3264,
+      "auxiliary": 3264
+    },
+    "ds006036": {
+      "recordings": 88,
+      "auxiliary": 88
+    },
+    "ds007526": {
+      "recordings": 277,
+      "supervised": 144,
+      "excluded_nonrest": 133
+    },
+    "ds007864": {
+      "recordings": 84,
+      "auxiliary": 84
+    },
+    "ds007865": {
+      "recordings": 47,
+      "auxiliary": 47
+    },
+    "ds007987": {
+      "recordings": 172,
+      "excluded_dataset": 172
+    },
+    "ds008768": {
+      "recordings": 358,
+      "supervised": 356,
+      "excluded_exact_duplicate": 2
+    },
+    "bigp3bci": {
+      "recordings": 6436,
+      "auxiliary": 6436
+    }
+  },
+  "dataset_exclusions": {
+    "ds004574": "Iowa task release; unresolved overlap with expanded Iowa.",
+    "ds004579": "Iowa task release; unresolved overlap with expanded Iowa.",
+    "ds004580": "Iowa task release; unresolved overlap with expanded Iowa.",
+    "ds004584": "Older Iowa resting release; replaced by expanded release.",
+    "ds003506": "UNM task release overlaps evaluation participants; never used in auxiliary pretraining.",
+    "ds003509": "UNM task release overlaps evaluation participants; never used in auxiliary pretraining.",
+    "ds003194": "Older NeuroEPO release replaced by Phase II/III release to avoid unresolved overlap.",
+    "ds003195": "Older placebo release replaced by Phase II/III release to avoid unresolved overlap.",
+    "ds005048": "MATLAB v7.3 EEGLAB unsupported by installed reader; needs independently validated adapter.",
+    "ds007987": "A1-D32 channel labels need an independently validated physical electrode mapping."
+  },
+  "selection": {
+    "site_iowa": {
+      "selected_family": "ssl_neural",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.6676879230759253,
+          "threshold": 0.7997267842292786,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.6933327218247416,
+          "threshold": 0.62272764707618,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7515226934544491,
+          "threshold": 0.5160545110702515,
+          "epochs": 2
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.5790219939256813,
+          "threshold": 0.7196075916290283,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.6833506964712249,
+          "threshold": 0.9996222257614136,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.6884635753980829,
+          "threshold": 0.6093089685609877,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7813778771015976,
+          "threshold": 0.8559624552726746,
+          "epochs": 10
+        }
+      }
+    },
+    "site_tel_aviv": {
+      "selected_family": "rich_svm",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.758292383045503,
+          "threshold": 0.8645373582839966,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.7828605461378114,
+          "threshold": 0.5788023929360958,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7053010846391204,
+          "threshold": 0.616040825843811,
+          "epochs": 1
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.6735025238823394,
+          "threshold": 0.7159570455551147,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7727073593595569,
+          "threshold": 0.760033905506134,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.7798027297756001,
+          "threshold": 0.6166405779716103,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.001
+          },
+          "inner_macro_auroc": 0.7602756996625689,
+          "threshold": 0.6715388894081116,
+          "epochs": 4
+        }
+      }
+    },
+    "site_ucsd": {
+      "selected_family": "ssl_neural",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.700635685396629,
+          "threshold": 0.6236963868141174,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7466946969741461,
+          "threshold": 0.6492467528168582,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7315622090815291,
+          "threshold": 0.5111187696456909,
+          "epochs": 10
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.6512018995301468,
+          "threshold": 0.5482105612754822,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.6947176262227247,
+          "threshold": 0.6583477854728699,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7541203408991835,
+          "threshold": 0.6403462696109652,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7582199354602094,
+          "threshold": 0.7088468074798584,
+          "epochs": 4
+        }
+      }
+    },
+    "site_unm": {
+      "selected_family": "scratch_neural",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.707443057174881,
+          "threshold": 0.7445375323295593,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7837660158651364,
+          "threshold": 0.7146640769112972,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.001
+          },
+          "inner_macro_auroc": 0.794489913630854,
+          "threshold": 0.5509834289550781,
+          "epochs": 7
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.6126517873763503,
+          "threshold": 0.5508281588554382,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.727273791287019,
+          "threshold": 0.6689680814743042,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7895821684227382,
+          "threshold": 0.6645612652743199,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.001
+          },
+          "inner_macro_auroc": 0.7836243356618328,
+          "threshold": 0.7975351810455322,
+          "epochs": 2
+        }
+      }
+    },
+    "within_0": {
+      "selected_family": "ssl_hybrid_svm",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.6632186155246607,
+          "threshold": 0.8077594041824341,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.7608339496786385,
+          "threshold": 0.6600634862467457,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7261257999558646,
+          "threshold": 0.663145899772644,
+          "epochs": 3
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.5743519840284674,
+          "threshold": 0.46746084094047546,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.656421188830961,
+          "threshold": 0.8500101566314697,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.7645907122365664,
+          "threshold": 0.6445675149950755,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7472819775460664,
+          "threshold": 0.6718178391456604,
+          "epochs": 3
+        }
+      }
+    },
+    "within_1": {
+      "selected_family": "rich_svm",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.7530370920043215,
+          "threshold": 0.7747735977172852,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.8223266211610304,
+          "threshold": 0.6324786531583112,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.785918551822226,
+          "threshold": 0.41445136070251465,
+          "epochs": 1
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.5994930404749174,
+          "threshold": 0.2908749282360077,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.7527632943025198,
+          "threshold": 0.7266939878463745,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.8210350508891968,
+          "threshold": 0.6290632530732015,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.8042203113007482,
+          "threshold": 0.47234106063842773,
+          "epochs": 4
+        }
+      }
+    },
+    "within_2": {
+      "selected_family": "scratch_neural",
+      "models": {
+        "rich_lr": {
+          "config": {
+            "family": "rich_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7517317181174088,
+          "threshold": 0.913488507270813,
+          "epochs": 0
+        },
+        "rich_svm": {
+          "config": {
+            "family": "rich_svm",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7515552603463788,
+          "threshold": 0.6565845457915576,
+          "epochs": 0
+        },
+        "scratch_neural": {
+          "config": {
+            "family": "scratch_neural",
+            "lr": 0.001
+          },
+          "inner_macro_auroc": 0.765984100877193,
+          "threshold": 0.5317754149436951,
+          "epochs": 8
+        },
+        "spectral_lr": {
+          "config": {
+            "family": "spectral_lr",
+            "C": 0.1
+          },
+          "inner_macro_auroc": 0.651658724134053,
+          "threshold": 0.47782817482948303,
+          "epochs": 0
+        },
+        "ssl_hybrid_lr": {
+          "config": {
+            "family": "ssl_hybrid_lr",
+            "C": 1.0
+          },
+          "inner_macro_auroc": 0.7617648588618984,
+          "threshold": 0.763903796672821,
+          "epochs": 0
+        },
+        "ssl_hybrid_svm": {
+          "config": {
+            "family": "ssl_hybrid_svm",
+            "C": 10.0
+          },
+          "inner_macro_auroc": 0.7530776259559155,
+          "threshold": 0.6072264668690176,
+          "epochs": 0
+        },
+        "ssl_neural": {
+          "config": {
+            "family": "ssl_neural",
+            "lr": 0.0003
+          },
+          "inner_macro_auroc": 0.7615470366621683,
+          "threshold": 0.570807158946991,
+          "epochs": 2
+        }
+      }
+    }
+  },
+  "benchmarks": {
+    "preparation-benchmark": {
+      "seconds": 2.3951981659047306,
+      "records": 13,
+      "forecast_seconds": 4131.155474235555,
+      "margin": 2
+    },
+    "ssl-benchmark": {
+      "device": "mps",
+      "steps": 40,
+      "seconds": 7.6529745841398835,
+      "forecast_seconds": 14406.9488628831,
+      "train_windows": 284219,
+      "validation_windows": 37066
+    },
+    "supervised-benchmark": {
+      "device": "mps",
+      "two_epochs_seconds": 10.533102415967733,
+      "forecast_seconds": 54572.00361712882,
+      "inner_neural_fits": 96,
+      "outer_final_neural_fits": 42,
+      "maximum_epochs": 40,
+      "participants": 440,
+      "valid_site_participants": 40,
+      "margin": 1.5
+    }
+  },
+  "interpretation": "All four PD sites were examined in v1/v2. All v3 estimates are exploratory.",
+  "protocol_sha256": "1254a84469476e888300cb1407387c80bab001aa363bfd8d2c90f7e112afe4a6"
+}

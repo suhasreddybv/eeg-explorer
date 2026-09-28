@@ -1,0 +1,917 @@
+{
+  "audit": {
+    "status": "passed",
+    "planned_recordings": 11211,
+    "cache_hashes_verified": 7988,
+    "source_receipts_and_stat_verified": 12858,
+    "source_method": "Sources read for preprocessing were rehashed then; final review reconciles all candidate source receipt SHA256, byte count and mtime, not a second full source rehash.",
+    "verified_fits": 620,
+    "neural_fits": 160,
+    "classical_fits": 460,
+    "sum_fit_seconds": 4329.160424367059,
+    "pd_people": 440,
+    "aux_train_groups": 850,
+    "aux_validation_groups": 110,
+    "ssl_windows": {
+      "device": "mps",
+      "steps": 40,
+      "seconds": 7.6529745841398835,
+      "forecast_seconds": 14406.9488628831,
+      "train_windows": 284219,
+      "validation_windows": 37066
+    },
+    "implementation_policy_matches": true,
+    "all_point_estimates_reproduced": true,
+    "outer_participant_and_site_separation": true,
+    "auxiliary_separation": true,
+    "software": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "torch": "2.14.0",
+      "mne": "1.13.2"
+    },
+    "python": "3.12.14"
+  },
+  "macro_uncertainty": {
+    "cross_site": {
+      "models": {
+        "rich_lr": {
+          "auroc": 0.7096622199739411,
+          "ci95": [
+            0.6360057565937935,
+            0.7777036559809045
+          ]
+        },
+        "rich_svm": {
+          "auroc": 0.7627009137599776,
+          "ci95": [
+            0.7035377623874989,
+            0.8196446450873495
+          ]
+        },
+        "scratch_neural": {
+          "auroc": 0.6992766161784022,
+          "ci95": [
+            0.6241253082397844,
+            0.7694245437218523
+          ]
+        },
+        "spectral_lr": {
+          "auroc": 0.559400224595556,
+          "ci95": [
+            0.47857747401405953,
+            0.6349422269213713
+          ]
+        },
+        "ssl_hybrid_lr": {
+          "auroc": 0.7202315308757891,
+          "ci95": [
+            0.6453775521809756,
+            0.7870379929580303
+          ]
+        },
+        "ssl_hybrid_svm": {
+          "auroc": 0.7613106789255362,
+          "ci95": [
+            0.7001955414120702,
+            0.8189218982411742
+          ]
+        },
+        "ssl_neural": {
+          "auroc": 0.68545228342626,
+          "ci95": [
+            0.6052899002305318,
+            0.7555829654137355
+          ]
+        },
+        "selected_pipeline": {
+          "auroc": 0.6897338859123204,
+          "ci95": [
+            0.6106332410476588,
+            0.7581844209931216
+          ]
+        }
+      },
+      "paired": {
+        "rich_svm_minus_spectral_lr": {
+          "difference": 0.20330068916442157,
+          "ci95": [
+            0.13005905347394697,
+            0.28072246825390973
+          ]
+        },
+        "ssl_hybrid_svm_minus_rich_svm": {
+          "difference": -0.0013902348344414506,
+          "ci95": [
+            -0.018247575159682252,
+            0.014232504437611305
+          ]
+        },
+        "ssl_hybrid_lr_minus_rich_lr": {
+          "difference": 0.010569310901847984,
+          "ci95": [
+            -0.006945748301084828,
+            0.030151163927145626
+          ]
+        },
+        "ssl_neural_minus_scratch_neural": {
+          "difference": -0.013824332752142232,
+          "ci95": [
+            -0.06324661831853905,
+            0.03393713581806104
+          ]
+        }
+      }
+    },
+    "within_site": {
+      "models": {
+        "rich_lr": {
+          "auroc": 0.664282906522929,
+          "ci95": [
+            0.5883368062305626,
+            0.7355965741752154
+          ]
+        },
+        "rich_svm": {
+          "auroc": 0.7112558599274492,
+          "ci95": [
+            0.6424999414990215,
+            0.7793640924353136
+          ]
+        },
+        "scratch_neural": {
+          "auroc": 0.6416510634697867,
+          "ci95": [
+            0.5632605670938627,
+            0.719600129036442
+          ]
+        },
+        "spectral_lr": {
+          "auroc": 0.6409733121609531,
+          "ci95": [
+            0.562359096948843,
+            0.7138738137580167
+          ]
+        },
+        "ssl_hybrid_lr": {
+          "auroc": 0.6581627290345585,
+          "ci95": [
+            0.5818195911327562,
+            0.7309407597707395
+          ]
+        },
+        "ssl_hybrid_svm": {
+          "auroc": 0.7149381101453812,
+          "ci95": [
+            0.6460745967176549,
+            0.7844579150441352
+          ]
+        },
+        "ssl_neural": {
+          "auroc": 0.67682783910977,
+          "ci95": [
+            0.5997312478289115,
+            0.7469051463370706
+          ]
+        },
+        "selected_pipeline": {
+          "auroc": 0.6927203909103888,
+          "ci95": [
+            0.6163728428576694,
+            0.7684093625446655
+          ]
+        }
+      },
+      "paired": {
+        "rich_svm_minus_spectral_lr": {
+          "difference": 0.07028254776649612,
+          "ci95": [
+            -0.007010042354910655,
+            0.15341596511265812
+          ]
+        },
+        "ssl_hybrid_svm_minus_rich_svm": {
+          "difference": 0.003682250217932004,
+          "ci95": [
+            -0.02410212741631073,
+            0.032993790899689374
+          ]
+        },
+        "ssl_hybrid_lr_minus_rich_lr": {
+          "difference": -0.00612017748837046,
+          "ci95": [
+            -0.03277113437756807,
+            0.02179310665941576
+          ]
+        },
+        "ssl_neural_minus_scratch_neural": {
+          "difference": 0.03517677563998323,
+          "ci95": [
+            -0.014072907046615861,
+            0.0890273569963042
+          ]
+        }
+      }
+    }
+  },
+  "demographic_profiles": {
+    "iowa": {
+      "0": {
+        "assigned": 110,
+        "retained": 97,
+        "excluded": 13,
+        "age_mean": 69.43608247422681,
+        "age_sd": 10.589678402094835,
+        "female": 50,
+        "male": 47,
+        "age_missing": 0,
+        "sex_missing": 0
+      },
+      "1": {
+        "assigned": 202,
+        "retained": 171,
+        "excluded": 31,
+        "age_mean": 68.6608187134503,
+        "age_sd": 8.019948468875125,
+        "female": 50,
+        "male": 121,
+        "age_missing": 0,
+        "sex_missing": 0
+      }
+    },
+    "tel_aviv": {
+      "0": {
+        "assigned": 28,
+        "retained": 23,
+        "excluded": 5,
+        "age_mean": 60.04347826086956,
+        "age_sd": 7.922799441368077,
+        "female": 11,
+        "male": 12,
+        "age_missing": 0,
+        "sex_missing": 0
+      },
+      "1": {
+        "assigned": 116,
+        "retained": 79,
+        "excluded": 37,
+        "age_mean": 65.48101265822785,
+        "age_sd": 9.612839650221122,
+        "female": 16,
+        "male": 63,
+        "age_missing": 0,
+        "sex_missing": 0
+      }
+    },
+    "ucsd": {
+      "0": {
+        "assigned": 16,
+        "retained": 15,
+        "excluded": 1,
+        "age_mean": 62.8,
+        "age_sd": 9.578249168969094,
+        "female": 8,
+        "male": 7,
+        "age_missing": 0,
+        "sex_missing": 0
+      },
+      "1": {
+        "assigned": 15,
+        "retained": 15,
+        "excluded": 0,
+        "age_mean": 63.266666666666666,
+        "age_sd": 8.198141485088179,
+        "female": 8,
+        "male": 7,
+        "age_missing": 0,
+        "sex_missing": 0
+      }
+    },
+    "unm": {
+      "0": {
+        "assigned": 25,
+        "retained": 18,
+        "excluded": 7,
+        "age_mean": 68.22222222222223,
+        "age_sd": 9.932451599239828,
+        "female": 6,
+        "male": 12,
+        "age_missing": 0,
+        "sex_missing": 0
+      },
+      "1": {
+        "assigned": 25,
+        "retained": 22,
+        "excluded": 3,
+        "age_mean": 69.95454545454545,
+        "age_sd": 7.840537352377448,
+        "female": 8,
+        "male": 14,
+        "age_missing": 0,
+        "sex_missing": 0
+      }
+    }
+  },
+  "subgroups": {
+    "cross_site": {
+      "iowa": {
+        "female": {
+          "counts": {
+            "0": 50,
+            "1": 50
+          },
+          "auroc": {
+            "rich_lr": 0.6444,
+            "rich_svm": 0.7068,
+            "scratch_neural": 0.6372000000000001,
+            "spectral_lr": 0.5559999999999999,
+            "ssl_hybrid_lr": 0.6632,
+            "ssl_hybrid_svm": 0.7071999999999999,
+            "ssl_neural": 0.6424,
+            "selected_pipeline": 0.6424
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 47,
+            "1": 121
+          },
+          "auroc": {
+            "rich_lr": 0.6470898540531037,
+            "rich_svm": 0.7334271144716019,
+            "scratch_neural": 0.6829611394408299,
+            "spectral_lr": 0.588886935115175,
+            "ssl_hybrid_lr": 0.6404079479514684,
+            "ssl_hybrid_svm": 0.7416915772815191,
+            "ssl_neural": 0.7091612449446105,
+            "selected_pipeline": 0.7091612449446105
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 25,
+            "1": 43
+          },
+          "auroc": {
+            "rich_lr": 0.7469767441860464,
+            "rich_svm": 0.8009302325581394,
+            "scratch_neural": 0.7106976744186047,
+            "spectral_lr": 0.6846511627906977,
+            "ssl_hybrid_lr": 0.7488372093023257,
+            "ssl_hybrid_svm": 0.8009302325581396,
+            "ssl_neural": 0.7506976744186047,
+            "selected_pipeline": 0.7506976744186047
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 72,
+            "1": 128
+          },
+          "auroc": {
+            "rich_lr": 0.6596137152777778,
+            "rich_svm": 0.724392361111111,
+            "scratch_neural": 0.6763237847222222,
+            "spectral_lr": 0.583984375,
+            "ssl_hybrid_lr": 0.6599392361111112,
+            "ssl_hybrid_svm": 0.7311197916666666,
+            "ssl_neural": 0.6983506944444444,
+            "selected_pipeline": 0.6983506944444444
+          }
+        }
+      },
+      "tel_aviv": {
+        "female": {
+          "counts": {
+            "0": 11,
+            "1": 16
+          },
+          "auroc": {
+            "rich_lr": 0.7159090909090909,
+            "rich_svm": 0.6761363636363635,
+            "scratch_neural": 0.8238636363636364,
+            "spectral_lr": 0.625,
+            "ssl_hybrid_lr": 0.7159090909090909,
+            "ssl_hybrid_svm": 0.6818181818181819,
+            "ssl_neural": 0.7954545454545454,
+            "selected_pipeline": 0.6761363636363635
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 12,
+            "1": 63
+          },
+          "auroc": {
+            "rich_lr": 0.5800264550264549,
+            "rich_svm": 0.6812169312169312,
+            "scratch_neural": 0.7671957671957671,
+            "spectral_lr": 0.33597883597883593,
+            "ssl_hybrid_lr": 0.5992063492063492,
+            "ssl_hybrid_svm": 0.697089947089947,
+            "ssl_neural": 0.626984126984127,
+            "selected_pipeline": 0.6812169312169312
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 16,
+            "1": 28
+          },
+          "auroc": {
+            "rich_lr": 0.6741071428571429,
+            "rich_svm": 0.5357142857142857,
+            "scratch_neural": 0.7566964285714286,
+            "spectral_lr": 0.3549107142857143,
+            "ssl_hybrid_lr": 0.6674107142857142,
+            "ssl_hybrid_svm": 0.5558035714285714,
+            "ssl_neural": 0.609375,
+            "selected_pipeline": 0.5357142857142857
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 7,
+            "1": 51
+          },
+          "auroc": {
+            "rich_lr": 0.5714285714285714,
+            "rich_svm": 0.8683473389355743,
+            "scratch_neural": 0.7871148459383754,
+            "spectral_lr": 0.47619047619047616,
+            "ssl_hybrid_lr": 0.5854341736694678,
+            "ssl_hybrid_svm": 0.876750700280112,
+            "ssl_neural": 0.7478991596638656,
+            "selected_pipeline": 0.8683473389355743
+          }
+        }
+      },
+      "ucsd": {
+        "female": {
+          "counts": {
+            "0": 8,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.90625,
+            "rich_svm": 0.828125,
+            "scratch_neural": 0.4375,
+            "spectral_lr": 0.40625,
+            "ssl_hybrid_lr": 0.953125,
+            "ssl_hybrid_svm": 0.8125,
+            "ssl_neural": 0.53125,
+            "selected_pipeline": 0.53125
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 7,
+            "1": 7
+          },
+          "auroc": {
+            "rich_lr": 0.6122448979591837,
+            "rich_svm": 0.8163265306122449,
+            "scratch_neural": 0.8367346938775511,
+            "spectral_lr": 0.6938775510204082,
+            "ssl_hybrid_lr": 0.6326530612244898,
+            "ssl_hybrid_svm": 0.7959183673469388,
+            "ssl_neural": 0.8163265306122449,
+            "selected_pipeline": 0.8163265306122449
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 9,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.7222222222222223,
+            "rich_svm": 0.7638888888888888,
+            "scratch_neural": 0.5694444444444444,
+            "spectral_lr": 0.5416666666666667,
+            "ssl_hybrid_lr": 0.75,
+            "ssl_hybrid_svm": 0.75,
+            "ssl_neural": 0.5972222222222222,
+            "selected_pipeline": 0.5972222222222222
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 6,
+            "1": 7
+          },
+          "auroc": {
+            "rich_lr": 0.8333333333333334,
+            "rich_svm": 0.9761904761904763,
+            "scratch_neural": 0.6904761904761905,
+            "spectral_lr": 0.5,
+            "ssl_hybrid_lr": 0.8809523809523809,
+            "ssl_hybrid_svm": 0.9523809523809524,
+            "ssl_neural": 0.6904761904761905,
+            "selected_pipeline": 0.6904761904761905
+          }
+        }
+      },
+      "unm": {
+        "female": {
+          "counts": {
+            "0": 6,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.5625,
+            "rich_svm": 0.6458333333333333,
+            "scratch_neural": 0.5208333333333334,
+            "spectral_lr": 0.5,
+            "ssl_hybrid_lr": 0.5833333333333334,
+            "ssl_hybrid_svm": 0.6354166666666667,
+            "ssl_neural": 0.5833333333333333,
+            "selected_pipeline": 0.5208333333333334
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 12,
+            "1": 14
+          },
+          "auroc": {
+            "rich_lr": 0.8869047619047619,
+            "rich_svm": 0.8333333333333334,
+            "scratch_neural": 0.75,
+            "spectral_lr": 0.8095238095238095,
+            "ssl_hybrid_lr": 0.875,
+            "ssl_hybrid_svm": 0.8273809523809523,
+            "ssl_neural": 0.7380952380952381,
+            "selected_pipeline": 0.75
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 6,
+            "1": 4
+          },
+          "not_estimated": "Fewer than five retained people in either class"
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 12,
+            "1": 18
+          },
+          "auroc": {
+            "rich_lr": 0.8796296296296297,
+            "rich_svm": 0.8703703703703703,
+            "scratch_neural": 0.712962962962963,
+            "spectral_lr": 0.7824074074074074,
+            "ssl_hybrid_lr": 0.861111111111111,
+            "ssl_hybrid_svm": 0.8518518518518519,
+            "ssl_neural": 0.7037037037037036,
+            "selected_pipeline": 0.712962962962963
+          }
+        }
+      }
+    },
+    "within_site": {
+      "iowa": {
+        "female": {
+          "counts": {
+            "0": 50,
+            "1": 50
+          },
+          "auroc": {
+            "rich_lr": 0.6908,
+            "rich_svm": 0.6646000000000001,
+            "scratch_neural": 0.596,
+            "spectral_lr": 0.622,
+            "ssl_hybrid_lr": 0.6868,
+            "ssl_hybrid_svm": 0.6348000000000001,
+            "ssl_neural": 0.6264,
+            "selected_pipeline": 0.6324000000000001
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 47,
+            "1": 121
+          },
+          "auroc": {
+            "rich_lr": 0.6606295058906277,
+            "rich_svm": 0.7170740284860208,
+            "scratch_neural": 0.6863020924916476,
+            "spectral_lr": 0.5867768595041323,
+            "ssl_hybrid_lr": 0.6511341656409355,
+            "ssl_hybrid_svm": 0.7340425531914895,
+            "ssl_neural": 0.6606295058906277,
+            "selected_pipeline": 0.7376472656936873
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 25,
+            "1": 43
+          },
+          "auroc": {
+            "rich_lr": 0.7497674418604652,
+            "rich_svm": 0.706046511627907,
+            "scratch_neural": 0.6474418604651163,
+            "spectral_lr": 0.6920930232558139,
+            "ssl_hybrid_lr": 0.747906976744186,
+            "ssl_hybrid_svm": 0.704186046511628,
+            "ssl_neural": 0.6688372093023256,
+            "selected_pipeline": 0.6809302325581394
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 72,
+            "1": 128
+          },
+          "auroc": {
+            "rich_lr": 0.6767578125,
+            "rich_svm": 0.7258029513888891,
+            "scratch_neural": 0.6770833333333334,
+            "spectral_lr": 0.6217447916666665,
+            "ssl_hybrid_lr": 0.6762152777777778,
+            "ssl_hybrid_svm": 0.724880642361111,
+            "ssl_neural": 0.6742621527777777,
+            "selected_pipeline": 0.7293836805555556
+          }
+        }
+      },
+      "tel_aviv": {
+        "female": {
+          "counts": {
+            "0": 11,
+            "1": 16
+          },
+          "auroc": {
+            "rich_lr": 0.6704545454545454,
+            "rich_svm": 0.7102272727272727,
+            "scratch_neural": 0.6193181818181818,
+            "spectral_lr": 0.6647727272727273,
+            "ssl_hybrid_lr": 0.6420454545454546,
+            "ssl_hybrid_svm": 0.6988636363636365,
+            "ssl_neural": 0.7727272727272727,
+            "selected_pipeline": 0.6988636363636364
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 12,
+            "1": 63
+          },
+          "auroc": {
+            "rich_lr": 0.6468253968253967,
+            "rich_svm": 0.7301587301587301,
+            "scratch_neural": 0.6891534391534391,
+            "spectral_lr": 0.544973544973545,
+            "ssl_hybrid_lr": 0.656084656084656,
+            "ssl_hybrid_svm": 0.746031746031746,
+            "ssl_neural": 0.7936507936507937,
+            "selected_pipeline": 0.6759259259259259
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 16,
+            "1": 28
+          },
+          "auroc": {
+            "rich_lr": 0.6361607142857142,
+            "rich_svm": 0.6450892857142857,
+            "scratch_neural": 0.6741071428571428,
+            "spectral_lr": 0.6026785714285714,
+            "ssl_hybrid_lr": 0.6205357142857142,
+            "ssl_hybrid_svm": 0.6629464285714286,
+            "ssl_neural": 0.7924107142857143,
+            "selected_pipeline": 0.6696428571428571
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 7,
+            "1": 51
+          },
+          "auroc": {
+            "rich_lr": 0.6498599439775911,
+            "rich_svm": 0.8179271708683473,
+            "scratch_neural": 0.6106442577030813,
+            "spectral_lr": 0.5574229691876751,
+            "ssl_hybrid_lr": 0.6862745098039216,
+            "ssl_hybrid_svm": 0.8039215686274509,
+            "ssl_neural": 0.7366946778711485,
+            "selected_pipeline": 0.6918767507002801
+          }
+        }
+      },
+      "ucsd": {
+        "female": {
+          "counts": {
+            "0": 8,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.734375,
+            "rich_svm": 0.828125,
+            "scratch_neural": 0.453125,
+            "spectral_lr": 0.796875,
+            "ssl_hybrid_lr": 0.75,
+            "ssl_hybrid_svm": 0.828125,
+            "ssl_neural": 0.4375,
+            "selected_pipeline": 0.71875
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 7,
+            "1": 7
+          },
+          "auroc": {
+            "rich_lr": 0.5918367346938775,
+            "rich_svm": 0.7142857142857143,
+            "scratch_neural": 0.7755102040816326,
+            "spectral_lr": 0.7346938775510203,
+            "ssl_hybrid_lr": 0.5306122448979592,
+            "ssl_hybrid_svm": 0.653061224489796,
+            "ssl_neural": 0.8367346938775511,
+            "selected_pipeline": 0.7142857142857143
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 9,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.5833333333333333,
+            "rich_svm": 0.6944444444444444,
+            "scratch_neural": 0.38888888888888895,
+            "spectral_lr": 0.75,
+            "ssl_hybrid_lr": 0.5833333333333334,
+            "ssl_hybrid_svm": 0.7083333333333334,
+            "ssl_neural": 0.4444444444444444,
+            "selected_pipeline": 0.6527777777777779
+          }
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 6,
+            "1": 7
+          },
+          "auroc": {
+            "rich_lr": 0.7857142857142857,
+            "rich_svm": 0.9047619047619048,
+            "scratch_neural": 0.8809523809523809,
+            "spectral_lr": 0.7857142857142858,
+            "ssl_hybrid_lr": 0.7142857142857143,
+            "ssl_hybrid_svm": 0.8809523809523809,
+            "ssl_neural": 0.8333333333333333,
+            "selected_pipeline": 0.8333333333333334
+          }
+        }
+      },
+      "unm": {
+        "female": {
+          "counts": {
+            "0": 6,
+            "1": 8
+          },
+          "auroc": {
+            "rich_lr": 0.6041666666666667,
+            "rich_svm": 0.4375,
+            "scratch_neural": 0.5,
+            "spectral_lr": 0.5,
+            "ssl_hybrid_lr": 0.625,
+            "ssl_hybrid_svm": 0.5625,
+            "ssl_neural": 0.4583333333333333,
+            "selected_pipeline": 0.6666666666666667
+          }
+        },
+        "male": {
+          "counts": {
+            "0": 12,
+            "1": 14
+          },
+          "auroc": {
+            "rich_lr": 0.6666666666666666,
+            "rich_svm": 0.6904761904761906,
+            "scratch_neural": 0.6130952380952381,
+            "spectral_lr": 0.6130952380952381,
+            "ssl_hybrid_lr": 0.6309523809523809,
+            "ssl_hybrid_svm": 0.6428571428571428,
+            "ssl_neural": 0.6845238095238095,
+            "selected_pipeline": 0.5892857142857143
+          }
+        },
+        "age_below_65": {
+          "counts": {
+            "0": 6,
+            "1": 4
+          },
+          "not_estimated": "Fewer than five retained people in either class"
+        },
+        "age_65_plus": {
+          "counts": {
+            "0": 12,
+            "1": 18
+          },
+          "auroc": {
+            "rich_lr": 0.7083333333333334,
+            "rich_svm": 0.6620370370370371,
+            "scratch_neural": 0.5694444444444444,
+            "spectral_lr": 0.6620370370370371,
+            "ssl_hybrid_lr": 0.6759259259259259,
+            "ssl_hybrid_svm": 0.6527777777777777,
+            "ssl_neural": 0.6388888888888888,
+            "selected_pipeline": 0.5740740740740741
+          }
+        }
+      }
+    }
+  },
+  "posthoc_confound_auroc": {
+    "cross_site": {
+      "demographic": {
+        "iowa": 0.5677337674082114,
+        "tel_aviv": 0.5473307649972483,
+        "ucsd": 0.4622222222222222,
+        "unm": 0.49242424242424243
+      },
+      "recording_quality": {
+        "iowa": 0.4906553324892988,
+        "tel_aviv": 0.46642817831590533,
+        "ucsd": 1.0,
+        "unm": 1.0
+      }
+    },
+    "within_site": {
+      "demographic": {
+        "iowa": 0.599957798275758,
+        "tel_aviv": 0.5822784810126583,
+        "ucsd": 0.34222222222222226,
+        "unm": 0.43434343434343436
+      },
+      "recording_quality": {
+        "iowa": 0.49490564900223066,
+        "tel_aviv": 0.42735277930654925,
+        "ucsd": 1.0,
+        "unm": 1.0
+      }
+    }
+  },
+  "excluded_recording_window_reasons": {
+    "ds003490": {
+      "amplitude": 29,
+      "step": 78
+    },
+    "ds003775": {
+      "amplitude": 9027,
+      "step": 9027
+    },
+    "ds004148": {
+      "step": 518,
+      "amplitude": 46
+    },
+    "ds004504": {
+      "step": 1163,
+      "amplitude": 524
+    },
+    "ds004796": {
+      "step": 1145,
+      "amplitude": 175
+    },
+    "ds005385": {
+      "step": 4029,
+      "amplitude": 445,
+      "flat": 478
+    },
+    "ds006036": {
+      "step": 602,
+      "amplitude": 245,
+      "repeat": 6,
+      "flat": 4
+    },
+    "ds007526": {
+      "amplitude": 1723,
+      "step": 2126
+    },
+    "ds007864": {
+      "step": 908,
+      "amplitude": 319
+    },
+    "ds007865": {
+      "amplitude": 235,
+      "step": 298
+    },
+    "ds008768": {
+      "step": 1359,
+      "amplitude": 673
+    },
+    "bigp3bci": {
+      "step": 104,
+      "repeat": 45,
+      "amplitude": 130
+    }
+  },
+  "diagnostic_scope": "Post-lock descriptive analyses only. No model changes or retuning. Bootstrap conditions on these four sites and excludes training/selection uncertainty. Comparisons and subgroups are unadjusted and exploratory."
+}

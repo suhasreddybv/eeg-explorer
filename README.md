@@ -98,3 +98,7 @@ The **Data archive** button shows live progress for a configured external archiv
 ## Parkinson’s classifier research plan
 
 The [research-backed PD classifier proposal](docs/PD_CLASSIFIER_RESEARCH_PLAN.md) describes the initial neural model, participant-separated train/validation/test split, independent-study evaluation, local runtime estimates and later Myna integration. The approved compute policy is local Mac only, with notification before any continuous stage forecast over four days. See [local training operations](docs/LOCAL_TRAINING.md).
+
+## Expanded PD research results
+
+The v3 comparison is complete: [reviewed report](docs/PD_V3_RESULTS.md), [PDF](output/pdf/PD_Classifier_V3_Report.pdf), [verification](docs/PD_V3_VERIFICATION.md), and [model cards](docs/pd-v3-model-cards.json). Cross-site and within-site results are separate. Pretraining did not demonstrate a cross-site improvement; results are exploratory and acquisition confounding remains material. The [preliminary v2 report](docs/PD_COMPARISON_RESULTS.md) is preserved.

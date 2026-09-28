@@ -1,0 +1,318 @@
+{
+  "rich_lr": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.7096622199739411,
+      "ci95": [
+        0.6360057565937935,
+        0.7777036559809045
+      ]
+    },
+    "within_site": {
+      "auroc": 0.664282906522929,
+      "ci95": [
+        0.5883368062305626,
+        0.7355965741752154
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "rich_lr",
+      "C": 0.1
+    },
+    "final_neural_epochs": null,
+    "final_fit_seeds": [
+      20260927
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "rich_svm": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.7627009137599776,
+      "ci95": [
+        0.7035377623874989,
+        0.8196446450873495
+      ]
+    },
+    "within_site": {
+      "auroc": 0.7112558599274492,
+      "ci95": [
+        0.6424999414990215,
+        0.7793640924353136
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "rich_svm",
+      "C": 10.0
+    },
+    "final_neural_epochs": null,
+    "final_fit_seeds": [
+      20260927
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "scratch_neural": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.6992766161784022,
+      "ci95": [
+        0.6241253082397844,
+        0.7694245437218523
+      ]
+    },
+    "within_site": {
+      "auroc": 0.6416510634697867,
+      "ci95": [
+        0.5632605670938627,
+        0.719600129036442
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "scratch_neural",
+      "lr": 0.001
+    },
+    "final_neural_epochs": 6,
+    "final_fit_seeds": [
+      20260927,
+      20260928,
+      20260929
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "spectral_lr": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.559400224595556,
+      "ci95": [
+        0.47857747401405953,
+        0.6349422269213713
+      ]
+    },
+    "within_site": {
+      "auroc": 0.6409733121609531,
+      "ci95": [
+        0.562359096948843,
+        0.7138738137580167
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "spectral_lr",
+      "C": 0.1
+    },
+    "final_neural_epochs": null,
+    "final_fit_seeds": [
+      20260927
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "ssl_hybrid_lr": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.7202315308757891,
+      "ci95": [
+        0.6453775521809756,
+        0.7870379929580303
+      ]
+    },
+    "within_site": {
+      "auroc": 0.6581627290345585,
+      "ci95": [
+        0.5818195911327562,
+        0.7309407597707395
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "ssl_hybrid_lr",
+      "C": 0.1
+    },
+    "final_neural_epochs": null,
+    "final_fit_seeds": [
+      20260927
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "ssl_hybrid_svm": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.7613106789255362,
+      "ci95": [
+        0.7001955414120702,
+        0.8189218982411742
+      ]
+    },
+    "within_site": {
+      "auroc": 0.7149381101453812,
+      "ci95": [
+        0.6460745967176549,
+        0.7844579150441352
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "ssl_hybrid_svm",
+      "C": 10.0
+    },
+    "final_neural_epochs": null,
+    "final_fit_seeds": [
+      20260927
+    ],
+    "chosen_by_final_all_data_selection": true
+  },
+  "ssl_neural": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.68545228342626,
+      "ci95": [
+        0.6052899002305318,
+        0.7555829654137355
+      ]
+    },
+    "within_site": {
+      "auroc": 0.67682783910977,
+      "ci95": [
+        0.5997312478289115,
+        0.7469051463370706
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "final_configuration": {
+      "family": "ssl_neural",
+      "lr": 0.0003
+    },
+    "final_neural_epochs": 2,
+    "final_fit_seeds": [
+      20260927,
+      20260928,
+      20260929
+    ],
+    "chosen_by_final_all_data_selection": false
+  },
+  "selected_pipeline": {
+    "intended_use": "Exploratory PD-versus-control EEG research, not diagnosis or symptom severity",
+    "test_scope": "Nested participant/site cross-validation on four previously examined sites",
+    "cross_site": {
+      "auroc": 0.6897338859123204,
+      "ci95": [
+        0.6106332410476588,
+        0.7581844209931216
+      ]
+    },
+    "within_site": {
+      "auroc": 0.6927203909103888,
+      "ci95": [
+        0.6163728428576694,
+        0.7684093625446655
+      ]
+    },
+    "limitations": [
+      "Previously examined sites",
+      "Engineering QC selection",
+      "Multiple-session aggregation",
+      "Age/sex and acquisition confounding",
+      "No prospective clinical validation"
+    ],
+    "inputs": "Named scalp EEG electrodes; fixed spectral features; all accepted compatible resting duration; metadata not used in primary EEG model",
+    "protocol": "PD_PROTOCOL_V3",
+    "retained_pd_control_participants": 440,
+    "primary_selection_criterion": "Equal-site mean AUROC in inner training-site validation",
+    "direct_metadata_inputs": false,
+    "recording_design_confound": "ON/OFF repeated PD sessions versus one control visit at UCSD/UNM",
+    "meaning": "Inner-selected family may differ by outer fold; this evaluates the selection procedure"
+  }
+}
