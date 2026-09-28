@@ -116,3 +116,48 @@ Two interpretation gaps were raised for review before Stage 7 locks anything, an
 - Added `tests/test_harmonize_v4.py` (10 tests) including the protocol's required invariant case — a site-independent scorer gives spread exactly 0 — plus a positive control that a prevalence-sensitive scorer is flagged.
 - `uv run ruff check .` and `uv run pytest -q` both green (120 passed).
 - **Next:** Stage 7 (T1 nested comparison, stacking, negative controls; gates G2–G4) — the first stage that fits supervised models, so the implementation policy must be re-frozen and the outer lock respected.
+
+## Stage 7: T1 nested comparison, stacking, negative controls (28 September 2026)
+
+- Implemented `models_v4.py` (F0–F6 as sklearn Pipelines, the `LeapdScorer`, the non-negative stacker `S`, Platt calibration) and `compare_v4.py` (person loading, `folds`, the D3 objective, `FoldContext`, `campaign`, `evaluate`, `negative_controls`).
+- **Not implemented, and recorded rather than passed over:** F7 (attention-MIL) and F8 (connectivity logistic, blocked on B-7 from Stage 5). The stacker therefore combines F0–F6. Since the protocol writes S's inputs as "F0–F6 (+F7, +FM if gated)", F0–F6 is the core it specifies, but the absence must be stated in the final report.
+- **Leakage boundaries enforced, not assumed.** Every fitted transform lives inside a training-fold Pipeline or in a `FoldContext` built from training people only. A sentinel test (`test_no_fitted_transform_sees_held_out_people`) poisons every held-out person's features with NaN and asserts the training-row design matrix is bit-identical, proving the C3 normative fit never read a test person.
+- **Performance optimisation, verified neutral:** `FoldContext` is memoised by (regime, training-people set) — the C3 normative model and tangent reference depend only on the training set, not the family or hyper-parameter, so they were being refit identically dozens of times. D3 scores verified bit-identical with and without the cache; runtime fell ~5× (89.2s → 17.9s for a seven-family pass).
+- **Benchmark and gate:** 53.7 s/fold measured on one cross-site and one within-site fold → 7 folds × 1.25 margin ≈ **0.13 h forecast**, far under the 96-hour gate.
+- **Lock order respected:** all outer models fitted → `outer-models-lock.json` frozen → only then `evaluate()` generated outer predictions. `evaluate()` raises if the lock is absent (tested).
+
+### Results — pre-declared pipeline first
+
+**Primary (`S|I`, pre-declared): cross-site 0.759, within-site 0.779, composite 0.769.**
+Secondary (`S|T`): cross-site 0.765, within-site 0.782, composite 0.774.
+
+| Variant | Cross-site | Within-site | Composite |
+|---|---|---|---|
+| F2 specparam elastic-net (I) | 0.774 | 0.801 | 0.788 |
+| **S\|T** (pre-declared secondary) | 0.765 | 0.782 | 0.774 |
+| F0 rich-SVM (I) — v3 baseline recomputed | 0.758 | 0.785 | 0.771 |
+| **S\|I** (pre-declared primary) | **0.759** | **0.779** | **0.769** |
+| F6 boosting (I) | 0.783 | 0.738 | 0.760 |
+| F3 Riemannian (I) | 0.718 | 0.748 | 0.733 |
+| F3 Riemannian (T) | 0.737 | 0.724 | 0.730 |
+| F1 relative-spectra SVM (I) | 0.677 | 0.714 | 0.696 |
+| F5 entropy (I) | 0.607 | 0.663 | 0.635 |
+| F4 LEAPD (I) | 0.520 | 0.640 | 0.580 |
+
+F2's 0.788 is the highest observed composite, but it is a **post-hoc observation, not a pre-declared result** — exactly the distinction v3 drew between its 0.763 best family and its 0.690 selection procedure. The honest headline is S|I = 0.769.
+
+### Gates
+
+- **H1 / G4 — met.** S|I beats v3's pre-declared pipeline on both components (cross 0.759 vs 0.690, within 0.779 vs 0.693; composite 0.769 vs 0.692, **+0.078**) and clears the "at least 0.75 on each" target. **Caveat that must travel with this number:** v3 and v4 differ in cohort (440 vs 324 eligible people, a direct consequence of A1's one-session rule), QC thresholds and features, so this is not a clean architecture-only comparison.
+- **G2 — NOT met. H2 unsupported.** Best B-only family (F2) inner-CV composite 0.7574 vs F0 (recomputed v3-rich) 0.7506 = **+0.0068**, well short of the required +0.02. The new aperiodic/relative/LPC families did **not** add materially over the v3-rich baseline on inner CV. Operationalised as best-B-family vs F0 because the gate has no pipeline consequence (S runs either way) and the margin is nowhere near the threshold; the full inner table is in `gates.json`.
+- **G3 — NOT met on gain. H3 unsupported.** S|T improves cross-site by only +0.006 (<0.02). The stress-test component did pass for C1. Note F3 itself was *worse* transductively (0.730 vs 0.733 composite), so the small stack-level gain is not a clean C1 effect.
+
+### Negative controls (A5)
+
+- **Permutation null** (labels permuted within site, 20 permutations): mean 0.504, SD 0.051, max 0.580. The real cross-site 0.759 sits roughly 5 SD above — the signal is not an artifact of the fitting procedure.
+- **Age/sex only:** 0.541 cross-site — weak, consistent with v3.
+- **Site-identity probe** (macro-AUROC, lower is better): v3-rich 0.948, B-1+B-6 0.922, **B-2+C3 0.834**, B-3 tangent 0.964, B-4 0.945, B-5 0.961. Every representation still carries substantial site information; this is a material limitation for any cross-site claim. Coherently, the block that leaks least site identity (B-2+C3) is also the best cross-site transferer (F2).
+- **Recording metadata:** covered structurally — A1 makes session count constant, so it carries zero information by construction (Stage 3).
+
+- Added `tests/test_compare_v4.py` (10 tests). `uv run ruff check .` and `uv run pytest -q` green (132 passed).
+- **Next:** Stage 8 (Track E foundation models, optional/gated) or Stage 9 (T2 reduced-channel montages).
