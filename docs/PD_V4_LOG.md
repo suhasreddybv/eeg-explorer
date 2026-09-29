@@ -181,3 +181,23 @@ F2's 0.788 is the highest observed composite, but it is a **post-hoc observation
 - **A stated hypothesis was refuted.** The expectation was that the unfiltered-LPC bug explained F4/LEAPD's near-chance cross-site result. On corrected data F4 got *slightly worse*. LEAPD genuinely underperforms on this cohort; the bug was not the explanation. F5/entropy is what actually benefited.
 - **The selectivity is itself a check.** Only F4 and F5 moved — exactly the two families consuming the corrected arrays. F0/F1/F2/F3/F6 are identical to three decimals because they derive from the `tokens`/`cov` arrays the fix did not touch.
 - **No gate changed.** G2 still not met (+0.0068, identical — both F2 and F0 use untouched arrays; H2 unsupported). G3 still not met (+0.007; H3 unsupported). G4/H1 still met: S|I composite 0.770, +0.078 over v3's pre-declared 0.6915, clearing the ≥0.75 target on both components. The correction cost ~2 hours of recompute and changed no conclusion — which is now demonstrated rather than assumed.
+
+
+## Stage 9: T2 reduced-channel montages (28 September 2026, protocol v4.1)
+
+Montages are rebuilt from `preref128` and re-referenced to **their own channels only**. This is the crux of T2: v4's 17-channel features use an average reference over all 17 electrodes, so reusing them for a 4-channel montage would encode electrodes the device does not have. A test asserts montage output is unchanged when every non-montage channel is scrambled.
+
+| Montage | Ch | Electrodes | Cross-site | Within-site | Composite | vs T1 (0.770) |
+|---|---|---|---|---|---|---|
+| **M4F** forehead headband | 4 | Fp1 Fp2 F7 F8 | 0.561 | 0.574 | **0.567** | −0.202 |
+| **M4T** around-ear | 4 | T7 T8 P7 P8 | 0.769 | 0.776 | **0.772** | +0.003 |
+| **M5S** spread (Suuronen 2023) | 5 | F8 F4 T7 O1 O2 | 0.777 | 0.772 | **0.775** | +0.005 |
+| **M8** compact cap | 8 | Fp1 Fp2 F7 F8 T7 T8 O1 O2 | 0.761 | 0.767 | **0.764** | −0.005 |
+
+- **G6: PASSED.** Best pre-declared montage (M5S, 0.775) sits within 0.005 of T1 — far inside the 0.05 allowance.
+- **The finding that matters: placement dominates channel count.** Four around-ear electrodes (M4T) match a 17-channel cap. Four *forehead* electrodes (M4F) collapse to near-chance at every site — Iowa 0.540, Tel Aviv 0.519, UCSD 0.585, UNM 0.600. Since the forehead headband is the most common consumer form factor, this is a direct negative signal for that design and the single most actionable result in v4 so far.
+- **M4T/M5S do not beat T1.** The +0.003/+0.005 margins are well inside participant-bootstrap noise. The defensible claim is that they are statistically indistinguishable from the full montage, not superior. Reading these as "fewer channels are better" would be wrong.
+- **Distillation (M8): inconclusive, not a negative result.** The distilled student scored 0.042 below the hard-label student, but the comparison is confounded by two implementation weaknesses that are recorded rather than hidden: (i) the teacher used T1's *outer* within-site predictions because the protocol's per-fold inner-OOF vectors were not persisted by the Stage 7 campaign — still out-of-sample for the teacher, but not what the protocol specifies; and (ii) the distilled student is a Ridge regressor on soft targets while the hard-label student is a logistic regression, so model class and target type differ simultaneously. A clean test needs persisted inner-OOF teachers and a single model class trained on both target types.
+- **Scope decisions recorded in `reduced_v4.montage_families()`:** F0 and F6 are excluded from T2 (both are 17-channel-only constructions, so neither is a wearable claim), and montage F2 uses B-2 alone rather than B-2+C3, because the C3 z-scores come from a 17-channel normative model and scoring a 4-channel montage against them would reintroduce absent electrodes. Refitting normative models per montage over the 467-person auxiliary pool was out of scope for this run.
+- **Not run:** the greedy channel-budget search (k=2…8). It is explicitly descriptive — G6 uses only the pre-declared montages — and an exhaustive search over arbitrary subsets requires montage features recomputed per candidate subset for all 324 people.
+- `uv run ruff check .` and `uv run pytest -q` green (141 passed).
