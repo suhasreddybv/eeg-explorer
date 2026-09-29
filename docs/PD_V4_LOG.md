@@ -301,3 +301,27 @@ Caveats that must travel with this:
 - The rule was written for a Turku-EO result that was meaningfully above chance. It is not: on the 22-person overlap EO is 0.46 and EC is 0.49, both intervals spanning chance. "Small Δ" here means *both conditions are at chance*, which is consistent with, and adds nothing to, the Stage 11 finding that the model does not transfer to Turku. It does establish that condition is not the reason.
 - P3 (the M4T around-ear montage) is the exception: Δ = +0.20, with EC at 0.30 [0.06, 0.60] on n=18. The rule does not cover P3, but this is a warning for any eyes-closed wearable claim — the montage model is, if anything, *anti*-predictive eyes-closed, on a very small n.
 - The EO numbers in this table are recomputed on the overlap subset and therefore differ from the Stage 11 n=24 values (0.545/0.552/0.587); they are the same frozen models on fewer people.
+
+## Protocol v4.2 / 14.4: BrainLat pre-download inspection and cohort amendment (29 September 2026)
+
+**Why an inspection before the download:** the Synapse listing showed PD files named `*_reject.set` and HC files without the suffix. If the BrainLat team processed PD and HC differently, a classifier could score on the processing, not the disease — the same leak the Turku PREP files were refused over. `scripts/brainlat_v4.py inspect` counted naming classes across all 75 subjects and fetched **one flagged + one plain file per group** for a label-free signature comparison (`brainlat-inspection.json`; sampled subject identities not recorded).
+
+### Findings
+
+| | PD `_reject` | PD plain | HC plain |
+|---|---|---|---|
+| naming count | AR 7/7, CL 6/22 | CL 16/22 | AR 0/19, CL 0/27 flagged |
+| structure | **epoched, 360 × 1 s** | continuous | continuous |
+| ICA weights stored | no | yes | yes |
+| low-pass (−30 dB) | none | ≈55 Hz | ≈49 Hz |
+| 50 Hz mains | removed | removed | removed |
+
+1. **Processing tracks diagnosis.** The flagged pipeline (segmented, epoch-rejected, no ICA, no low-pass) exists only under PD: 13/29 PD vs 0/46 HC. Plain PD and plain HC share one pipeline.
+2. **There is no raw BrainLat data.** Every file is ICA-cleaned and low-passed; training and Turku were raw. A shared processing shift, reported as such.
+3. **Biosemi-128 cap (A1..D32)** with coordinates stored per file. Nearest electrode to a 10-20 target: 5–16 mm frontal/central, **22–31 mm at P8/O1** — nearest-electrode mapping would change what those channels measure.
+
+### Decisions (protocol §14.4, written before any BrainLat label was sealed)
+
+- **Cohort: Chile, plain-named files only — 16 PD vs 27 HC.** Argentine HC excluded because every Argentine person would be a control (site would predict label inside the test set). The excluded PD are, by naming, the artifact-heavier recordings: the PD sample is selected toward cleaner EEG, and that travels with the result.
+- **Channels: spherical-spline interpolation** of the 17 v3 channels at standard 10-20 positions from all 128 electrodes, using each file's own coordinates. Two bugs were caught by the synthetic-field test before any real file was touched: Biosemi's C3/C4 labels collide with 10-20 names (sources are now prefixed), and the standard montage's sphere centre sits **16 mm behind** the Biosemi origin, so placing standard positions directly among Biosemi ones tilted every target by ~10° (positions are now aligned by fitted sphere centres; the linear-field recovery test passes at r > 0.99). Derived 17-channel EDFs carry both source and derived hashes; the frozen loader is unchanged.
+- H5b and the one-shot rule unchanged. With 16 PD the interval will be wide; this is a second external site, not a power study.
