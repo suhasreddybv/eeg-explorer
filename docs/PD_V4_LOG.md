@@ -356,3 +356,10 @@ Searched after the BrainLat one-shot: OpenNeuro (full-text search of every datas
 - **E-DLB consortium** (PD = 71 across 11 sites): open portion is the Iowa data; in-house recordings restricted to approved proposals.
 - **Copenhagen/DRCMR 2026 preprint** (40 PD OFF-med, 26 HC, 128-ch BioSemi, eyes-open, 2048 Hz, raw): no data deposit; request-only. **Chosen as the single follow-up**; pre-registered as §14.5 before the request was drafted; a data-request letter was drafted for Suhas to send (never sent by the assistant).
 - **Around-ear / cEEGrid / in-ear PD data: none public.** The only ear-EEG datasets are auditory-attention studies in healthy adults. The around-ear evidence in v4 is therefore P3 = M4T on Turku (physical T7/T8/P7/P8, raw, EO) and BrainLat (interpolated, cleaned, EC), and that is the state of the field, not a search gap.
+
+## Stage 11 reporting: results document, model cards and PDF (29 September 2026) — G5
+
+- `scripts/report_pd_v4.py` builds `docs/pd-v4-results.json` (aggregate only; a leak check for participant keys and local paths returns zero) and `docs/pd-v4-model-cards.json` for P1, P2 and P3, each carrying internal composites, both Turku runs, BrainLat, the eyes-closed control, the locked threshold and the weights hash.
+- `scripts/report_pd_v4_pdf.py` renders `output/pdf/PD_Classifier_V4_Report.pdf` (18 pages) and `docs/PD_V4_RESULTS.md` from the JSON. Every page was rasterised (`--png`) and inspected; the first pass showed raw dict text in the fold-selection table and a sex-coding mismatch for New Mexico (`Male`/`Female` keys), both corrected before delivery. `report-validation.json` records the PDF hash and the review.
+- **G5 met:** ruff clean, 176 tests pass, `data/` ignored, no raw EEG, participant tables, predictions, weights or local paths in Git.
+- The report's decision: do not build a product on this classifier; the internal gains over v3 are real, the external generalisation is not demonstrated, and the output is not test-retest reliable. v5 should first test whether the Turku failure is a raw-versus-cleaned data effect (Copenhagen, §14.5).

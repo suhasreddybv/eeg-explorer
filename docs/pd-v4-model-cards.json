@@ -1,0 +1,448 @@
+{
+  "P1": {
+    "name": "S non-negative stack (P1, inductive)",
+    "pipeline": "S|I",
+    "regime": "inductive",
+    "intended_use": "Exploratory PD-versus-control resting EEG research on 17 named scalp channels; not diagnosis or symptom severity",
+    "inputs": "17 named 10-20 channels, 256 Hz, 1-40 Hz, average reference; first 15 accepted 4 s windows per person (A2); families B-1..B-6 plus v3-rich; C3 normative z-scores; no metadata inputs",
+    "test_scope": "Nested leave-one-site-out (4 sites) plus 3 within-site participant folds; two one-shot external sites",
+    "cross_site_macro_auroc": 0.7654174530189675,
+    "within_site_macro_auroc": 0.7737129021105509,
+    "composite": 0.7695651775647592,
+    "per_site_cross_auroc": {
+      "iowa": 0.7490671641791044,
+      "tel_aviv": 0.6546840958605665,
+      "ucsd": 0.7794871794871795,
+      "unm": 0.8784313725490196
+    },
+    "locked_site_turku": {
+      "confirmatory_n20": {
+        "pipeline": "P1 / I",
+        "auroc": 0.5700000000000001,
+        "auroc_ci95": [
+          0.28,
+          0.8099999999999999
+        ],
+        "pr_auc": 0.5879034772417125,
+        "brier": 0.2695542309089193,
+        "threshold": 0.5470618265934357,
+        "sensitivity": 0.2,
+        "specificity": 0.7,
+        "sensitivity_95ci_wilson": [
+          0.05668215145437519,
+          0.5098375284633583
+        ],
+        "specificity_95ci_wilson": [
+          0.39677814746114537,
+          0.8922087325936989
+        ],
+        "confusion_matrix": [
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            2
+          ]
+        ]
+      },
+      "corrected_n24_non_confirmatory": {
+        "pipeline": "P1 / I",
+        "auroc": 0.5454545454545454,
+        "auroc_ci95": [
+          0.30069930069930073,
+          0.7762237762237763
+        ],
+        "pr_auc": 0.5422120363296834,
+        "brier": 0.2620362228137856,
+        "threshold": 0.5470618265934357,
+        "sensitivity": 0.2727272727272727,
+        "specificity": 0.7692307692307693,
+        "sensitivity_95ci_wilson": [
+          0.09746059290024889,
+          0.5656453011761291
+        ],
+        "specificity_95ci_wilson": [
+          0.49743624053272495,
+          0.9182047128150143
+        ],
+        "confusion_matrix": [
+          [
+            10,
+            3
+          ],
+          [
+            8,
+            3
+          ]
+        ]
+      },
+      "gate_H5_ci_lower_above_0.60": false
+    },
+    "locked_site_brainlat": {
+      "pipeline": "P1 / I",
+      "auroc": 0.6971153846153847,
+      "auroc_ci95": [
+        0.4998798076923077,
+        0.8798076923076923
+      ],
+      "pr_auc": 0.8091369945414063,
+      "brier": 0.22019891169544786,
+      "threshold": 0.5470618265934357,
+      "sensitivity": 0.3125,
+      "specificity": 1.0,
+      "sensitivity_95ci_wilson": [
+        0.14164643854782039,
+        0.5559564416525933
+      ],
+      "specificity_95ci_wilson": [
+        0.7719046276458016,
+        0.9999999999999999
+      ],
+      "confusion_matrix": [
+        [
+          13,
+          0
+        ],
+        [
+          11,
+          5
+        ]
+      ],
+      "n_scored": 29,
+      "gate_H5b_ci_lower_above_0.60": false
+    },
+    "eyes_closed_control": {
+      "n_overlap": 22,
+      "n_ec_all": 23,
+      "eo_auroc_overlap": 0.4628099173553719,
+      "eo_ci95": [
+        0.21487603305785122,
+        0.6942148760330579
+      ],
+      "ec_auroc_overlap": 0.48760330578512395,
+      "ec_ci95": [
+        0.23140495867768596,
+        0.7355371900826446
+      ],
+      "delta_eo_minus_ec": -0.02479338842975204,
+      "ec_auroc_all": 0.5303030303030303,
+      "ec_ci95_all": [
+        0.2878787878787879,
+        0.7575757575757576
+      ]
+    },
+    "threshold": 0.5470618265934357,
+    "training_prevalence": 0.6450617283950617,
+    "n_training_people": 324,
+    "weights_sha256": "3662ec4d230af3f45c9801ac855cfac5a21f112cd2780f75cdfc01773edd672a",
+    "limitations": [
+      "Four training sites previously examined in v1-v3; internal estimates are exploratory",
+      "Site identity is recoverable from every representation (probe AUROC 0.81-0.97)",
+      "Engineering QC without blinded clinical validation; label-free thresholds sat at their ceilings",
+      "Turku one-shot (raw, eyes-open, n=20/24): H5 failed; CI spans chance",
+      "BrainLat one-shot (ICA-cleaned, eyes-closed, 16 PD / 13 HC): H5b failed on CI; ranking 0.70-0.74 but locked threshold does not transfer",
+      "No prospective clinical validation; not a diagnostic, progression or symptom-tracking product"
+    ],
+    "protocol": "PD_PROTOCOL_V4",
+    "protocol_sha256": "447c47cb060f6c735d064c41b91cca96186c124daed2d30793007845c29321ff"
+  },
+  "P2": {
+    "name": "S non-negative stack (P2, transductive)",
+    "pipeline": "S|T",
+    "regime": "transductive (C1 re-centering on the test site's own covariances)",
+    "intended_use": "Exploratory PD-versus-control resting EEG research on 17 named scalp channels; not diagnosis or symptom severity",
+    "inputs": "17 named 10-20 channels, 256 Hz, 1-40 Hz, average reference; first 15 accepted 4 s windows per person (A2); families B-1..B-6 plus v3-rich; C3 normative z-scores; no metadata inputs",
+    "test_scope": "Nested leave-one-site-out (4 sites) plus 3 within-site participant folds; two one-shot external sites",
+    "cross_site_macro_auroc": 0.7727866224824219,
+    "within_site_macro_auroc": 0.7766287634696052,
+    "composite": 0.7747076929760135,
+    "per_site_cross_auroc": {
+      "iowa": 0.7494169776119403,
+      "tel_aviv": 0.650326797385621,
+      "ucsd": 0.8051282051282052,
+      "unm": 0.8862745098039215
+    },
+    "locked_site_turku": {
+      "confirmatory_n20": {
+        "pipeline": "P2 / T",
+        "auroc": 0.6000000000000001,
+        "auroc_ci95": [
+          0.33000000000000007,
+          0.85
+        ],
+        "pr_auc": 0.6059391915274268,
+        "brier": 0.26323788534006753,
+        "threshold": 0.5970875326747709,
+        "sensitivity": 0.2,
+        "specificity": 0.8,
+        "sensitivity_95ci_wilson": [
+          0.05668215145437519,
+          0.5098375284633583
+        ],
+        "specificity_95ci_wilson": [
+          0.49016247153664183,
+          0.9433178485456247
+        ],
+        "confusion_matrix": [
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            2
+          ]
+        ]
+      },
+      "corrected_n24_non_confirmatory": {
+        "pipeline": "P2 / T",
+        "auroc": 0.5524475524475524,
+        "auroc_ci95": [
+          0.3006993006993007,
+          0.7692307692307692
+        ],
+        "pr_auc": 0.544604380827291,
+        "brier": 0.26059097980686574,
+        "threshold": 0.5970875326747709,
+        "sensitivity": 0.18181818181818182,
+        "specificity": 0.8461538461538461,
+        "sensitivity_95ci_wilson": [
+          0.05136768974608513,
+          0.4769805619608442
+        ],
+        "specificity_95ci_wilson": [
+          0.5776536898051745,
+          0.9567418216419186
+        ],
+        "confusion_matrix": [
+          [
+            11,
+            2
+          ],
+          [
+            9,
+            2
+          ]
+        ]
+      },
+      "gate_H5_ci_lower_above_0.60": false
+    },
+    "locked_site_brainlat": {
+      "pipeline": "P2 / T",
+      "auroc": 0.7355769230769231,
+      "auroc_ci95": [
+        0.5192307692307693,
+        0.8991586538461533
+      ],
+      "pr_auc": 0.8333098103163892,
+      "brier": 0.20725012150414324,
+      "threshold": 0.5970875326747709,
+      "sensitivity": 0.25,
+      "specificity": 1.0,
+      "sensitivity_95ci_wilson": [
+        0.10182067491213048,
+        0.49498316535508774
+      ],
+      "specificity_95ci_wilson": [
+        0.7719046276458016,
+        0.9999999999999999
+      ],
+      "confusion_matrix": [
+        [
+          13,
+          0
+        ],
+        [
+          12,
+          4
+        ]
+      ],
+      "n_scored": 29,
+      "gate_H5b_ci_lower_above_0.60": false
+    },
+    "eyes_closed_control": {
+      "n_overlap": 22,
+      "n_ec_all": 23,
+      "eo_auroc_overlap": 0.47107438016528924,
+      "eo_ci95": [
+        0.23119834710743797,
+        0.7190082644628099
+      ],
+      "ec_auroc_overlap": 0.5041322314049587,
+      "ec_ci95": [
+        0.2479338842975207,
+        0.7603305785123967
+      ],
+      "delta_eo_minus_ec": -0.03305785123966942,
+      "ec_auroc_all": 0.5454545454545455,
+      "ec_ci95_all": [
+        0.2954545454545454,
+        0.7803030303030303
+      ]
+    },
+    "threshold": 0.5970875326747709,
+    "training_prevalence": 0.6450617283950617,
+    "n_training_people": 324,
+    "weights_sha256": "9d86b2daaaaccac5656f215dec9bd7bcdc5ad7b71b78b3516c6f4869ffa63297",
+    "limitations": [
+      "Four training sites previously examined in v1-v3; internal estimates are exploratory",
+      "Site identity is recoverable from every representation (probe AUROC 0.81-0.97)",
+      "Engineering QC without blinded clinical validation; label-free thresholds sat at their ceilings",
+      "Turku one-shot (raw, eyes-open, n=20/24): H5 failed; CI spans chance",
+      "BrainLat one-shot (ICA-cleaned, eyes-closed, 16 PD / 13 HC): H5b failed on CI; ranking 0.70-0.74 but locked threshold does not transfer",
+      "No prospective clinical validation; not a diagnostic, progression or symptom-tracking product"
+    ],
+    "protocol": "PD_PROTOCOL_V4",
+    "protocol_sha256": "447c47cb060f6c735d064c41b91cca96186c124daed2d30793007845c29321ff"
+  },
+  "P3": {
+    "name": "P3 M4T around-ear montage stack",
+    "pipeline": "M4T montage stack (T7, T8, P7, P8), inductive",
+    "intended_use": "Exploratory around-ear feasibility on a montage subset of full caps; NOT a claim about any around-ear device (no public around-ear PD dataset exists)",
+    "inputs": "4 channels re-referenced within the montage from preref128; families B-1, B-2, B-4, B-5, B-6 and Riemannian covariance on the 4 channels; C3 normative features",
+    "selection_note": "P3 fixed to M4T by reviewed decision as the wearable form factor of interest, NOT chosen on any score. M5S scored marginally higher on outer composite and was deliberately not used.",
+    "test_scope": "Nested leave-one-site-out (4 sites) plus 3 within-site participant folds; two one-shot external sites",
+    "cross_site_macro_auroc": 0.7688573691372199,
+    "within_site_macro_auroc": 0.7761387989586382,
+    "composite": 0.7724980840479291,
+    "per_site_cross_auroc": {
+      "iowa": 0.7406716417910447,
+      "tel_aviv": 0.659041394335512,
+      "ucsd": 0.8051282051282052,
+      "unm": 0.8705882352941177
+    },
+    "locked_site_turku": {
+      "confirmatory_n20": {
+        "pipeline": "P3 / I",
+        "auroc": 0.6000000000000001,
+        "auroc_ci95": [
+          0.33,
+          0.84
+        ],
+        "pr_auc": 0.6293518899401253,
+        "brier": 0.2592624279329324,
+        "threshold": 0.558137157917785,
+        "sensitivity": 0.3,
+        "specificity": 0.8,
+        "sensitivity_95ci_wilson": [
+          0.10779126740630099,
+          0.6032218525388546
+        ],
+        "specificity_95ci_wilson": [
+          0.49016247153664183,
+          0.9433178485456247
+        ],
+        "confusion_matrix": [
+          [
+            8,
+            2
+          ],
+          [
+            7,
+            3
+          ]
+        ]
+      },
+      "corrected_n24_non_confirmatory": {
+        "pipeline": "P3 / I",
+        "auroc": 0.5874125874125874,
+        "auroc_ci95": [
+          0.3356643356643356,
+          0.8041958041958042
+        ],
+        "pr_auc": 0.5920235466288097,
+        "brier": 0.24926094454002543,
+        "threshold": 0.558137157917785,
+        "sensitivity": 0.2727272727272727,
+        "specificity": 0.8461538461538461,
+        "sensitivity_95ci_wilson": [
+          0.09746059290024889,
+          0.5656453011761291
+        ],
+        "specificity_95ci_wilson": [
+          0.5776536898051745,
+          0.9567418216419186
+        ],
+        "confusion_matrix": [
+          [
+            11,
+            2
+          ],
+          [
+            8,
+            3
+          ]
+        ]
+      }
+    },
+    "locked_site_brainlat": {
+      "pipeline": "P3 / I / M4T",
+      "auroc": 0.7259615384615384,
+      "auroc_ci95": [
+        0.5191105769230768,
+        0.8990384615384616
+      ],
+      "pr_auc": 0.7766856693143458,
+      "brier": 0.22370390872422213,
+      "threshold": 0.558137157917785,
+      "sensitivity": 0.25,
+      "specificity": 1.0,
+      "sensitivity_95ci_wilson": [
+        0.10182067491213048,
+        0.49498316535508774
+      ],
+      "specificity_95ci_wilson": [
+        0.7719046276458016,
+        0.9999999999999999
+      ],
+      "confusion_matrix": [
+        [
+          13,
+          0
+        ],
+        [
+          12,
+          4
+        ]
+      ],
+      "n_scored": 29,
+      "channels": "spline-interpolated from 128 Biosemi electrodes"
+    },
+    "eyes_closed_control": {
+      "n_overlap": 18,
+      "n_ec_all": 23,
+      "eo_auroc_overlap": 0.5,
+      "eo_ci95": [
+        0.1875,
+        0.7875
+      ],
+      "ec_auroc_overlap": 0.3,
+      "ec_ci95": [
+        0.0625,
+        0.6
+      ],
+      "delta_eo_minus_ec": 0.2,
+      "ec_auroc_all": 0.42424242424242425,
+      "ec_ci95_all": [
+        0.18939393939393936,
+        0.6666666666666667
+      ]
+    },
+    "threshold": 0.558137157917785,
+    "n_training_people": 324,
+    "weights_sha256": "5ead50dce6491496dd59c878d17cea8c8f62361e493cfc520bcbb43518380fd0",
+    "limitations": [
+      "Four training sites previously examined in v1-v3; internal estimates are exploratory",
+      "Site identity is recoverable from every representation (probe AUROC 0.81-0.97)",
+      "Engineering QC without blinded clinical validation; label-free thresholds sat at their ceilings",
+      "Turku one-shot (raw, eyes-open, n=20/24): H5 failed; CI spans chance",
+      "BrainLat one-shot (ICA-cleaned, eyes-closed, 16 PD / 13 HC): H5b failed on CI; ranking 0.70-0.74 but locked threshold does not transfer",
+      "No prospective clinical validation; not a diagnostic, progression or symptom-tracking product",
+      "Eyes-closed Turku: P3 fell to 0.30 [0.06, 0.60] on n=18; the around-ear montage is condition-sensitive"
+    ],
+    "protocol": "PD_PROTOCOL_V4",
+    "protocol_sha256": "447c47cb060f6c735d064c41b91cca96186c124daed2d30793007845c29321ff"
+  }
+}
