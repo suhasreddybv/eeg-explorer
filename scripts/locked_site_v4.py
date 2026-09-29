@@ -345,8 +345,120 @@ def verify_format():
     return report
 
 
-def evaluate():
-    raise NotImplementedError("Stage 11 one-shot Turku evaluation; not implemented yet")
+def evaluate(repeat=False):
+    """The one-shot locked-site evaluation.
+
+    Verifies both locks and the seal hash, opens the sealed labels, scores
+    P1/P2/P3, and writes locked-site-results.json. Refuses a second run
+    unless `repeat=True`, which also stamps the output as non-confirmatory.
+    """
+    import numpy as np
+    from sklearn.metrics import average_precision_score, brier_score_loss, roc_auc_score
+
+    from pd_pipeline import compare_v4 as cv
+    from pd_pipeline.experiments import wilson
+    from pd_pipeline.registry import save
+
+    results_path = V4_RUN / "locked-site-results.json"
+    if results_path.exists() and not repeat:
+        raise RuntimeError(
+            "Turku has already been evaluated. This is a one-shot test: re-running makes "
+            "the result non-confirmatory. Pass --i-understand-this-is-a-repeat to proceed."
+        )
+    for required in ("outer-models-lock.json", "final-models-lock.json"):
+        if not (V4_RUN / required).exists():
+            raise RuntimeError(f"{required} missing; refusing to open the locked site")
+    seal = json.loads((V4_RUN / "locked-site-seal.json").read_text())
+    sealed_path = SEALED_DIR / "labels.json"
+    if _sha256_file(sealed_path) != seal["sealed_labels_sha256"]:
+        raise RuntimeError("Sealed labels file has changed since it was sealed")
+
+    labels = load_labels()["labels"]
+    people = cv.load_people(role="locked_test")
+    scored = []
+    for person in people:
+        subject = person["key"].split(":", 1)[1]
+        entry = labels.get(subject)
+        if entry is None:
+            continue
+        person = dict(person)
+        person["y"] = int(entry["label"])
+        person["age"] = float(entry.get("age")) if entry.get("age") is not None else float("nan")
+        sex = str(entry.get("sex", "")).strip().upper()
+        person["sex"] = {"M": 0.0, "F": 1.0, "1": 1.0, "0": 0.0}.get(sex, float("nan"))
+        scored.append(person)
+
+    y = np.array([p["y"] for p in scored])
+    report = {
+        "protocol_version": "v4.1",
+        "confirmatory": not repeat,
+        "n_scored": len(scored),
+        "n_source_recordings": 40,
+        "coverage": {
+            "scored": len(scored),
+            "pd": int((y == 1).sum()),
+            "control": int((y == 0).sum()),
+            "excluded_before_labels": 40 - len(scored),
+            "note": (
+                "QC exclusions were determined label-free, before any label was opened: "
+                "13 recordings produced no accepted window and 3 fell below A2's 10-window "
+                "minimum."
+            ),
+        },
+        "pipelines": {},
+    }
+    if len(set(y)) < 2:
+        report["error"] = "Only one diagnosis class survived QC; AUROC is undefined."
+        save(results_path, report)
+        return report
+
+    from pd_pipeline.reduced_v4 import load_montage_people
+
+    rng = np.random.default_rng(20261001)
+    for tag in ("P1", "P2", "P3"):
+        target = load_montage_people(scored, "M4T") if tag == "P3" else scored
+        if len(target) != len(scored):
+            report["pipelines"][tag] = {"error": "missing montage features"}
+            continue
+        probabilities, meta = cv.score_with_final(tag, target)
+        y_t = np.array([p["y"] for p in target])
+        auroc = float(roc_auc_score(y_t, probabilities))
+        boot = []
+        for _ in range(2000):
+            idx = np.concatenate(
+                [rng.choice(np.flatnonzero(y_t == c), (y_t == c).sum(), replace=True) for c in (0, 1)]
+            )
+            boot.append(roc_auc_score(y_t[idx], probabilities[idx]))
+        threshold = meta["threshold"]
+        predicted = probabilities >= threshold
+        tp = int(((y_t == 1) & predicted).sum())
+        fn = int(((y_t == 1) & ~predicted).sum())
+        tn = int(((y_t == 0) & ~predicted).sum())
+        fp = int(((y_t == 0) & predicted).sum())
+        report["pipelines"][tag] = {
+            "pipeline": meta["tag"] + " / " + meta["regime"],
+            "auroc": auroc,
+            "auroc_ci95": [float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975))],
+            "pr_auc": float(average_precision_score(y_t, probabilities)),
+            "brier": float(brier_score_loss(y_t, probabilities)),
+            "threshold": threshold,
+            "sensitivity": tp / max(tp + fn, 1),
+            "specificity": tn / max(tn + fp, 1),
+            "sensitivity_95ci_wilson": wilson(tp, max(tp + fn, 1)),
+            "specificity_95ci_wilson": wilson(tn, max(tn + fp, 1)),
+            "confusion_matrix": [[tn, fp], [fn, tp]],
+        }
+
+    ages = np.array([p["age"] for p in scored], dtype="float64")
+    sexes = np.array([p["sex"] for p in scored], dtype="float64")
+    report["balance"] = {
+        "age_mean_pd": float(np.nanmean(ages[y == 1])) if np.isfinite(ages[y == 1]).any() else None,
+        "age_mean_control": float(np.nanmean(ages[y == 0])) if np.isfinite(ages[y == 0]).any() else None,
+        "female_fraction_pd": float(np.nanmean(sexes[y == 1])) if np.isfinite(sexes[y == 1]).any() else None,
+        "female_fraction_control": float(np.nanmean(sexes[y == 0])) if np.isfinite(sexes[y == 0]).any() else None,
+    }
+    save(results_path, report)
+    return report
 
 
 DS008875 = {
@@ -416,7 +528,7 @@ if __name__ == "__main__":
     {
         "download": download,
         "seal": seal,
-        "evaluate": evaluate,
+        "evaluate": lambda: evaluate(repeat="--i-understand-this-is-a-repeat" in sys.argv),
         "overlap_audit": overlap_audit,
         "verify_format": verify_format,
     }[sys.argv[1]]()

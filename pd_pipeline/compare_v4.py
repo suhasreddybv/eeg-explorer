@@ -691,3 +691,87 @@ def negative_controls(run=RUN, seed=SEED, n_permutations=20):
     }
     save(run / "negative-controls.json", report)
     return report
+
+
+# ---------------------------------------------------------------------------
+# Stage 11: final all-data fits, then the final lock
+# ---------------------------------------------------------------------------
+
+
+def final_fit(run=RUN, seed=SEED, family_specs=None, regime="I", tag="P1"):
+    """Fit the pre-named pipeline on ALL eligible supervised people, with
+    hyper-parameters chosen by the same D3 inner selection. This produces
+    the model that scores the locked site; it carries no test claim of its
+    own."""
+    import pickle
+
+    people = load_people(run)
+    normative_pool = build_normative_pool(run)
+    family_specs = family_specs or FAMILIES
+    all_indices = list(range(len(people)))
+    get_context = context_factory()
+    y = np.array([p["y"] for p in people])
+
+    selections, oof = {}, {}
+    for family in family_specs:
+        best, _ = select_family(
+            people, all_indices, family, regime, normative_pool, seed, get_context, family_specs
+        )
+        selections[family] = best["params"]
+        column = best["oof"]
+        oof[family] = np.where(np.isnan(column), np.nanmean(column), column)
+
+    context = get_context(people, people, regime, normative_pool, seed)
+    fitted = {}
+    for family, params in selections.items():
+        spec = family_specs[family]
+        model = spec["build"](params)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            model.fit(context.block(people, spec["block"]), y)
+        fitted[family] = model
+
+    stacker = NonNegativeStacker(C=1.0).fit(
+        np.column_stack([oof[f] for f in family_specs]), y
+    )
+    stacked_oof = stacker.predict_proba(np.column_stack([oof[f] for f in family_specs]))[:, 1]
+
+    artefact = {
+        "tag": tag,
+        "regime": regime,
+        "families": list(family_specs),
+        "selections": selections,
+        "stacker_weights": dict(zip(family_specs, stacker.weights_.tolist())),
+        "threshold": choose_threshold(y, stacked_oof),
+        "training_prevalence": float(y.mean()),
+        "n_training_people": len(people),
+    }
+    folder = run / "final-models"
+    folder.mkdir(parents=True, exist_ok=True)
+    with (folder / f"{tag}.pkl").open("wb") as handle:
+        pickle.dump(
+            {"fitted": fitted, "stacker": stacker, "context": context, "meta": artefact}, handle
+        )
+    save(folder / f"{tag}.json", artefact)
+    return artefact
+
+
+def score_with_final(tag, people, run=RUN):
+    """Apply a frozen final pipeline to new people (the locked site)."""
+    import pickle
+
+    with (run / "final-models" / f"{tag}.pkl").open("rb") as handle:
+        bundle = pickle.load(handle)
+    meta, context, stacker = bundle["meta"], bundle["context"], bundle["stacker"]
+    from .models_v4 import FAMILIES as ALL
+
+    from .reduced_v4 import montage_families
+
+    specs = ALL if meta["tag"] != "P3" else montage_families()
+    columns = []
+    for family in meta["families"]:
+        spec = specs[family]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            columns.append(bundle["fitted"][family].predict_proba(context.block(people, spec["block"]))[:, 1])
+    return stacker.predict_proba(np.column_stack(columns))[:, 1], meta

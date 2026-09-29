@@ -103,3 +103,39 @@ def test_raises_rather_than_guesses_on_unexpected_group_values():
         locked_site_v4.resolve_pd_group_coding(
             data_rows, idx["PD group"], idx["LEDD"], idx["PD duration"]
         )
+
+
+def test_evaluate_refuses_without_both_locks(tmp_path, monkeypatch):
+    """The one-shot must not open labels until both locks exist."""
+    monkeypatch.setattr(locked_site_v4, "V4_RUN", tmp_path)
+    with pytest.raises(RuntimeError, match="outer-models-lock.json missing"):
+        locked_site_v4.evaluate()
+    (tmp_path / "outer-models-lock.json").write_text("{}")
+    with pytest.raises(RuntimeError, match="final-models-lock.json missing"):
+        locked_site_v4.evaluate()
+
+
+def test_evaluate_refuses_a_second_run_without_the_override(tmp_path, monkeypatch):
+    monkeypatch.setattr(locked_site_v4, "V4_RUN", tmp_path)
+    (tmp_path / "locked-site-results.json").write_text("{}")
+    with pytest.raises(RuntimeError, match="one-shot"):
+        locked_site_v4.evaluate()
+    # With the override it gets past the repeat guard and fails later, on the
+    # locks -- i.e. the override only waives the repeat check, nothing else.
+    with pytest.raises(RuntimeError, match="lock"):
+        locked_site_v4.evaluate(repeat=True)
+
+
+def test_evaluate_detects_a_tampered_seal(tmp_path, monkeypatch):
+    monkeypatch.setattr(locked_site_v4, "V4_RUN", tmp_path)
+    sealed = tmp_path / "sealed"
+    sealed.mkdir()
+    monkeypatch.setattr(locked_site_v4, "SEALED_DIR", sealed)
+    (tmp_path / "outer-models-lock.json").write_text("{}")
+    (tmp_path / "final-models-lock.json").write_text("{}")
+    (sealed / "labels.json").write_text(json.dumps({"labels": {"01": {"label": 1}}}))
+    (tmp_path / "locked-site-seal.json").write_text(
+        json.dumps({"sealed_labels_sha256": "0" * 64})
+    )
+    with pytest.raises(RuntimeError, match="changed since it was sealed"):
+        locked_site_v4.evaluate()
