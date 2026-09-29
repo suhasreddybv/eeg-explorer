@@ -192,6 +192,11 @@ class FoldContext:
             return np.stack([p["b4"] for p in people])
         if name == "b5":
             return np.stack([p["b5"] for p in people])
+        if name == "fm":
+            # Track E: frozen foundation-model embedding (Stage 8). Present
+            # only when fm_v4 has attached one; never part of the
+            # pre-declared primary pipeline.
+            return np.stack([p["fm"] for p in people])
         if name == "b2":
             # B-2 alone, no C3 z-scores. Used by the T2 montage variants:
             # the cached normative vector is a 17-channel quantity, so
