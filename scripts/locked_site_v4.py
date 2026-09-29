@@ -79,23 +79,30 @@ def _sha256_file(path):
     return h.hexdigest()
 
 
-def discover_targets():
-    """The 40 raw eyesOpen.set files (never *_PREP_preprocessed.set), plus
-    InfoAboutParticipants.xlsx and the preprocessing .m file, each with the
-    OSF-reported size/sha256/download link/version."""
+EXPECTED_RAW = {"eyesOpen": 40, "eyesClosed": 44}
+
+
+def discover_targets(condition="eyesOpen"):
+    """The raw <NN>_<condition>.set files (never *_PREP_preprocessed.set),
+    plus InfoAboutParticipants.xlsx and the preprocessing .m file, each
+    with the OSF-reported size/sha256/download link/version.
+
+    eyesOpen is the locked-site test condition (40 files). eyesClosed (44
+    files, same participants) is used only for the protocol v4.2 condition-
+    shift diagnostic; it is never a fresh test."""
     root_items = {i["attributes"]["name"]: i for i in _list_folder(ROOT_URL)}
     data_items = _list_folder(DATA_FOLDER_URL)
-    raw_eyes_open = sorted(
-        (i for i in data_items if i["attributes"]["name"].endswith("_eyesOpen.set")),
+    raw = sorted(
+        (i for i in data_items if i["attributes"]["name"].endswith(f"_{condition}.set")),
         key=lambda i: i["attributes"]["name"],
     )
-    if len(raw_eyes_open) != 40:
+    if len(raw) != EXPECTED_RAW[condition]:
         raise ValueError(
-            f"Expected 40 raw eyesOpen.set files, found {len(raw_eyes_open)}; "
+            f"Expected {EXPECTED_RAW[condition]} raw {condition}.set files, found {len(raw)}; "
             "stop and ask before proceeding (source layout may have changed)."
         )
     targets = []
-    for item in raw_eyes_open:
+    for item in raw:
         targets.append(("raw", item))
     for name in ["InfoAboutParticipants.xlsx", "EEG_PD_restingstate_preprocess.m"]:
         if name not in root_items:
@@ -130,10 +137,10 @@ def _download_one(item, dest):
     return {"status": "downloaded", "bytes": got_bytes, "sha256": got_sha256}
 
 
-def download():
+def download(condition="eyesOpen"):
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    targets = discover_targets()
-    manifest = {"osf_node": OSF_NODE, "licence_note": LICENCE_NOTE, "files": []}
+    targets = discover_targets(condition)
+    manifest = {"osf_node": OSF_NODE, "condition": condition, "licence_note": LICENCE_NOTE, "files": []}
     for role, item in targets:
         a = item["attributes"]
         dest = RAW_DIR / a["name"]
@@ -154,7 +161,9 @@ def download():
         print(a["name"], result["status"], result["bytes"], flush=True)
     manifest["total_bytes"] = sum(f["bytes"] for f in manifest["files"])
     manifest["total_files"] = len(manifest["files"])
-    manifest_path = LOCKED_ROOT / "manifest.json"
+    # The eyes-open manifest backs the sealed one-shot and must never be
+    # overwritten by the diagnostic condition's download.
+    manifest_path = LOCKED_ROOT / ("manifest.json" if condition == "eyesOpen" else f"manifest-{condition}.json")
     manifest_path.write_text(json.dumps(manifest, indent=2))
     print(f"manifest written: {manifest_path}", flush=True)
     return manifest
@@ -537,7 +546,7 @@ def overlap_audit():
 
 if __name__ == "__main__":
     {
-        "download": download,
+        "download": lambda: download("eyesClosed" if "--eyes-closed" in sys.argv else "eyesOpen"),
         "seal": seal,
         "evaluate": lambda: evaluate(repeat="--i-understand-this-is-a-repeat" in sys.argv),
         "overlap_audit": overlap_audit,

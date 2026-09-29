@@ -183,3 +183,37 @@ Local Mac only; 96-hour gate before every continuous stage; freeze-before-fit; n
 ---
 
 *Research use only. Nothing in v4 establishes a diagnostic device, progression measure or wearable performance claim.*
+
+---
+
+## 14. Protocol v4.2 addendum: a second locked site, and a condition-shift control (29 September 2026)
+
+Frozen **before** any BrainLat data is downloaded and before any Turku eyes-closed recording is scored. Motivation: the Turku one-shot (H5) failed decisively — P1 AUROC 0.545 [0.301, 0.776] — and a single external site cannot distinguish "the pipeline does not generalise to unseen sites" from "it does not generalise to *that* site's recording quality". A systematic search of OpenNeuro (exhaustive, via its GitHub mirror), OSF, Zenodo, figshare, Dryad, Harvard Dataverse, PhysioNet, EBRAINS and GIN, plus every cohort cited by the three multi-site PD-EEG studies, found exactly **one** downloadable, non-overlapping PD-vs-control resting-EEG source: BrainLat. Every other candidate is Iowa-lineage, already in training, private (OHSU, USD, expanded Iowa), request-only (Medellín, Emotiv/Malaysia), task-based (Emory `gd24w`, Northumbria `fxb8z`), or features-only (Kaggle).
+
+### 14.1 BrainLat (Synapse `syn51549340`) — second locked site, `locked_test_2`
+
+- Source: Latin American Brain Health Institute; Prado et al., *Scientific Data* 2023. CC-BY-4.0. Synapse imposes **zero access requirements** (no data-use agreement); a free account is needed to download.
+- EEG: 128-channel Biosemi ActiveTwo, 512 Hz, **eyes-closed**, 10 min, EEG-BIDS. All 17 v3 channels are present.
+- Participants with EEG, from the two sites that have both groups: **~29 PD** (7 Argentina CNC-UdeSA, 22 Chile GERO) and **46 HC** (19 Argentina, 27 Chile). Colombia contributes no PD EEG and is excluded.
+- **Labels are sealed at download.** Diagnosis is given by folder membership (`3_PD` vs `5_HC`); the download script records it to a sealed file that only the evaluation command may read, exactly as for Turku.
+- **Subject IDs repeat across sites** (`sub-40001` exists under both `PD/AR` and `PD/CL`). Every person key is therefore site-qualified — `brainlat:<site>:<subject>` — and a test asserts no cross-site collision. This is the class of bug that cost the Turku one-shot its first run.
+- QC and A2 are unchanged and label-free. Coverage is reported by diagnosis.
+- **Pipelines scored: P1, P2, P3 exactly as locked in `final-models-lock.json`. No refit.** P3 is the M4T around-ear montage; on BrainLat this is a montage subset of a 128-channel cap — the honest framing is identical to Stage 9's, and it is **not** a claim about any around-ear device. No public around-ear PD dataset exists.
+- **H5b.** The primary pipeline's 95% CI lower bound on BrainLat is above 0.60. Reported either way. Same one-shot rule: a second run requires the override flag and is non-confirmatory.
+
+### 14.2 The eyes-closed confound, and the pre-registered Turku-EC control
+
+Training and Turku are eyes-open; BrainLat is eyes-closed. A null BrainLat result would therefore be ambiguous between site shift and condition shift. To separate them, the 44 Turku eyes-closed recordings — the **same people** already tested eyes-open, same licence terms — are scored with the identical frozen P1/P2/P3 **before** BrainLat is opened. This is a diagnostic on labels already unsealed; it is **not** a new test and is labelled non-confirmatory.
+
+**Decision rule, fixed now:** let Δ = AUROC(Turku-EO, n=24 corrected run) − AUROC(Turku-EC, same people, P1).
+- **|Δ| ≤ 0.05** → the EO→EC shift is small; a BrainLat result is interpreted as evidence about *site* generalisation.
+- **Δ > 0.10** → EC materially degrades the pipeline; a null BrainLat result is reported as **confounded by condition** and is not evidence about site generalisation.
+- **0.05 < Δ ≤ 0.10** → reported as partially confounded; BrainLat is interpreted only qualitatively.
+
+Because Turku-EO is itself near chance (0.545), Δ may be uninformative in the "small" direction: both could be near 0.5 for different reasons. The rule is kept anyway so that the interpretation is committed before the numbers exist; that limitation is stated with the result.
+
+### 14.3 Order of operations
+
+1. Download Turku eyes-closed (44 files) → windows under frozen thresholds → features and M4T montage features → score P1/P2/P3 → compute Δ → record verdict under 14.2.
+2. Only then download BrainLat (PD + HC from AR and CL), seal labels, verify format label-free, extract, build features.
+3. One-shot BrainLat evaluation via the same guarded command (both locks, seal hash, repeat refusal).
