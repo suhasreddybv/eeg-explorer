@@ -250,3 +250,31 @@ Montages are rebuilt from `preref128` and re-referenced to **their own channels 
 - **ICC(2,1) of the exported LLR = 0.436** across 18 Iowa participants with a usable second session (between-session Spearman 0.484). Repeat sessions are absent from the v4 registry by construction (A1 keeps one per person), so they were extracted on demand; each person's two sessions were scored by a model trained on the three non-Iowa sites, so neither session was ever in training.
 - **This misses H6's ≥0.6 target.** At n=18 the interval is wide, but 0.436 is moderate at best, and it is the single most important number for any Myna *tracking* claim: session-to-session variability is substantial relative to between-person differences. A cross-sectional classifier is better supported by this work than a progression monitor.
 - `uv run ruff check .` and `uv run pytest -q` green (153 passed).
+
+## Stage 11: final fits and the one-shot locked-site evaluation (29 September 2026, protocol v4.1)
+
+**Reviewed decisions applied before anything was opened:** P3 was fixed to the **M4T** around-ear montage as the wearable form factor of interest — explicitly *not* selected on any score (M5S scored marginally higher on outer composite and was deliberately not used). The evaluation proceeded on the Turku people passing QC and A2, with exclusions reported by diagnosis.
+
+Final all-data fits (P1 `S|I`, P2 `S|T`, P3 M4T stack) on all 324 supervised people, then `final-models-lock.json`, then the locked site — in that order.
+
+### Two bugs were caught before the shot was spent, and one after
+
+- **Before (not spent):** the transductive P2 crashed because C1 re-centering was looked up in the training map, which cannot contain a new site. Correct behaviour is to re-center a locked site on *its own* covariances; `extend_transductive` now does that, tested. No results file had been written, so the one-shot was intact.
+- **Before (not spent):** P3 crashed on a dimension mismatch — `final_fit` was loading 17-channel people while wearing montage family specs, so P3 would have been a 17-channel model *labelled* "M4T". The mismatch (10-dim vs 153-dim tangent vectors) caught it. Had the dimensions coincided, this would have been exactly the leak Stage 9 exists to prevent. `final_fit` now takes a `montage` argument and fits on montage features.
+- **After (shot spent):** Turku filenames are zero-padded (`02`) while the label spreadsheet keys the same person unpadded (`2`). Raw string matching silently dropped **every single-digit participant** — 4 of 24 eligible people (17%), systematically biased toward low participant numbers. Fixed, regression-tested, and re-run under the protocol's override.
+
+### Results
+
+| Pipeline | Confirmatory (n=20) | Corrected, non-confirmatory (n=24) |
+|---|---|---|
+| **P1 `S\|I`** (primary) | **0.570** [0.280, 0.810] | **0.545** [0.301, 0.776] |
+| P2 `S\|T` | 0.600 [0.330, 0.850] | 0.552 [0.301, 0.769] |
+| P3 M4T wearable | 0.600 [0.330, 0.840] | 0.587 [0.336, 0.804] |
+
+Coverage (n=24 run): 11 PD / 13 control scored; 16 of 40 recordings excluded, all by label-free QC decided before any label was opened (13 produced no accepted window, 3 fell below A2's 10-window minimum). Age is balanced (PD 68.9, control 68.0) as is sex (45% vs 54% female).
+
+- **H5 FAILS decisively, on both runs.** It required the primary pipeline's 95% CI lower bound above 0.60; the actual lower bounds are **0.280** (n=20) and **0.301** (n=24). Both intervals comfortably span chance.
+- **This is the most important result in v4, and it contradicts every internal number.** Nested cross-validation across four sites gave a composite of 0.770; the first genuinely unexamined site gives ~0.55 with an interval including chance. Whatever the internal pipeline learned does not transfer to Turku.
+- **The conclusion is robust to the bug.** Correcting it moved the primary estimate 0.570 → 0.545 and changed nothing about the verdict — as predicted before re-running.
+- **Both runs are reported.** The n=20 run is the formally confirmatory one-shot; the n=24 run is complete but non-confirmatory by protocol, since it followed seeing the first result.
+- Interpretation to carry into the report: the site-identity probe (0.83–0.96 across every representation) already warned that site information dominates these features. Turku is consistent with that warning — internal cross-site folds still shared acquisition era, montage conventions and preprocessing lineage in ways a truly external Finnish clinical recording does not.

@@ -374,12 +374,22 @@ def evaluate(repeat=False):
         raise RuntimeError("Sealed labels file has changed since it was sealed")
 
     labels = load_labels()["labels"]
+    # Turku filenames are zero-padded ("02") while the spreadsheet keys the
+    # same participant unpadded ("2"). Matching on the raw string silently
+    # dropped every single-digit participant, so normalise both sides.
+    def _normalise(key):
+        key = str(key).strip()
+        return str(int(key)) if key.isdigit() else key
+
+    labels = {_normalise(k): v for k, v in labels.items()}
     people = cv.load_people(role="locked_test")
+    unmatched = []
     scored = []
     for person in people:
-        subject = person["key"].split(":", 1)[1]
+        subject = _normalise(person["key"].split(":", 1)[1])
         entry = labels.get(subject)
         if entry is None:
+            unmatched.append(person["key"])
             continue
         person = dict(person)
         person["y"] = int(entry["label"])
@@ -406,6 +416,7 @@ def evaluate(repeat=False):
             ),
         },
         "pipelines": {},
+        "unmatched_after_qc": unmatched,
     }
     if len(set(y)) < 2:
         report["error"] = "Only one diagnosis class survived QC; AUROC is undefined."

@@ -167,3 +167,35 @@ def test_transductive_regime_is_restricted_to_guardrail_survivors():
 def test_evaluate_refuses_before_the_outer_lock_exists(tmp_path):
     with pytest.raises(RuntimeError, match="not locked"):
         cv.evaluate(run=tmp_path)
+
+
+def test_transductive_context_recentres_a_new_site_on_itself():
+    """A locked site must be re-centred using its OWN covariances, not
+    looked up in the training map (which would KeyError, or worse, silently
+    reuse another site's statistics)."""
+    people = _cohort(n_per_site=5)
+    normative_pool = [
+        {"normative": np.random.default_rng(i).normal(size=38), "age": 60.0, "sex": float(i % 2)}
+        for i in range(40)
+    ]
+    context = cv.FoldContext(people, people, "T", normative_pool)
+    newcomers = [_person(f"new:{i}", "locked_site", 0, seed=500 + i) for i in range(6)]
+    for person in newcomers:
+        assert person["key"] not in (context.recentred or {})
+    context.extend_transductive(newcomers)
+    for person in newcomers:
+        assert person["key"] in context.recentred
+    # And the block assembles without error for the new site.
+    assert context.block(newcomers, "b3_tangent").shape[0] == len(newcomers)
+
+
+def test_extend_transductive_is_a_noop_in_inductive_regime():
+    people = _cohort(n_per_site=5)
+    normative_pool = [
+        {"normative": np.random.default_rng(i).normal(size=38), "age": 60.0, "sex": 0.0}
+        for i in range(40)
+    ]
+    context = cv.FoldContext(people, people, "I", normative_pool)
+    before = getattr(context, "recentred", None)
+    context.extend_transductive([_person("new:1", "locked_site", 0, seed=900)])
+    assert getattr(context, "recentred", None) == before

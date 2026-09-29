@@ -139,3 +139,20 @@ def test_evaluate_detects_a_tampered_seal(tmp_path, monkeypatch):
     )
     with pytest.raises(RuntimeError, match="changed since it was sealed"):
         locked_site_v4.evaluate()
+
+
+def test_participant_id_zero_padding_is_normalised():
+    """Regression: Turku filenames are zero-padded ('02') while the source
+    spreadsheet keys the same person unpadded ('2'). Matching on the raw
+    string silently dropped every single-digit participant -- a systematic
+    17% loss of the locked test set, biased toward low participant numbers."""
+    def normalise(key):
+        key = str(key).strip()
+        return str(int(key)) if key.isdigit() else key
+
+    filename_ids = ["01", "02", "09", "10", "24", "40"]
+    spreadsheet_ids = ["1", "2", "9", "10", "24", "40"]
+    assert [normalise(k) for k in filename_ids] == [normalise(k) for k in spreadsheet_ids]
+    # Raw matching is what failed before the fix.
+    assert "02" not in set(spreadsheet_ids)
+    assert normalise("02") in set(normalise(k) for k in spreadsheet_ids)

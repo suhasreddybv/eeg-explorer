@@ -170,6 +170,29 @@ class FoldContext:
             )
             self.recentred = {p["key"]: m for p, m in zip(with_cov, recentred)}
 
+    def extend_transductive(self, people):
+        """Transductive C1 for people the context was not fitted over -- a
+        new site at scoring time.
+
+        The whole point of C1 is that a site's statistics come from that
+        site's own (unlabelled) recordings, so a locked site must be
+        re-centred on itself, not looked up in the training map. Labels are
+        never involved.
+        """
+        if self.regime != "T":
+            return
+        with_cov = [p for p in people if p.get("cov") is not None]
+        missing = [p for p in with_cov if p["key"] not in (self.recentred or {})]
+        if not missing:
+            return
+        recentred = recenter_riemann(
+            np.stack([p["cov"] for p in missing]).astype("float64"),
+            np.array([p["site"] for p in missing]),
+        )
+        if self.recentred is None:
+            self.recentred = {}
+        self.recentred.update({p["key"]: m for p, m in zip(missing, recentred)})
+
     def normative_z_for(self, people):
         X = np.array([p["normative"] for p in people])
         age = np.array([p["age"] for p in people])
@@ -698,7 +721,7 @@ def negative_controls(run=RUN, seed=SEED, n_permutations=20):
 # ---------------------------------------------------------------------------
 
 
-def final_fit(run=RUN, seed=SEED, family_specs=None, regime="I", tag="P1"):
+def final_fit(run=RUN, seed=SEED, family_specs=None, regime="I", tag="P1", montage=None):
     """Fit the pre-named pipeline on ALL eligible supervised people, with
     hyper-parameters chosen by the same D3 inner selection. This produces
     the model that scores the locked site; it carries no test claim of its
@@ -706,6 +729,15 @@ def final_fit(run=RUN, seed=SEED, family_specs=None, regime="I", tag="P1"):
     import pickle
 
     people = load_people(run)
+    if montage:
+        # A montage pipeline must be FIT on montage features, not merely
+        # scored with them. Fitting on 17-channel data and labelling the
+        # result "M4T" would be exactly the leak Stage 9 exists to prevent.
+        from .reduced_v4 import load_montage_people
+
+        people = load_montage_people(people, montage, run)
+        if not people:
+            raise ValueError(f"No montage features cached for {montage}")
     normative_pool = build_normative_pool(run)
     family_specs = family_specs or FAMILIES
     all_indices = list(range(len(people)))
@@ -745,6 +777,7 @@ def final_fit(run=RUN, seed=SEED, family_specs=None, regime="I", tag="P1"):
         "threshold": choose_threshold(y, stacked_oof),
         "training_prevalence": float(y.mean()),
         "n_training_people": len(people),
+        "montage": montage,
     }
     folder = run / "final-models"
     folder.mkdir(parents=True, exist_ok=True)
@@ -768,6 +801,8 @@ def score_with_final(tag, people, run=RUN):
     from .reduced_v4 import montage_families
 
     specs = ALL if meta["tag"] != "P3" else montage_families()
+    # A locked site is re-centred on its own recordings under regime T.
+    context.extend_transductive(people)
     columns = []
     for family in meta["families"]:
         spec = specs[family]
