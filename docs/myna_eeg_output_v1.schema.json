@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/myna_eeg_output_v1.schema.json",
+  "title": "Myna EEG output v1",
+  "description": "Per-session EEG output for multimodal fusion. Research use only: this is not a diagnostic device output, not a progression measure, and not a validated wearable claim.",
+  "type": "object",
+  "required": [
+    "schema",
+    "model_id",
+    "montage",
+    "regime",
+    "quality",
+    "pd_probability",
+    "pd_log_likelihood_ratio",
+    "embedding",
+    "research_use_only"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "myna-eeg-output/1"
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Hash of the frozen fitted model."
+    },
+    "montage": {
+      "type": "string",
+      "enum": [
+        "T1_17ch",
+        "M4F",
+        "M4T",
+        "M5S",
+        "M8"
+      ]
+    },
+    "regime": {
+      "type": "string",
+      "enum": [
+        "inductive",
+        "transductive"
+      ]
+    },
+    "quality": {
+      "type": "object",
+      "required": [
+        "accepted_windows",
+        "acceptance_fraction"
+      ],
+      "properties": {
+        "accepted_windows": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "acceptance_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "line_noise_ratio": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "pd_probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "pd_log_likelihood_ratio": {
+      "type": "number",
+      "description": "logit(calibrated p) - logit(training prevalence). Prior-free, so a fusion step can apply its own prior instead of inheriting this research cohort's ~64% PD rate."
+    },
+    "cognition_index": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "units": {
+          "type": "string"
+        }
+      },
+      "description": "Exploratory (H6); not a validated cognitive measure."
+    },
+    "embedding": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "PCA of the stacked-feature space, fit on training people only."
+    },
+    "research_use_only": {
+      "const": true
+    }
+  }
+}
