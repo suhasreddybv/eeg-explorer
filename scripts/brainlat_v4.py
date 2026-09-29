@@ -461,6 +461,52 @@ def interpolate_to_v3(raw):
     return combined.pick(targets)
 
 
+class HeaderOnly(Exception):
+    """A .set whose .fdt sample file was never published: no recording."""
+
+
+def _data_companions(path):
+    return sorted(p for p in path.parent.iterdir() if p.suffix.lower() == ".fdt" and not p.name.startswith("._"))
+
+
+def read_source(path):
+    """Open a BrainLat .set without touching the originals.
+
+    Two dataset quirks, both handled in a scratch directory: (1) 14 HC
+    files are 3 MB headers whose .fdt was never uploaded -> HeaderOnly;
+    (2) PD files were renamed on Synapse (sub-400xx) but their headers
+    still reference the pre-rename .fdt name (s6_sub-100xx). The referenced
+    name is symlinked to the one .fdt actually present. PD and HC files
+    with matching digits were checked to be different recordings (sizes
+    and sha256 differ)."""
+    import re
+    import shutil
+    import tempfile
+    import warnings
+
+    import mne
+
+    warnings.filterwarnings("ignore")
+    if path.suffix.lower() != ".set":
+        return mne.io.read_raw(str(path), preload=True, verbose=False)
+    companions = _data_companions(path)
+    if not companions:
+        raise HeaderOnly(path.name)
+    with tempfile.TemporaryDirectory(prefix="brainlat-set-") as td:
+        tmp = Path(td) / path.name
+        shutil.copyfile(path, tmp)
+        for f in companions:
+            os.symlink(f, tmp.parent / f.name)
+        try:
+            return mne.io.read_raw(str(tmp), preload=True, verbose=False)
+        except FileNotFoundError as e:
+            m = re.search(r"File (.+?) not found", str(e))
+            if not m or len(companions) != 1:
+                raise
+            os.symlink(companions[0], tmp.parent / Path(m.group(1)).name)
+            return mne.io.read_raw(str(tmp), preload=True, verbose=False)
+
+
 def derive():
     """Write one 17-channel EDF per subject next to the originals and
     record source/derived hashes. QC and features then run on these files
@@ -473,13 +519,20 @@ def derive():
     manifest = json.loads((LOCKED_ROOT / "manifest.json").read_text())
     by_key = {s["key"]: s for s in manifest["subjects"]}
     derived = {"method": "spherical-spline interpolation (MNE interpolate_bads, mode=accurate) to standard_1005 positions of the 17 v3 channels; positions from each file's own chanlocs",
-               "files": []}
+               "files": [], "header_only": []}
     for site, subject, path in _source_files():
         key = person_key(site, subject)
         entry = next(f for f in by_key[key]["files"] if f["name"] == path.name)
         if _sha256_file(path) != entry["sha256"]:
             raise ValueError(f"Source integrity failure before derivation: {path.name}")
-        raw = mne.io.read_raw(str(path), preload=True, verbose=False)
+        try:
+            raw = read_source(path)
+        except HeaderOnly:
+            # No sample data was ever published for this subject. Recorded by key
+            # (label-free here; cross-tabulated by group only in the report).
+            derived["header_only"].append(key)
+            print(key, "header-only, no .fdt published", flush=True)
+            continue
         out = DERIVED_DIR / site / subject / f"{subject}_v3_17ch.edf"
         out.parent.mkdir(parents=True, exist_ok=True)
         mne.export.export_raw(str(out), interpolate_to_v3(raw), fmt="edf", overwrite=True, verbose=False)
