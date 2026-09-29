@@ -65,6 +65,55 @@ def test_inspection_sample_is_one_flagged_and_one_plain_per_group_in_sorted_orde
     assert ("5_HC", "flagged") not in picked  # no flagged HC file exists: nothing is invented
 
 
+def test_cohort_filter_keeps_chile_plain_files_only_and_counts_the_rest_without_names():
+    kept, excluded = brainlat_v4.select_subjects(_rows())
+    assert [r["subject"] for r in kept] == ["sub-3", "sub-4"]
+    assert excluded["3_PD/AR"] == {"other_site": 2}
+    assert excluded["5_HC/CL"] == {"no_or_ambiguous_eeg_file": 1}
+    assert excluded["5_HC/AR"] == {"other_site": 1}
+    # Counts only: no subject id appears anywhere in the exclusion record.
+    assert "sub-" not in json.dumps(excluded)
+
+
+def test_cohort_filter_excludes_flagged_chile_pd():
+    rows = _rows() + [{"group": "3_PD", "site": "CL", "subject": "sub-9", "folder_id": "g", "files": ["s9_CL_PD_reject.set"]}]
+    kept, excluded = brainlat_v4.select_subjects(rows)
+    assert "sub-9" not in [r["subject"] for r in kept]
+    assert excluded["3_PD/CL"] == {"preprocessing_flagged_name": 1}
+
+
+def test_interpolation_recovers_a_smooth_scalp_field_at_the_17_v3_positions():
+    """A field that is linear in scalp direction must be reproduced at the
+    virtual 10-20 sites from the 128 Biosemi electrodes. This is the whole
+    basis for scoring BrainLat with a 17-channel model."""
+    import mne
+    import numpy as np
+
+    from pd_pipeline.cohort_v3 import CONFIG
+
+    bio = mne.channels.make_standard_montage("biosemi128")
+    pos = bio.get_positions()["ch_pos"]
+    names = list(pos)
+    unit = np.array([pos[n] / np.linalg.norm(pos[n]) for n in names])
+    field = unit[:, 0] + 0.5 * unit[:, 1] - 0.3 * unit[:, 2]  # linear in direction
+    t = np.linspace(0, 1, 256)
+    data = field[:, None] * np.sin(2 * np.pi * 10 * t)[None, :] * 1e-5
+    raw = mne.io.RawArray(data, mne.create_info(names, 256.0, "eeg"), verbose=False)
+    raw.set_montage(bio, verbose=False)
+
+    out = brainlat_v4.interpolate_to_v3(raw)
+    assert out.ch_names == list(CONFIG["channels"])
+    # Directions must be taken about the standard montage's own sphere
+    # centre (a realistic head, ~16 mm behind the origin), as the code does.
+    std = mne.channels.make_standard_montage("standard_1005").get_positions()["ch_pos"]
+    std_centre, _ = brainlat_v4._fit_sphere(np.array(list(std.values())))
+    target_unit = np.array([(std[c] - std_centre) / np.linalg.norm(std[c] - std_centre) for c in out.ch_names])
+    expected = target_unit[:, 0] + 0.5 * target_unit[:, 1] - 0.3 * target_unit[:, 2]
+    got = out.get_data()[:, 64] / (np.sin(2 * np.pi * 10 * t[64]) * 1e-5)
+    assert np.corrcoef(expected, got)[0, 1] > 0.99
+    assert np.abs(expected - got).max() < 0.15  # field spans about 2 units
+
+
 def test_load_labels_reads_sealed_file_once_both_locks_exist(tmp_path, monkeypatch):
     sealed = tmp_path / "sealed"
     sealed.mkdir()

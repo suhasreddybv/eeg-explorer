@@ -83,25 +83,54 @@ def discover(syn):
     return out
 
 
+COHORT_SITE = "CL"  # protocol 14.4: Chile only, plain-named files only
+
+
+def select_subjects(rows):
+    """Protocol 14.4 cohort filter, pure. Keeps Chile subjects whose single
+    EEG file carries no preprocessing flag; returns (kept, excluded_counts)
+    where the counts are aggregated by group/site/reason and never name a
+    subject."""
+    kept, excluded = [], {}
+    for row in rows:
+        name = _eeg_name(row)
+        reason = None
+        if row["site"] != COHORT_SITE:
+            reason = "other_site"
+        elif name is None:
+            reason = "no_or_ambiguous_eeg_file"
+        elif PREPROCESSING_FLAG.search(name):
+            reason = "preprocessing_flagged_name"
+        if reason:
+            cell = excluded.setdefault(f"{row['group']}/{row['site']}", {})
+            cell[reason] = cell.get(reason, 0) + 1
+        else:
+            kept.append({**row, "eeg_file": name})
+    return kept, excluded
+
+
 def download():
-    """Download each subject's eeg/ folder and seal labels in the same pass.
-    Nothing is printed per subject beyond the key and byte count."""
+    """Download the protocol 14.4 cohort (Chile, plain-named) and seal its
+    labels in the same pass. Flagged and Argentine subjects are counted, not
+    fetched. Nothing is printed per subject beyond the key and byte count."""
     syn = _client()
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     SEALED_DIR.mkdir(parents=True, exist_ok=True)
-    subjects = discover(syn)
-    keys = [person_key(site, subject) for _, site, subject, _, _ in subjects]
+    label_of = {group: label for group, (_, label) in GROUP_FOLDERS.items()}
+    kept, excluded = select_subjects(listing(syn))
+    keys = [person_key(r["site"], r["subject"]) for r in kept]
     if len(keys) != len(set(keys)):
         raise ValueError("Site-qualified keys collide; refusing to proceed")
 
-    manifest = {"project": PROJECT, "licence_note": LICENCE_NOTE, "subjects": []}
+    manifest = {"project": PROJECT, "licence_note": LICENCE_NOTE, "cohort_rule": "protocol 14.4: Chile, plain-named files",
+                "excluded_counts": excluded, "subjects": []}
     labels = {}
-    for group, site, subject, folder_id, label in subjects:
-        key = person_key(site, subject)
-        dest = RAW_DIR / site / subject
+    for row in kept:
+        key = person_key(row["site"], row["subject"])
+        dest = RAW_DIR / row["site"] / row["subject"]
         dest.mkdir(parents=True, exist_ok=True)
         files = []
-        for entity in syn.getChildren(folder_id, includeTypes=["folder", "file"]):
+        for entity in syn.getChildren(row["folder_id"], includeTypes=["folder"]):
             if entity["name"] != "eeg":
                 continue
             for f in syn.getChildren(entity["id"], includeTypes=["file"]):
@@ -110,8 +139,8 @@ def download():
                 files.append(
                     {"name": path.name, "bytes": path.stat().st_size, "sha256": _sha256_file(path), "synid": f["id"]}
                 )
-        manifest["subjects"].append({"key": key, "site": site, "subject": subject, "files": files})
-        labels[key] = {"label": label, "site": site}
+        manifest["subjects"].append({"key": key, "site": row["site"], "subject": row["subject"], "eeg_file": row["eeg_file"], "files": files})
+        labels[key] = {"label": label_of[row["group"]], "site": row["site"]}
         print(key, sum(f["bytes"] for f in files), flush=True)
 
     (LOCKED_ROOT / "manifest.json").write_text(json.dumps(manifest, indent=2))
@@ -328,18 +357,139 @@ BIOSEMI_LABEL = __import__("re").compile(r"^[A-D]\d{1,2}$")
 PREPROCESSING_FLAG = __import__("re").compile(r"reject|prep|clean|ica|filt|proc", __import__("re").I)
 
 
-def _eeg_files():
-    """One EEG file per subject. BrainLat's EEG folder is NOT BIDS-named
-    (e.g. s40001_CH_PD_reject.set, s6_sub-100012_rs_eeg.set), so match any
-    .set/.bdf/.edf/.vhdr and refuse ambiguity rather than pick silently."""
+def _source_files():
+    """One downloaded EEG file per subject. BrainLat's EEG folder is NOT
+    BIDS-named (e.g. s40001_CH_PD_reject.set, s6_sub-100012_rs_eeg.set), so
+    match any .set/.bdf/.edf/.vhdr and refuse ambiguity rather than pick
+    silently."""
     out = []
     for site in SITES:
         for subject_dir in sorted((RAW_DIR / site).glob("sub-*")):
-            hits = sorted(h for h in subject_dir.rglob("*") if h.suffix.lower() in (".set", ".bdf", ".edf", ".vhdr"))
+            hits = sorted(h for h in subject_dir.rglob("*") if h.suffix.lower() in EEG_SUFFIXES)
             if len(hits) > 1:
                 raise ValueError(f"{subject_dir}: {len(hits)} candidate EEG files; refusing to guess which is the recording")
             if hits:
                 out.append((site, subject_dir.name, hits[0]))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Protocol 14.4: virtual 10-20 channels from the 128-electrode Biosemi cap
+# ---------------------------------------------------------------------------
+
+DERIVED_DIR = LOCKED_ROOT / "derived"
+DERIVED_MANIFEST = LOCKED_ROOT / "derived-manifest.json"
+
+
+def _fit_sphere(points):
+    """Algebraic least-squares sphere fit. Returns (centre, radius)."""
+    import numpy as np
+
+    A = np.c_[2 * points, np.ones(len(points))]
+    b = (points**2).sum(axis=1)
+    x = np.linalg.lstsq(A, b, rcond=None)[0]
+    centre = x[:3]
+    return centre, float(np.sqrt(x[3] + centre @ centre))
+
+
+def interpolate_to_v3(raw):
+    """Spherical-spline interpolation of the 17 v3 channels at their
+    standard 10-20 positions from every electrode in `raw`, using the
+    coordinates stored in the file. No template, no nearest-electrode.
+
+    Mechanically: append 17 zero channels at the target positions, mark
+    them bad, and let MNE's interpolate_bads (Perrin et al. 1989) fill them
+    from the good electrodes. Positions are normalised to unit vectors
+    inside MNE, so a radius mismatch between the file's coordinates and the
+    standard montage does not matter; only direction does."""
+    import mne
+    import numpy as np
+
+    from pd_pipeline.cohort_v3 import CONFIG
+
+    targets = list(CONFIG["channels"])
+    raw = raw.copy().load_data().pick("eeg")
+    montage = raw.get_montage()
+    if montage is None:
+        raise ValueError("No electrode positions stored in the file; refusing to guess")
+    src = montage.get_positions()["ch_pos"]
+    bad = [n for n in raw.ch_names if n not in src or not np.isfinite(src[n]).all()]
+    if bad:
+        raise ValueError(f"{len(bad)} electrodes without finite positions; refusing to guess")
+    # Biosemi's C-block labels (C3, C4, ...) collide with 10-20 names; they
+    # are different electrodes. Prefix the sources so nothing is mistaken.
+    raw.rename_channels({n: f"src_{n}" for n in raw.ch_names})
+    src = {f"src_{n}": p for n, p in src.items()}
+    # The standard montage is a realistic head whose best-fit sphere is
+    # centred ~16 mm behind the origin; Biosemi coordinates are a sphere at
+    # the origin. Placing standard positions directly among Biosemi ones
+    # tilts every target by ~10 degrees. Align the two by their fitted
+    # sphere centres and put each target on the source sphere.
+    std_raw = mne.channels.make_standard_montage("standard_1005").get_positions()["ch_pos"]
+    src_centre, src_radius = _fit_sphere(np.array([src[n] for n in raw.ch_names]))
+    std_centre, _ = _fit_sphere(np.array(list(std_raw.values())))
+    std = {}
+    for t in targets:
+        direction = std_raw[t] - std_centre
+        std[t] = src_centre + src_radius * direction / np.linalg.norm(direction)
+    virtual = mne.io.RawArray(
+        np.zeros((len(targets), raw.n_times)), mne.create_info(targets, raw.info["sfreq"], "eeg"), verbose=False
+    )
+    source_names = list(raw.ch_names)  # add_channels mutates raw in place
+    combined = raw.add_channels([virtual], force_update_info=True)
+    combined.set_montage(
+        mne.channels.make_dig_montage(
+            ch_pos={**{n: src[n] for n in source_names}, **{t: std[t] for t in targets}}, coord_frame="head"
+        ),
+        verbose=False,
+    )
+    combined.info["bads"] = targets
+    combined.interpolate_bads(reset_bads=True, mode="accurate", verbose=False)
+    return combined.pick(targets)
+
+
+def derive():
+    """Write one 17-channel EDF per subject next to the originals and
+    record source/derived hashes. QC and features then run on these files
+    through the unchanged loader (which reads .edf but not .fif)."""
+    import warnings
+
+    import mne
+
+    warnings.filterwarnings("ignore")
+    manifest = json.loads((LOCKED_ROOT / "manifest.json").read_text())
+    by_key = {s["key"]: s for s in manifest["subjects"]}
+    derived = {"method": "spherical-spline interpolation (MNE interpolate_bads, mode=accurate) to standard_1005 positions of the 17 v3 channels; positions from each file's own chanlocs",
+               "files": []}
+    for site, subject, path in _source_files():
+        key = person_key(site, subject)
+        entry = next(f for f in by_key[key]["files"] if f["name"] == path.name)
+        if _sha256_file(path) != entry["sha256"]:
+            raise ValueError(f"Source integrity failure before derivation: {path.name}")
+        raw = mne.io.read_raw(str(path), preload=True, verbose=False)
+        out = DERIVED_DIR / site / subject / f"{subject}_v3_17ch.edf"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        mne.export.export_raw(str(out), interpolate_to_v3(raw), fmt="edf", overwrite=True, verbose=False)
+        derived["files"].append({"key": key, "site": site, "subject": subject, "path": str(out.relative_to(ARCHIVE)),
+                                 "bytes": out.stat().st_size, "sha256": _sha256_file(out),
+                                 "source": path.name, "source_sha256": entry["sha256"], "n_source_electrodes": len(raw.ch_names),
+                                 "sfreq": float(raw.info["sfreq"])})
+        print(key, "derived", len(raw.ch_names), "->", 17, flush=True)
+    DERIVED_MANIFEST.write_text(json.dumps(derived, indent=2))
+    return derived
+
+
+def _eeg_files():
+    """The derived 17-channel files, one per subject, with integrity checked
+    against the derived manifest. Refuses to run on originals."""
+    if not DERIVED_MANIFEST.exists():
+        raise RuntimeError("Run `derive` first: BrainLat originals are 128-electrode Biosemi and are never fed to QC directly")
+    out = []
+    for f in json.loads(DERIVED_MANIFEST.read_text())["files"]:
+        path = ARCHIVE / f["path"]
+        if path.stat().st_size != f["bytes"]:
+            raise ValueError(f"Derived file size changed: {f['path']}")
+        out.append((f["site"], f["subject"], path))
     return out
 
 
@@ -349,7 +499,7 @@ def preprocessing_flags():
     files were processed differently, diagnosis could leak through
     processing artefacts and no result here would be interpretable."""
     out = {}
-    for site, subject, path in _eeg_files():
+    for site, subject, path in _source_files():
         out[person_key(site, subject)] = {"file": path.name, "flagged": bool(PREPROCESSING_FLAG.search(path.name))}
     return out
 
@@ -409,22 +559,23 @@ def verify_format():
 def _records():
     from pd_pipeline.registry import digest
 
-    manifest = json.loads((LOCKED_ROOT / "manifest.json").read_text())
-    by_key = {s["key"]: s for s in manifest["subjects"]}
+    derived = {f["key"]: f for f in json.loads(DERIVED_MANIFEST.read_text())["files"]}
     records = []
     for site, subject, path in _eeg_files():
         key = person_key(site, subject)
         rel = str(path.relative_to(ARCHIVE))
-        entry = next((f for f in by_key.get(key, {}).get("files", []) if f["name"] == path.name), None)
-        if entry is None:
-            raise ValueError(f"{rel} not in the download manifest; refusing to extract unverified data")
+        entry = derived[key]
+        if entry["path"] != rel:
+            raise ValueError(f"{rel} not in the derived manifest; refusing to extract unverified data")
         records.append(
             {
                 "id": digest(rel)[:20], "path": rel, "dataset": "brainlat", "site": "brainlat_" + site,
                 "person": key, "key": key,
                 # QC as a supervised-grade site: all 17 channels required, not the auxiliary minimum of 12.
                 "role": "supervised", "label": None, "interval": None, "protocol_exclusion": None,
-                "sources": [{"path": rel, "sha256": entry["sha256"], "bytes": entry["bytes"]}],
+                # Both hashes travel with the record: the derived EDF that is read, and the original it came from.
+                "sources": [{"path": rel, "sha256": entry["sha256"], "bytes": entry["bytes"],
+                             "derived_from": entry["source"], "source_sha256": entry["source_sha256"]}],
             }
         )
     return records
@@ -545,6 +696,7 @@ SEED = 20261001
 COMMANDS = {
     "inspect": inspect,  # run first: four files, label-free, decides whether download is worth doing
     "download": download,
+    "derive": derive,  # protocol 14.4: 128 Biosemi electrodes -> 17 virtual 10-20 channels, before verify_format
     "verify_format": verify_format,
     "extract": extract_and_featurise,
     "evaluate": lambda: evaluate(repeat="--i-understand-this-is-a-repeat" in sys.argv),

@@ -217,3 +217,17 @@ Because Turku-EO is itself near chance (0.545), Δ may be uninformative in the "
 1. Download Turku eyes-closed (39 distinct files on OSF; listing de-duplicated by OSF file id) → windows under frozen thresholds → features and M4T montage features → score P1/P2/P3 → compute Δ → record verdict under 14.2.
 2. Only then download BrainLat (PD + HC from AR and CL), seal labels, verify format label-free, extract, build features.
 3. One-shot BrainLat evaluation via the same guarded command (both locks, seal hash, repeat refusal).
+
+### 14.4 Amendment after the pre-download inspection (29 September 2026, before any BrainLat label was sealed or any BrainLat person scored)
+
+A label-free inspection of the Synapse listing and of one flagged + one plain file per group (`scripts/brainlat_v4.py inspect`, report `brainlat-inspection.json`) found three things the addendum did not anticipate:
+
+1. **Processing tracks diagnosis.** Files named `*_reject.set` are a different pipeline (epoched 1-s segments, no stored ICA, no low-pass) and exist only under PD: PD/AR 7/7, PD/CL 6/22, HC/AR 0/19, HC/CL 0/27. Plain-named files, PD and HC alike, share one pipeline (continuous, ICA-cleaned, low-passed ≈50 Hz). Scoring the flagged files would let a classifier detect the pipeline, not the disease — the leak the Turku PREP files were refused over.
+2. **There is no raw BrainLat data.** Every file is ICA-cleaned and low-passed. Training and Turku were raw with the pipeline's own filtering. This is a processing *shift* shared by both groups (not a leak) and is reported as such.
+3. **The cap is Biosemi 128 (labels A1..D32)** with electrode coordinates stored in each file. The nearest electrode to a 10-20 target is 5–16 mm away frontally/centrally but 22–31 mm at P8/O1.
+
+**Decisions, fixed before the seal:**
+- **Cohort: plain-named files, Chile only** — 16 PD vs 27 HC. The 13 `_reject` PD files are excluded; Argentine HC are excluded because every Argentine person would be a control, making site partially predictive of label within the test set. The excluded PD are, by the naming, the recordings the BrainLat team found artifact-heavier: the PD sample is therefore **selected toward cleaner EEG**, and this is stated with the result.
+- **Channels: spherical-spline interpolation** of virtual channels at the standard 10-20 positions of the 17 v3 channels from all 128 electrodes, using the coordinates stored in each file (never a template guess, never nearest-electrode). The M4T channels (T7, T8, P7, P8) are four of those 17. Derived 17-channel files are written alongside the originals with source and derived hashes recorded; QC, A2 and features then run on them unchanged.
+- **Site key** is `brainlat_CL`; H5b and the one-shot rule are unchanged. With 16 PD the 95% CI will be wide; this is a second external site, not a power study.
+- **Nothing in this amendment used a label beyond the group-level counts in point 1**, which are folder sizes visible in the listing.
