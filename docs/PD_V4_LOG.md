@@ -201,3 +201,52 @@ Montages are rebuilt from `preref128` and re-referenced to **their own channels 
 - **Scope decisions recorded in `reduced_v4.montage_families()`:** F0 and F6 are excluded from T2 (both are 17-channel-only constructions, so neither is a wearable claim), and montage F2 uses B-2 alone rather than B-2+C3, because the C3 z-scores come from a 17-channel normative model and scoring a 4-channel montage against them would reintroduce absent electrodes. Refitting normative models per montage over the 467-person auxiliary pool was out of scope for this run.
 - **Not run:** the greedy channel-budget search (k=2…8). It is explicitly descriptive — G6 uses only the pre-declared montages — and an exhaustive search over arbitrary subsets requires montage features recomputed per candidate subset for all 324 people.
 - `uv run ruff check .` and `uv run pytest -q` green (141 passed).
+
+## Stage 8: Track E foundation models (28 September 2026, protocol v4.1)
+
+**Licences were checked before any weights were downloaded**, per the protocol's stop-and-ask rule. Two of three candidates were dropped:
+
+| Model | Licence | Outcome |
+|---|---|---|
+| CBraMod `braindecode/cbramod-pretrained` | BSD-3-Clause, ungated | **used** (4,951,202 params; accepts 17×800 @ 200 Hz directly) |
+| LaBraM `braindecode/labram-pretrained` | BSD-3-Clause | **skipped (technical)** — the checkpoint's `temporal_embedding` is `[1,16,200]` (16 s windows) against braindecode's `[1,5,200]` for a 4 s window, unresolved by changing `n_times`. v4's 4 s window is fixed by the frozen protocol, so the window was not reshaped to suit the checkpoint. |
+| REVE `brain-bzh/reve-base` | declared only as **"other"**; companion `reve-positions` declares none | **skipped (licence)** — the protocol's unclear-licence rule |
+
+### The FM gate fails on all three conditions
+
+| Condition | Result |
+|---|---|
+| Beats both negative controls | **NO** — probe 0.641 vs **random-init 0.696**, permuted 0.434 |
+| Adds ≥0.01 composite to the stack | **NO** — S+FM 0.697 vs S(I) 0.770, i.e. **−0.073** |
+| Site-identity probe no worse than v3-rich | **NO** — FM 0.969 vs v3-rich 0.948 |
+
+- **The pretrained weights were beaten by the same architecture with random weights** (0.696 vs 0.641). Both clear the permuted-label floor (0.434), so there is real signal — but none of it is attributable to CBraMod's pretraining here. Because the dimensionality, probe, folds and pooling are identical between the two arms, that specific comparison is internally fair.
+- **Adding the FM actively degraded the stack** by 0.073, and its embedding carries *more* site identity than v3-rich — the opposite of what a transferable representation should do.
+- **`S+FM` is therefore excluded.** `S(I)` remains the pre-declared primary, as it would have regardless: Track E can only ever produce a secondary pipeline.
+
+**Two caveats that qualify this as a negative result about *this run*, not about CBraMod:**
+1. **Channel positions were not verified against CBraMod's expected layout.** Sampling rate (200 Hz) and unit scaling (÷100 µV) follow the documentation, but the 17 channels were passed in v3's order without confirming the model's expected montage/positional encoding. That is a real deviation from the protocol's "follow each model's documented input preprocessing … channel naming/positions" and is a plausible cause of the poor showing.
+2. **The pooled embedding is 27,200-dimensional for 324 people** — a severe p≫n regime even at C=0.1. This applies equally to both arms, so it does not explain random-init beating pretrained, but it does cap how much any probe here could achieve.
+
+## Stage 10: T3 fusion outputs, cognition, reliability (28 September 2026, protocol v4.1)
+
+- **Exported quantity is a prior-free log-likelihood ratio**, not a probability: `logit(calibrated p) − logit(training prevalence)`. A calibrated probability bakes in this cohort's ~64.5% PD rate, an artefact of how these research cohorts were assembled that has nothing to do with whoever Myna eventually scores.
+- **The naive-Bayes combiner is guarded in code, not footnoted.** `combine_llr` refuses to run without `acknowledge_unvalidated=True`, because EEG, speech and movement in PD are all downstream of one disease process and are plainly not conditionally independent. `demonstrate_overcounting()` shows the failure rather than asserting it: a **near-duplicate** modality inflates combined evidence to 2.31, *more* than a genuinely **independent** one at 2.07, despite carrying almost no new information. `StackingFusion` is the alternative once paired data exist.
+- `docs/myna_eeg_output_v1.schema.json` written, with structural validation and a `research_use_only` constant that cannot be set false.
+
+### Cognition index (H6, exploratory, within PD only)
+
+| Target | Features | Grouped-CV ρ (95% CI) | Cross-site ρ: Iowa | Cross-site ρ: Tel Aviv |
+|---|---|---|---|---|
+| MoCA | T1 (17 ch) | +0.061 (−0.114, 0.230) | +0.259 (p=0.016) | +0.063 (ns) |
+| **MoCA** | **M8** | **+0.253 (0.086, 0.406)** | **+0.378 (p=0.0003)** | +0.212 (ns) |
+| UPDRS-III | T1 (17 ch) | +0.307 (0.137, 0.453) | +0.012 (ns) | −0.084 (ns) |
+
+- **The UPDRS-III row is a trap and must not be reported as a finding.** Its grouped-CV ρ of +0.307 looks the strongest in the table, but cross-site transfer is *null in both directions* (+0.012, −0.084). Grouped CV pools both sites, so a model that learns site-level offsets in UPDRS-III distribution scores well without any clinical signal. The cross-site evaluation is the honest one, and it says there is nothing here.
+- **MoCA on M8 is the only credible signal**: positive in both evaluation types, and — notably — stronger than the full 17-channel montage. Tel Aviv remains underpowered (n=50, ns).
+
+### Test-retest reliability (H6)
+
+- **ICC(2,1) of the exported LLR = 0.436** across 18 Iowa participants with a usable second session (between-session Spearman 0.484). Repeat sessions are absent from the v4 registry by construction (A1 keeps one per person), so they were extracted on demand; each person's two sessions were scored by a model trained on the three non-Iowa sites, so neither session was ever in training.
+- **This misses H6's ≥0.6 target.** At n=18 the interval is wide, but 0.436 is moderate at best, and it is the single most important number for any Myna *tracking* claim: session-to-session variability is substantial relative to between-person differences. A cross-sectional classifier is better supported by this work than a progression monitor.
+- `uv run ruff check .` and `uv run pytest -q` green (153 passed).
