@@ -114,6 +114,22 @@ def test_interpolation_recovers_a_smooth_scalp_field_at_the_17_v3_positions():
     assert np.abs(expected - got).max() < 0.15  # field spans about 2 units
 
 
+def test_source_files_ignore_appledouble_shadows_and_use_the_manifest_name(tmp_path, monkeypatch):
+    # The external drive grows '._x.set' resource-fork shadows next to every
+    # file; they made 43/43 subjects look ambiguous on the first derive run.
+    raw = tmp_path / "raw" / "CL" / "sub-1" / "eeg"
+    raw.mkdir(parents=True)
+    for name in ("s1_sub-1_rs_eeg.set", "._s1_sub-1_rs_eeg.set", "s1_sub-1_rs_eeg.fdt"):
+        (raw / name).write_bytes(b"x")
+    (tmp_path / "manifest.json").write_text(
+        json.dumps({"subjects": [{"site": "CL", "subject": "sub-1", "eeg_file": "s1_sub-1_rs_eeg.set"}]})
+    )
+    monkeypatch.setattr(brainlat_v4, "LOCKED_ROOT", tmp_path)
+    monkeypatch.setattr(brainlat_v4, "RAW_DIR", tmp_path / "raw")
+    files = brainlat_v4._source_files()
+    assert [(s, sub, p.name) for s, sub, p in files] == [("CL", "sub-1", "s1_sub-1_rs_eeg.set")]
+
+
 def test_load_labels_reads_sealed_file_once_both_locks_exist(tmp_path, monkeypatch):
     sealed = tmp_path / "sealed"
     sealed.mkdir()

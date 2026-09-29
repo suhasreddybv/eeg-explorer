@@ -362,10 +362,23 @@ def _source_files():
     BIDS-named (e.g. s40001_CH_PD_reject.set, s6_sub-100012_rs_eeg.set), so
     match any .set/.bdf/.edf/.vhdr and refuse ambiguity rather than pick
     silently."""
+    manifest_path = LOCKED_ROOT / "manifest.json"
+    # After download the manifest names each subject's EEG file; use it.
+    # The external drive also grows macOS AppleDouble '._name.set' shadows,
+    # which are not recordings and must never count as candidates.
+    by_subject = {}
+    if manifest_path.exists():
+        by_subject = {(s["site"], s["subject"]): s.get("eeg_file") for s in json.loads(manifest_path.read_text())["subjects"]}
     out = []
     for site in SITES:
         for subject_dir in sorted((RAW_DIR / site).glob("sub-*")):
-            hits = sorted(h for h in subject_dir.rglob("*") if h.suffix.lower() in EEG_SUFFIXES)
+            hits = sorted(
+                h for h in subject_dir.rglob("*")
+                if h.suffix.lower() in EEG_SUFFIXES and not h.name.startswith("._")
+            )
+            named = by_subject.get((site, subject_dir.name))
+            if named:
+                hits = [h for h in hits if h.name == named]
             if len(hits) > 1:
                 raise ValueError(f"{subject_dir}: {len(hits)} candidate EEG files; refusing to guess which is the recording")
             if hits:
