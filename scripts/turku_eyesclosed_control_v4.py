@@ -102,7 +102,9 @@ def extract_and_featurise():
         _verify(record)
         meta = process_record_extract(record, ARCHIVE, EC_RUN, fingerprint, thresholds)
         if meta["status"] != "ready" or meta["windows"] < 10:  # A2, unchanged
-            out[record["subject"]] = {"status": meta["status"], "windows": meta["windows"]}
+            # A2 failures must not keep the QC status "ready": _people keys on it.
+            status = meta["status"] if meta["status"] != "ready" else "below_a2_minimum"
+            out[record["subject"]] = {"status": status, "windows": meta["windows"], "reason": meta.get("reason")}
             continue
         feats = fv.person_features([record["id"]], run=EC_RUN)
         with np.load(EC_RUN / "windows" / (record["id"] + ".npz")) as d:
@@ -116,7 +118,7 @@ def _people(entries, labels):
 
     people, montage_people = [], []
     for subject, e in entries.items():
-        if e["status"] != "ready" or subject not in labels:
+        if e["status"] != "ready" or "features" not in e or subject not in labels:
             continue
         lab = labels[subject]
         f, m = e["features"], e["montage"]
