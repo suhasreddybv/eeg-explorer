@@ -218,20 +218,37 @@ def signature(path):
     import mne
 
     warnings.filterwarnings("ignore")
-    raw = mne.io.read_raw(str(path), preload=True, verbose=False)
-    sig = {
-        "sfreq": float(raw.info["sfreq"]),
-        "n_channels": len(raw.ch_names),
-        "duration_s": round(raw.n_times / raw.info["sfreq"], 1),
-        "n_boundary_events": int(sum("boundary" in d.lower() for d in raw.annotations.description)),
-        "highpass_hz": float(raw.info["highpass"]),
-        "lowpass_hz": float(raw.info["lowpass"]),
-    }
+    try:
+        data = mne.io.read_raw(str(path), preload=True, verbose=False)
+        sig = {
+            "structure": "continuous",
+            "duration_s": round(data.n_times / data.info["sfreq"], 1),
+            "n_boundary_events": int(sum("boundary" in d.lower() for d in data.annotations.description)),
+        }
+    except TypeError as e:
+        # An epoched .set file is itself a processing signature: the raw
+        # recording was segmented and (in EEGLAB's usual pipeline) rejected
+        # epoch-wise. Record the structure rather than fail.
+        if "trials" not in str(e):
+            raise
+        data = mne.io.read_epochs_eeglab(str(path), verbose=False)
+        sig = {
+            "structure": "epoched",
+            "n_epochs": len(data),
+            "epoch_len_s": round(data.times[-1] - data.times[0], 3),
+            "duration_s": round(len(data) * (data.times[-1] - data.times[0]), 1),
+        }
+    sig.update(
+        sfreq=float(data.info["sfreq"],),
+        n_channels=len(data.ch_names),
+        highpass_hz=float(data.info["highpass"]),
+        lowpass_hz=float(data.info["lowpass"]),
+    )
     if path.suffix.lower() == ".set":
         sig.update(_eeglab_fields(path))
-    picks = mne.pick_types(raw.info, eeg=True)
-    psd = raw.compute_psd(picks=picks, fmin=0.1, fmax=min(100.0, raw.info["sfreq"] / 2 - 1), verbose=False)
-    p, f = psd.get_data().mean(axis=0), psd.freqs
+    picks = mne.pick_types(data.info, eeg=True)
+    psd = data.compute_psd(picks=picks, fmin=0.1, fmax=min(100.0, data.info["sfreq"] / 2 - 1), verbose=False)
+    p, f = psd.get_data().reshape(-1, len(psd.freqs)).mean(axis=0), psd.freqs
 
     def band(lo, hi):
         m = (f >= lo) & (f < hi)
