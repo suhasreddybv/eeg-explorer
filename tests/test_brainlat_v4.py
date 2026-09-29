@@ -37,6 +37,34 @@ def test_load_labels_refuses_without_both_locks(tmp_path, monkeypatch):
         brainlat_v4.load_labels()
 
 
+def _rows():
+    return [
+        {"group": "3_PD", "site": "AR", "subject": "sub-2", "folder_id": "a", "files": ["s2_AR_PD_reject.set", "s2.fdt"]},
+        {"group": "3_PD", "site": "AR", "subject": "sub-1", "folder_id": "b", "files": ["s1_AR_PD_reject.set"]},
+        {"group": "3_PD", "site": "CL", "subject": "sub-3", "folder_id": "c", "files": ["sub-3_rs_eeg.set"]},
+        {"group": "5_HC", "site": "CL", "subject": "sub-4", "folder_id": "d", "files": ["sub-4_rs_eeg.set"]},
+        {"group": "5_HC", "site": "CL", "subject": "sub-5", "folder_id": "e", "files": []},
+        {"group": "5_HC", "site": "AR", "subject": "sub-6", "folder_id": "f", "files": ["a.set", "b.set"]},
+    ]
+
+
+def test_naming_summary_counts_preprocessing_flags_by_group_and_site():
+    s = brainlat_v4.naming_summary(_rows())
+    assert s["3_PD/AR"] == {"flagged": 2, "plain": 0, "none_or_ambiguous": 0}
+    assert s["3_PD/CL"] == {"flagged": 0, "plain": 1, "none_or_ambiguous": 0}
+    assert s["5_HC/CL"] == {"flagged": 0, "plain": 1, "none_or_ambiguous": 1}
+    assert s["5_HC/AR"]["none_or_ambiguous"] == 1  # two .set files: refuse to pick
+
+
+def test_inspection_sample_is_one_flagged_and_one_plain_per_group_in_sorted_order():
+    sample = brainlat_v4.pick_inspection_sample(_rows())
+    picked = {(s["group"], s["naming_class"]): s["subject"] for s in sample}
+    assert picked[("3_PD", "flagged")] == "sub-1"  # sorted by (site, subject), not listing order
+    assert picked[("3_PD", "plain")] == "sub-3"
+    assert picked[("5_HC", "plain")] == "sub-4"
+    assert ("5_HC", "flagged") not in picked  # no flagged HC file exists: nothing is invented
+
+
 def test_load_labels_reads_sealed_file_once_both_locks_exist(tmp_path, monkeypatch):
     sealed = tmp_path / "sealed"
     sealed.mkdir()

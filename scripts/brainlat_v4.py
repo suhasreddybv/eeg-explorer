@@ -141,6 +141,163 @@ def load_labels():
     return json.loads((SEALED_DIR / "labels.json").read_text())
 
 
+# ---------------------------------------------------------------------------
+# Pre-download inspection: does preprocessing track diagnosis?
+# ---------------------------------------------------------------------------
+# A first look at the folder listing showed PD files named *_reject.set
+# (artifact-rejected by the BrainLat team) and HC files without the suffix.
+# If PD and HC recordings were processed differently, a classifier could
+# score on the processing signature instead of the disease -- the same leak
+# the Turku PREP files were refused over. `inspect` settles this on four
+# files before the full download and seal: it counts naming classes by
+# group and site, then compares label-free processing signatures between
+# one flagged and one plain file per group. The report never records which
+# subject is in which group.
+
+EEG_SUFFIXES = (".set", ".bdf", ".edf", ".vhdr")
+INSPECTION_DIR = LOCKED_ROOT / "inspection"  # outside raw/: never enters the manifest
+
+
+def listing(syn):
+    """EEG file names per subject, no downloads. [{group, site, subject, folder_id, files}]"""
+    rows = []
+    for group, site, subject, folder_id, _label in discover(syn):
+        names = []
+        for entity in syn.getChildren(folder_id, includeTypes=["folder"]):
+            if entity["name"] == "eeg":
+                names = sorted(f["name"] for f in syn.getChildren(entity["id"], includeTypes=["file"]))
+        rows.append({"group": group, "site": site, "subject": subject, "folder_id": folder_id, "files": names})
+    return rows
+
+
+def _eeg_name(row):
+    hits = [n for n in row["files"] if n.lower().endswith(EEG_SUFFIXES)]
+    return hits[0] if len(hits) == 1 else None
+
+
+def naming_summary(rows):
+    """Counts of preprocessing-flagged vs plain EEG file names by group and
+    site, plus subjects with no or ambiguous EEG files. Pure; no labels
+    beyond the group aggregate."""
+    out = {}
+    for row in rows:
+        cell = out.setdefault(f"{row['group']}/{row['site']}", {"flagged": 0, "plain": 0, "none_or_ambiguous": 0})
+        name = _eeg_name(row)
+        if name is None:
+            cell["none_or_ambiguous"] += 1
+        elif PREPROCESSING_FLAG.search(name):
+            cell["flagged"] += 1
+        else:
+            cell["plain"] += 1
+    return out
+
+
+def pick_inspection_sample(rows):
+    """First flagged and first plain subject per group (any site), in sorted
+    order so the choice is reproducible and not ours to make."""
+    sample = []
+    for group in GROUP_FOLDERS:
+        for cls in ("flagged", "plain"):
+            for row in sorted((r for r in rows if r["group"] == group), key=lambda r: (r["site"], r["subject"])):
+                name = _eeg_name(row)
+                if name is None:
+                    continue
+                if (cls == "flagged") == bool(PREPROCESSING_FLAG.search(name)):
+                    sample.append({**row, "eeg_file": name, "naming_class": cls})
+                    break
+    return sample
+
+
+def signature(path):
+    """Label-free processing fingerprint of one EEG file. Everything here is
+    something an artifact-rejection or filtering step would change and a
+    diagnosis would not: boundary events, EEGLAB history/ICA fields, and
+    PSD ratios at the high-pass, low-pass and mains edges."""
+    import warnings
+
+    import mne
+
+    warnings.filterwarnings("ignore")
+    raw = mne.io.read_raw(str(path), preload=True, verbose=False)
+    sig = {
+        "sfreq": float(raw.info["sfreq"]),
+        "n_channels": len(raw.ch_names),
+        "duration_s": round(raw.n_times / raw.info["sfreq"], 1),
+        "n_boundary_events": int(sum("boundary" in d.lower() for d in raw.annotations.description)),
+        "highpass_hz": float(raw.info["highpass"]),
+        "lowpass_hz": float(raw.info["lowpass"]),
+    }
+    if path.suffix.lower() == ".set":
+        sig.update(_eeglab_fields(path))
+    picks = mne.pick_types(raw.info, eeg=True)
+    psd = raw.compute_psd(picks=picks, fmin=0.1, fmax=min(100.0, raw.info["sfreq"] / 2 - 1), verbose=False)
+    p, f = psd.get_data().mean(axis=0), psd.freqs
+
+    def band(lo, hi):
+        m = (f >= lo) & (f < hi)
+        return float(p[m].mean()) if m.any() else float("nan")
+
+    sig["psd_ratio_0p1_0p5_over_1_4"] = band(0.1, 0.5) / band(1, 4)  # ~0 if high-pass filtered
+    sig["psd_ratio_60_90_over_20_30"] = band(60, 90) / band(20, 30)  # ~0 if low-pass filtered
+    sig["psd_ratio_mains_50"] = band(49, 51) / band(45, 55)  # 1/5 ≈ 0.2 if notch-free and no mains noise
+    return {k: (round(v, 4) if isinstance(v, float) else v) for k, v in sig.items()}
+
+
+def _eeglab_fields(path):
+    """EEGLAB keeps a processing history string and ICA/reject structs in
+    the .set file; MNE drops them. Read them directly when the file is a
+    classic MAT; v7.3 (HDF5) files are recorded as unreadable, not guessed."""
+    try:
+        from scipy.io import loadmat
+
+        m = loadmat(str(path), squeeze_me=True, struct_as_record=False)
+        eeg = m.get("EEG", m)
+        get = (lambda k: getattr(eeg, k, None)) if not isinstance(eeg, dict) else eeg.get
+        hist = get("history")
+        hist = str(hist) if hist is not None else ""
+        ica = get("icaweights")
+        return {
+            "eeglab_history_lines": hist.count("pop_") + hist.count("eeg_"),
+            "eeglab_history_has_reject": bool(__import__("re").search(r"reject|clean_|pop_select", hist, __import__("re").I)),
+            "eeglab_history_has_filter": "eegfilt" in hist,
+            "eeglab_has_ica": ica is not None and getattr(ica, "size", 0) > 0,
+        }
+    except Exception as e:  # noqa: BLE001 -- recorded so the report says why
+        return {"eeglab_fields": f"unreadable: {type(e).__name__}"}
+
+
+def inspect():
+    syn = _client()
+    rows = listing(syn)
+    summary = naming_summary(rows)
+    sample = pick_inspection_sample(rows)
+    INSPECTION_DIR.mkdir(parents=True, exist_ok=True)
+    signatures = {}
+    for s in sample:
+        dest = INSPECTION_DIR / s["group"] / s["naming_class"]
+        dest.mkdir(parents=True, exist_ok=True)
+        eeg_id = None
+        for entity in syn.getChildren(s["folder_id"], includeTypes=["folder"]):
+            if entity["name"] == "eeg":
+                eeg_id = entity["id"]
+        for f in syn.getChildren(eeg_id, includeTypes=["file"]):
+            # The .fdt companion holds the samples for a .set header; fetch both.
+            if f["name"] == s["eeg_file"] or f["name"].lower().endswith(".fdt"):
+                syn.get(f["id"], downloadLocation=str(dest), ifcollision="keep.local")
+        signatures[f"{s['group']}/{s['site']}/{s['naming_class']}"] = signature(dest / s["eeg_file"])
+    report = {
+        "purpose": "Does preprocessing track diagnosis? Naming classes by group/site and label-free processing signatures of one flagged + one plain file per group.",
+        "naming_by_group_site": summary,
+        "n_subjects": len(rows),
+        "signatures": signatures,
+        "note": "Subject identities of the sampled files are deliberately not recorded.",
+    }
+    V4_RUN.mkdir(parents=True, exist_ok=True)
+    (V4_RUN / "brainlat-inspection.json").write_text(json.dumps(report, indent=2))
+    print(json.dumps(report, indent=2))
+    return report
+
+
 
 
 # ---------------------------------------------------------------------------
@@ -369,6 +526,7 @@ def evaluate(repeat=False):
 
 SEED = 20261001
 COMMANDS = {
+    "inspect": inspect,  # run first: four files, label-free, decides whether download is worth doing
     "download": download,
     "verify_format": verify_format,
     "extract": extract_and_featurise,
