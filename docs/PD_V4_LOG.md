@@ -325,3 +325,24 @@ Caveats that must travel with this:
 - **Cohort: Chile, plain-named files only — 16 PD vs 27 HC.** Argentine HC excluded because every Argentine person would be a control (site would predict label inside the test set). The excluded PD are, by naming, the artifact-heavier recordings: the PD sample is selected toward cleaner EEG, and that travels with the result.
 - **Channels: spherical-spline interpolation** of the 17 v3 channels at standard 10-20 positions from all 128 electrodes, using each file's own coordinates. Two bugs were caught by the synthetic-field test before any real file was touched: Biosemi's C3/C4 labels collide with 10-20 names (sources are now prefixed), and the standard montage's sphere centre sits **16 mm behind** the Biosemi origin, so placing standard positions directly among Biosemi ones tilted every target by ~10° (positions are now aligned by fitted sphere centres; the linear-field recovery test passes at r > 0.99). Derived 17-channel EDFs carry both source and derived hashes; the frozen loader is unchanged.
 - H5b and the one-shot rule unchanged. With 16 PD the interval will be wide; this is a second external site, not a power study.
+
+## Protocol v4.2 / 14.4: BrainLat one-shot (29 September 2026)
+
+**Cohort as scored:** 29 people — 16 PD, 13 HC — all Chile, plain-named, ICA-cleaned continuous files, 17 channels spline-interpolated from 128 Biosemi electrodes. Erosion from 75 listed subjects: 26 Argentina (site rule), 6 flagged Chile PD (processing rule), **14 Chile HC header-only on Synapse** (no `.fdt` ever uploaded — discovered at derivation, recorded in §14.4 before scoring). Label-free QC then accepted **29/29** with 112–269 windows each; the ICA-cleaned pipeline had already removed what our QC would have (Turku raw lost 16/40).
+
+Three further dataset quirks handled without touching originals: macOS `._` AppleDouble shadows on the SSD; PD `.set` headers referencing their pre-rename `.fdt` (`s6_sub-100xx` vs `sub-400xx`) — symlinked in a scratch directory; PD/HC files with matching digits verified to be different recordings (sizes and sha256 differ).
+
+### Results (confirmatory one-shot; locked P1/P2/P3, no refit)
+
+| Pipeline | AUROC [95% CI] | PR-AUC | Brier | Sens / Spec at locked threshold |
+|---|---|---|---|---|
+| **P1 `S\|I`** (primary) | **0.697 [0.500, 0.880]** | 0.809 | 0.220 | 0.31 / 1.00 |
+| P2 `S\|T` | 0.736 [0.519, 0.899] | 0.833 | 0.207 | 0.25 / 1.00 |
+| P3 M4T | 0.726 [0.519, 0.899] | 0.777 | 0.224 | 0.25 / 1.00 |
+
+- **H5b fails** as written: P1's CI lower bound is 0.500, not > 0.60. Reported either way, as pre-registered.
+- **But this is not Turku.** Point estimates (0.70–0.74) sit near the internal cross-site composite (0.77) and well above Turku (0.55); P2 and P3 intervals exclude 0.5, P1's touches it. With 13 controls no interval could have cleared 0.60 unless the AUROC were ≈0.85+, so the failure is partly a power statement.
+- **Calibration is shifted, ranking is not.** Specificity 1.00 with sensitivity 0.25–0.31: every control is below the locked threshold and most PD are too — BrainLat's ICA-cleaned signals score "healthier" across the board. Discrimination survives a threshold shift that would have to be re-learned on the new site; that is exactly the harmonisation problem the pipeline was supposed to solve at P2 (which does no better on threshold than P1).
+- **The Turku-EC control says condition is not the explanation** (§14.2 verdict `site_generalisation_interpretable`), so a BrainLat–Turku contrast is a *site/processing* contrast.
+- **Caveats that must travel with these numbers:** eyes-closed vs eyes-open training; ICA-cleaned and low-passed source data vs raw training; the 13 PD dropped as `_reject` were the artifact-heavier recordings, so the PD sample is selected toward cleaner EEG; interpolated rather than physical electrodes; n = 29; H5b's threshold of 0.60 was set for a Turku-sized cohort.
+- **Honest two-site summary for the report:** on the one external site with raw eyes-open data (Turku) the pipeline is at chance; on the one with pre-cleaned eyes-closed data (BrainLat) it ranks at ~0.70 but with a confidence interval touching chance and a threshold that no longer transfers. Neither site meets its pre-registered gate. The generalisation claim remains unsupported; the BrainLat result is the first evidence that the failure may be partly a *data-condition* (raw vs cleaned) effect rather than a total absence of transferable signal — a hypothesis for v5, not a finding.
