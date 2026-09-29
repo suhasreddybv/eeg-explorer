@@ -161,3 +161,23 @@ F2's 0.788 is the highest observed composite, but it is a **post-hoc observation
 
 - Added `tests/test_compare_v4.py` (10 tests). `uv run ruff check .` and `uv run pytest -q` green (132 passed).
 - **Next:** Stage 8 (Track E foundation models, optional/gated) or Stage 9 (T2 reduced-channel montages).
+
+## Protocol v4.1 correction and Stage 4-7 re-run (28 September 2026)
+
+- **Bug found while preparing Stage 9.** Stage 4 built `preref128` and the per-window `lpc` array from the *unfiltered* resampled signal, contradicting the frozen protocol's filtered-window rule. The effect was material: in one UCSD recording **40.7% of `preref128` power sat below 1 Hz**. Since Stage 9's montages are built entirely from `preref128`, this had to be fixed before T2 could mean anything.
+- **A tempting shortcut was tested and rejected.** Filtering the stored 128 Hz array on the fly would have avoided a re-run, but it only approximates the protocol: correlation 0.956 with the correct path, yet **29.5% off in RMS**. Using the array raw was far worse (correlation 0.189). So the array was rebuilt properly.
+- **Fix:** both arrays now derive from `filtered_preref` — band-passed 1–40 Hz but deliberately *not* average-referenced, which is precisely what `preref128` exists for. Verified in the rebuilt data: UCSD sub-1 Hz power **40.7% → 11.8%**, in-band 51.4% → 87.7%, and the across-channel mean remains non-zero (still un-referenced). `raw200` corrected the same way. Regression-tested.
+- **Provenance.** The fix follows solely from the protocol text, not from any outcome — but it was found *after* Stage 7's outer results had been seen, so the prior run is preserved under `data/pd-runs/v4/superseded-v4.0/` and everything from the re-run is labelled protocol v4.1.
+
+### What changed, and what didn't
+
+| Variant | v4.1 composite | superseded | Δ |
+|---|---|---|---|
+| F5 entropy | 0.684 | 0.635 | **+0.049** |
+| F4 LEAPD | 0.570 | 0.580 | **−0.010** |
+| F0 / F1 / F2 / F3 / F6 | unchanged | | +0.000 |
+| **S\|I (primary)** | **0.770** (cross 0.765, within 0.774) | 0.769 | +0.000 |
+
+- **A stated hypothesis was refuted.** The expectation was that the unfiltered-LPC bug explained F4/LEAPD's near-chance cross-site result. On corrected data F4 got *slightly worse*. LEAPD genuinely underperforms on this cohort; the bug was not the explanation. F5/entropy is what actually benefited.
+- **The selectivity is itself a check.** Only F4 and F5 moved — exactly the two families consuming the corrected arrays. F0/F1/F2/F3/F6 are identical to three decimals because they derive from the `tokens`/`cov` arrays the fix did not touch.
+- **No gate changed.** G2 still not met (+0.0068, identical — both F2 and F0 use untouched arrays; H2 unsupported). G3 still not met (+0.007; H3 unsupported). G4/H1 still met: S|I composite 0.770, +0.078 over v3's pre-declared 0.6915, clearing the ≥0.75 target on both components. The correction cost ~2 hours of recompute and changed no conclusion — which is now demonstrated rather than assumed.
