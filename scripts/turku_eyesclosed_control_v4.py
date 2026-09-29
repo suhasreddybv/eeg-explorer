@@ -1,7 +1,7 @@
 """Turku eyes-closed condition-shift control (protocol v4.2 §14.2).
 
-Scores the 44 Turku eyes-CLOSED recordings — the same people already
-tested eyes-open — with the identical frozen P1/P2/P3, then applies the
+Scores the 39 Turku eyes-CLOSED recordings on OSF — a subset of the same
+people already tested eyes-open — with the identical frozen P1/P2/P3, then applies the
 pre-registered decision rule to the EO−EC gap. This is a diagnostic on
 labels that are already unsealed. It is NOT a new test: the output is
 stamped non-confirmatory and never feeds any model.
@@ -26,6 +26,7 @@ SEED = 20261001
 # §14.2 thresholds, fixed before any number existed.
 SMALL_GAP = 0.05
 CONFOUNDED_GAP = 0.10
+EXPECTED_EC = 39  # distinct eyes-closed files on OSF (see locked_site_v4.EXPECTED_RAW)
 
 
 def normalise_id(value):
@@ -72,8 +73,10 @@ def ec_records(manifest_path=LOCKED_ROOT / "manifest-eyesClosed.json"):
                 "sources": [{"path": rel, "sha256": f["sha256"], "bytes": f["bytes"]}],
             }
         )
-    if len(records) != 44:
-        raise ValueError(f"Expected 44 eyes-closed records, built {len(records)}")
+    # OSF holds 39 distinct eyes-closed files, not the 44 the paper implies;
+    # the first listing double-counted one file and hid the shortfall.
+    if len(records) != EXPECTED_EC or len({r["subject"] for r in records}) != EXPECTED_EC:
+        raise ValueError(f"Expected {EXPECTED_EC} distinct eyes-closed records, built {len(records)}")
     return records
 
 

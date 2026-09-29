@@ -278,3 +278,26 @@ Coverage (n=24 run): 11 PD / 13 control scored; 16 of 40 recordings excluded, al
 - **The conclusion is robust to the bug.** Correcting it moved the primary estimate 0.570 → 0.545 and changed nothing about the verdict — as predicted before re-running.
 - **Both runs are reported.** The n=20 run is the formally confirmatory one-shot; the n=24 run is complete but non-confirmatory by protocol, since it followed seeing the first result.
 - Interpretation to carry into the report: the site-identity probe (0.83–0.96 across every representation) already warned that site information dominates these features. Turku is consistent with that warning — internal cross-site folds still shared acquisition era, montage conventions and preprocessing lineage in ways a truly external Finnish clinical recording does not.
+
+## Protocol v4.2: Turku eyes-closed condition-shift control (29 September 2026)
+
+**Purpose (§14.2):** BrainLat, the only remaining external site, is eyes-closed while training and Turku are eyes-open. Before BrainLat can be opened, the Turku people already tested eyes-open were re-scored on their eyes-closed recordings with the identical frozen P1/P2/P3, so a null BrainLat result can be attributed to site shift rather than condition shift. Labels were already unsealed by the one-shot; this is a diagnostic, stamped `confirmatory: False`, never fed to any model.
+
+### A file-count bug was found and fixed before the corrected run
+
+The addendum said 44 eyes-closed files; the first download "found" 44 because OSF's default 10-item pages shifted between requests and returned `39_eyesClosed.set` six times while hiding five others. Only **39 distinct eyes-closed files exist on OSF** (participants 02–40; participant 01 is eyes-open only), and one of those (`12`) had never been downloaded. `_list_folder` now requests 100-item pages and keys on the unique OSF file id; `ec_records` refuses a manifest whose entry count and distinct-subject count differ (regression-tested). The first run (38 files, n=22 scored, P1 Δ = −0.09) gave the same verdict as the corrected run below and is superseded by it.
+
+### Results (corrected run: 39 files, 23 people scored EC, 22 overlap with the 24 scored EO)
+
+| Pipeline | EO AUROC (overlap) | EC AUROC (overlap) | Δ = EO − EC | EC AUROC (all 23) |
+|---|---|---|---|---|
+| **P1 `S\|I`** (rule applies here) | 0.463 [0.215, 0.694] | 0.488 [0.231, 0.736] | **−0.025** | 0.530 [0.288, 0.758] |
+| P2 `S\|T` | 0.471 [0.231, 0.719] | 0.504 [0.248, 0.760] | −0.033 | 0.545 [0.295, 0.780] |
+| P3 M4T (n=18 overlap) | 0.500 [0.188, 0.788] | 0.300 [0.063, 0.600] | +0.200 | 0.424 [0.189, 0.667] |
+
+**Verdict under the pre-registered rule: `site_generalisation_interpretable`** (|Δ| = 0.025 ≤ 0.05 for P1). Eyes-closed Turku scores no worse than eyes-open Turku, so a null on eyes-closed BrainLat cannot be blamed on the condition change for the primary pipeline.
+
+Caveats that must travel with this:
+- The rule was written for a Turku-EO result that was meaningfully above chance. It is not: on the 22-person overlap EO is 0.46 and EC is 0.49, both intervals spanning chance. "Small Δ" here means *both conditions are at chance*, which is consistent with, and adds nothing to, the Stage 11 finding that the model does not transfer to Turku. It does establish that condition is not the reason.
+- P3 (the M4T around-ear montage) is the exception: Δ = +0.20, with EC at 0.30 [0.06, 0.60] on n=18. The rule does not cover P3, but this is a warning for any eyes-closed wearable claim — the montage model is, if anything, *anti*-predictive eyes-closed, on a very small n.
+- The EO numbers in this table are recomputed on the overlap subset and therefore differ from the Stage 11 n=24 values (0.545/0.552/0.587); they are the same frozen models on fewer people.

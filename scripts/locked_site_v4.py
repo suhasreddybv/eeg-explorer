@@ -63,12 +63,19 @@ def _get_json(url):
 
 
 def _list_folder(url):
-    items = []
+    """OSF's default 10-item pages can shift between requests, so an item may
+    appear on two consecutive pages (the eyes-closed listing once returned
+    39_eyesClosed.set six times and hid five other files behind the count).
+    Ask for large pages and key on the OSF file id, which is unique."""
+    items = {}
+    sep = "&" if "?" in url else "?"
+    url = f"{url}{sep}page[size]=100"
     while url:
         d = _get_json(url)
-        items.extend(d["data"])
+        for item in d["data"]:
+            items[item["id"]] = item
         url = d["links"].get("next")
-    return items
+    return list(items.values())
 
 
 def _sha256_file(path):
@@ -79,7 +86,10 @@ def _sha256_file(path):
     return h.hexdigest()
 
 
-EXPECTED_RAW = {"eyesOpen": 40, "eyesClosed": 44}
+# Counted from a de-duplicated OSF listing (distinct file ids). Only 39
+# eyes-closed files exist on OSF; an earlier duplicated listing made it
+# look like 44 (see _list_folder).
+EXPECTED_RAW = {"eyesOpen": 40, "eyesClosed": 39}
 
 
 def discover_targets(condition="eyesOpen"):
@@ -87,9 +97,9 @@ def discover_targets(condition="eyesOpen"):
     plus InfoAboutParticipants.xlsx and the preprocessing .m file, each
     with the OSF-reported size/sha256/download link/version.
 
-    eyesOpen is the locked-site test condition (40 files). eyesClosed (44
-    files, same participants) is used only for the protocol v4.2 condition-
-    shift diagnostic; it is never a fresh test."""
+    eyesOpen is the locked-site test condition (40 files). eyesClosed (39
+    files on OSF, a subset of the same participants) is used only for the
+    protocol v4.2 condition-shift diagnostic; it is never a fresh test."""
     root_items = {i["attributes"]["name"]: i for i in _list_folder(ROOT_URL)}
     data_items = _list_folder(DATA_FOLDER_URL)
     raw = sorted(

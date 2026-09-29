@@ -29,12 +29,16 @@ def test_participants_match_across_conditions_despite_zero_padding():
     assert ec.normalise_id("sub-x") == "sub-x"  # non-numeric passes through
 
 
+def _ec_entries(n=ec.EXPECTED_EC, start=1):
+    return [
+        {"name": f"{i:02d}_eyesClosed.set", "role": "raw", "sha256": f"h{i}", "bytes": 10}
+        for i in range(start, start + n)
+    ]
+
+
 def test_ec_records_are_built_from_the_eyes_closed_manifest_only(tmp_path):
     manifest = {
-        "files": [
-            {"name": f"{i:02d}_eyesClosed.set", "role": "raw", "sha256": f"h{i}", "bytes": 10}
-            for i in range(1, 45)
-        ]
+        "files": _ec_entries()
         + [
             {"name": "01_eyesOpen.set", "role": "raw", "sha256": "eo", "bytes": 10},
             {"name": "InfoAboutParticipants.xlsx", "role": "provenance", "sha256": "x", "bytes": 1},
@@ -43,7 +47,7 @@ def test_ec_records_are_built_from_the_eyes_closed_manifest_only(tmp_path):
     path = tmp_path / "manifest-eyesClosed.json"
     path.write_text(json.dumps(manifest))
     records = ec.ec_records(path)
-    assert len(records) == 44
+    assert len(records) == ec.EXPECTED_EC == 39
     assert all(r["role"] == "locked_test_ec" for r in records)
     assert all(r["label"] is None for r in records)
     assert records[0]["subject"] == "1" and records[0]["person"] == "osf-pehj9-ec:01"
@@ -54,5 +58,15 @@ def test_ec_records_are_built_from_the_eyes_closed_manifest_only(tmp_path):
 def test_ec_records_refuse_wrong_count(tmp_path):
     path = tmp_path / "manifest-eyesClosed.json"
     path.write_text(json.dumps({"files": [{"name": "01_eyesClosed.set", "role": "raw", "sha256": "h", "bytes": 1}]}))
-    with pytest.raises(ValueError, match="Expected 44"):
+    with pytest.raises(ValueError, match="Expected 39"):
+        ec.ec_records(path)
+
+
+def test_ec_records_refuse_duplicate_files_masquerading_as_full_count(tmp_path):
+    # The bug that hid a missing file: 38 distinct entries plus the same file
+    # listed again must not pass as 39.
+    entries = _ec_entries(38) + [_ec_entries(1, start=38)[0]]
+    path = tmp_path / "manifest-eyesClosed.json"
+    path.write_text(json.dumps({"files": entries}))
+    with pytest.raises(ValueError, match="distinct"):
         ec.ec_records(path)

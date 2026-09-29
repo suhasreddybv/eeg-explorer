@@ -203,7 +203,7 @@ Frozen **before** any BrainLat data is downloaded and before any Turku eyes-clos
 
 ### 14.2 The eyes-closed confound, and the pre-registered Turku-EC control
 
-Training and Turku are eyes-open; BrainLat is eyes-closed. A null BrainLat result would therefore be ambiguous between site shift and condition shift. To separate them, the 44 Turku eyes-closed recordings — the **same people** already tested eyes-open, same licence terms — are scored with the identical frozen P1/P2/P3 **before** BrainLat is opened. This is a diagnostic on labels already unsealed; it is **not** a new test and is labelled non-confirmatory.
+Training and Turku are eyes-open; BrainLat is eyes-closed. A null BrainLat result would therefore be ambiguous between site shift and condition shift. To separate them, the Turku eyes-closed recordings on OSF (39 distinct files — the addendum originally said 44, a count inflated by a duplicated OSF page listing; corrected 2026-09-29 after the first control run, before any number from the corrected run existed) — a **subset of the same people** already tested eyes-open, same licence terms — are scored with the identical frozen P1/P2/P3 **before** BrainLat is opened. This is a diagnostic on labels already unsealed; it is **not** a new test and is labelled non-confirmatory.
 
 **Decision rule, fixed now:** let Δ = AUROC(Turku-EO, n=24 corrected run) − AUROC(Turku-EC, same people, P1).
 - **|Δ| ≤ 0.05** → the EO→EC shift is small; a BrainLat result is interpreted as evidence about *site* generalisation.
@@ -214,6 +214,6 @@ Because Turku-EO is itself near chance (0.545), Δ may be uninformative in the "
 
 ### 14.3 Order of operations
 
-1. Download Turku eyes-closed (44 files) → windows under frozen thresholds → features and M4T montage features → score P1/P2/P3 → compute Δ → record verdict under 14.2.
+1. Download Turku eyes-closed (39 distinct files on OSF; listing de-duplicated by OSF file id) → windows under frozen thresholds → features and M4T montage features → score P1/P2/P3 → compute Δ → record verdict under 14.2.
 2. Only then download BrainLat (PD + HC from AR and CL), seal labels, verify format label-free, extract, build features.
 3. One-shot BrainLat evaluation via the same guarded command (both locks, seal hash, repeat refusal).
